@@ -1,0 +1,10 @@
+{
+  "expo": {
+    "name": "palpiteirosExpo",
+    "slug": "palpiteirosExpo",
+    "version": "1.0.0",
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  }
+}
