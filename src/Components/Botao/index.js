@@ -29,7 +29,7 @@ const css = StyleSheet.create({
     botaoCadastro: {
         height: 55,
         justifyContent: 'center',
-        borderRadius: 6,
+        borderRadius: 15,
         marginTop: 12
     },
     txtBt: {
