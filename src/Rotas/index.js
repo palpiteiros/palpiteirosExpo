@@ -7,7 +7,6 @@ import { UserProvider } from './UserProvider';
  */
 
 export default function Rotas() {
-    console.log('render');
     return (
         <UserProvider>
             <RootNavigator />
