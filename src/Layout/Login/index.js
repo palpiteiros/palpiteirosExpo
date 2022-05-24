@@ -69,7 +69,7 @@ export default function Login({navigation}) {
                     valor={senha}
                     funcao={setSenha}
                     icone={'security'}
-                    senha
+                    senha={true}
                     inputNome={'Digite sua senha'}
                 />
                 <View style={css.viewEsqueci}>
