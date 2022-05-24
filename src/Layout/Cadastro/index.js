@@ -94,7 +94,6 @@ export default function Cadastro({navigation}) {
                         inputNome={'Digite seu Telefone'}
                     />
                     
-                    <View style={css.container} />
                     <View style={css.spacing} />
                     
                     
