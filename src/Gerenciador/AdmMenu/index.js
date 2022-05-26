@@ -1,7 +1,11 @@
 import React from 'react';
 import { Text, SafeAreaView, View, StyleSheet } from 'react-native';
 import ItemGridMenu from '../../Components/ItemGridMenu';
-import Toolbar from '../../Components/Toolbar';
+import Toolbar from '../../Components/Toolbar'; 
+
+
+
+
 
 const css = StyleSheet.create({
     container: {
@@ -16,14 +20,22 @@ const css = StyleSheet.create({
 });
 
 
+
+
+
 const ligas = require('../../Img/ligas.png');
 const mesas = require('../../Img/mesas.png');
 const palpites = require('../../Img/palpites.png');
-const palpiteiro = require('../../Img/palpiteiro.png');
+const palpiteiro = require('../../Img/palpiteiro.png'); 
 
 
 
-export default function AdmMenu() {
+
+
+
+
+export default function AdmMenu({navigation}) {
+
     return (
         <SafeAreaView style={css.container}>
             <Toolbar 
@@ -33,6 +45,7 @@ export default function AdmMenu() {
                 <ItemGridMenu
                     titulo={'Ligas'}
                     img={ligas}
+                    click={()=> navigation.navigate('Ligas')}
                 />
                 <ItemGridMenu
                     titulo={'Palpiteiros'}
