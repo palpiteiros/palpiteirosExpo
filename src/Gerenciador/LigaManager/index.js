@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Text, SafeAreaView, View, StyleSheet, FlatList } from 'react-native';
 import BotaoVoltarAoInicio from '../../Components/BotaoVoltar';
 import Fab from '../../Components/Fab';
@@ -38,6 +38,39 @@ export default function LigaManager({ navigation }) {
 
 
 
+  const [dados, setDados] = useState();
+
+
+  useEffect(()=>{
+    setDados([
+      {
+        "id": 1,
+        "banner": 'https://2.bp.blogspot.com/-DtuSGo7zfHw/VduFxAAVLAI/AAAAAAAAxn0/huRCDzObDoc/s1600/Vazco%2Bda%2BGama%2BRJ.png',
+        "nomeLiga": "Liga dos Milionarios",
+        "descLiga": "Descricao aqui",
+        "Campeonatos": "Copa do mundo",
+        "Fechamento": "26/05 ás 15:26",
+        "DataCriacao": "12/04 ás 12:00",
+        "Resultado": "Brasil" ,
+        "jogoPmesa": 15,
+        "nMesas": 20,
+        "nJogadores": 125,
+        "TotalPalpites": 250,
+        "Entrada": "R$ 10,00",
+        "Premio": "R$ 2.500,00"
+
+      }
+
+    ])
+
+
+  },[])
+
+
+
+
+
+
   return (
     <SafeAreaView style={css.container}>
 
@@ -50,24 +83,7 @@ export default function LigaManager({ navigation }) {
       </View>
 
       <FlatList
-        data={[{
-          "id": 1,
-          "banner": 'https://2.bp.blogspot.com/-DtuSGo7zfHw/VduFxAAVLAI/AAAAAAAAxn0/huRCDzObDoc/s1600/Vazco%2Bda%2BGama%2BRJ.png',
-          "nomeLiga": "Liga dos Milionarios",
-          "descLiga": "Descricao aqui",
-          "Campeonatos": "Copa do mundo",
-          "Fechamento": "26/05 ás 15:26",
-          "DataCriacao": "12/04 ás 12:00",
-          "Resultado": "Brasil" ,
-          "jogoPmesa": 15,
-          "nMesas": 20,
-          "nJogadores": 125,
-          "TotalPalpites": 250,
-          "Entrada": "R$ 10,00",
-          "Premio": "R$ 2.500,00"
-
-        }]}
-
+        data={dados}
         renderItem={({ item }) => <ItemCardLigas data={item} />}
         keyExtractor={item => item.id}
       />

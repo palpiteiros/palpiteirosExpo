@@ -10,8 +10,8 @@ import { colorVerde } from '../../Styles/Cores';
 
 
 
-export default function ItemCardCampeonatos({ data }) {
-
+export default function ItemCardCampeonatos({ data, click }) {
+ 
 
     const css = StyleSheet.create({
 
@@ -26,12 +26,13 @@ export default function ItemCardCampeonatos({ data }) {
         heardCard: {
             flexDirection: 'row',
             width: '100%',
-            alignItems: 'flex-start'
+            alignItems: 'flex-start', 
 
         },
 
         txt: {
             paddingLeft: 25,
+            
         },
 
         txtBody: {
@@ -46,6 +47,7 @@ export default function ItemCardCampeonatos({ data }) {
 
         bodyCard: {
             width: '100%',
+            marginTop: 15
 
         },
 
@@ -61,6 +63,8 @@ export default function ItemCardCampeonatos({ data }) {
             marginTop: 15
         },
 
+        image:{paddingTop: 9, backgroundColor: 'white'},
+
 
         footer:{
             marginTop: 20
@@ -73,15 +77,18 @@ export default function ItemCardCampeonatos({ data }) {
 
 
     return (
-        <Card onPress={'click'} elevation={8} mode="elevated" style={css.container}>
+        <Card  elevation={8} mode="elevated" style={css.container}>
 
             <View style={css.heardCard}>
-                <Avatar.Image size={70} source={{ uri: data.banner }} />
+                <Avatar.Image style={css.image}  size={70} source={{ uri: data.banner }} />
 
                 <View>
-                    <Title style={css.txt}>{data.nomeLiga}</Title>
+                    <Title style={css.txt}>{data.Campeonato}</Title>
 
-                    <Subheading style={css.txt}>{data.descLiga}</Subheading>
+                    <Subheading style={css.txt}>Edição: {data.edicao}</Subheading>
+
+                    <Subheading style={css.txt}>Temporada: {data.temporada}</Subheading>
+
                 </View>
 
             </View>
@@ -91,11 +98,11 @@ export default function ItemCardCampeonatos({ data }) {
 
                 <View style={css.rowTitle}>
 
-                    <Text style={css.txtBodyTitle}>Criação</Text>
+                    <Text style={css.txtBodyTitle}>Tipo</Text>
 
-                    <Text style={css.txtBodyTitle}>Fechamento</Text>
+                    <Text style={css.txtBodyTitle}>Rodada</Text>
 
-                    <Text style={css.txtBodyTitle}>Resultado</Text>
+                    <Text style={css.txtBodyTitle}>Status</Text>
 
 
 
@@ -103,67 +110,21 @@ export default function ItemCardCampeonatos({ data }) {
 
                 <View style={css.row}>
 
-                    <Text style={css.txtBody}>{data.DataCriacao}</Text>
+                    <Text style={css.txtBody}>{data.tipo}</Text>
 
-                    <Text style={css.txtBody}>{data.Fechamento}</Text>
+                    <Text style={css.txtBody}>{data.rodada}</Text>
 
                     <Text style={css.txtBody}>Ainda não saiu</Text>
 
 
 
                 </View>
-
-
-
-                <View style={css.rowTitle}>
-
-                    <Text style={css.txtBodyTitle}>Jogos p/ mesa</Text>
-                    <Text style={css.txtBodyTitle}>Nº mesas</Text>
-                    <Text style={css.txtBodyTitle}>Nº jogadores</Text>
-
-                </View>
-
-
-                <View style={css.row}>
-
-                    <Text style={css.txtBody}>{data.jogoPmesa}</Text>
-                    <Text style={css.txtBody}>{data.nMesas}</Text>
-                    <Text style={css.txtBody}>{data.nJogadores}</Text>
-
-
-
-                </View>
-
-
-
-
-                <View style={css.rowTitle}>
-
-                    <Text style={css.txtBodyTitle}>Entrada</Text>
-                    <Text style={css.txtBodyTitle}>Total palpites</Text>
-                    <Text style={css.txtBodyTitle}>Prêmio</Text>
-
-                </View>
-
-
-                <View style={css.row}>
-
-                    <Text style={css.txtBody}>{data.Entrada}</Text>
-                    <Text style={css.txtBody}>{data.TotalPalpites}</Text>
-                    <Text style={css.txtBody}>{data.Premio}</Text>
-
-
-
-                </View>
-
-
-
-
+ 
             </View>
 
 
             <View style={css.footer}>
-                <Button onPress={()=> alert('Abre um modal com informações mais detalhadas sobre a liga')} color={colorVerde} mode='contained'>Selecionar campeonato</Button>
+                <Button onPress={()=> click()} color={colorVerde} mode='contained'>Selecionar campeonato</Button>
             </View>
 
         </Card>

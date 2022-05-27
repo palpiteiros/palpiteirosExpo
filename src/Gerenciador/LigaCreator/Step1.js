@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import { Text, SafeAreaView, View, StyleSheet, FlatList } from 'react-native';
 import ItemCardCampeonatos from '../../Components/ItemCardCampeonatos';
 
@@ -25,39 +25,59 @@ const css = StyleSheet.create({
 
 export default function Step1({ navigation }) {
 
+    const [data, setData] = useState();
+
+
+    useEffect(()=>{
+
+        setData([
+            {
+                "id": 1,
+                "banner": 'https://2.bp.blogspot.com/-DtuSGo7zfHw/VduFxAAVLAI/AAAAAAAAxn0/huRCDzObDoc/s1600/Vazco%2Bda%2BGama%2BRJ.png',
+                "Campeonato": "Copa do mundo",
+                "edicao": 20,
+                "temporada": 2022,
+                "tipo": "mata-mata",
+                "rodada": 10,
+                "status": "0",
+                "jogos":
+               {
+                    "id": 1,
+                    "nJogo": "1",
+                    "casa": "Brasil",
+                    "visitante": 'Alemanha',
+                    "data":"05/02 as 20h",
+                    "status": "Em andamento",
+                    "logo1":"https://s3.static.brasilescola.uol.com.br/be/2021/11/bandeira-do-brasil.jpg",
+                    "logo2":"https://s5.static.brasilescola.uol.com.br/be/2020/10/bandeira-da-alemanha.jpg",
+
+                }, 
+
+            },
+            
+          
+        ])
+
+    },[])
+
+
+
+
+    function proxTela() {
+        navigation.navigate('Jogos', data );
+    }
+
+
+
+
+
 
     return (
         <SafeAreaView style={css.container}>
 
             <FlatList
-                data={[
-                    {
-                        "id": 1,
-                        "banner": 'https://2.bp.blogspot.com/-DtuSGo7zfHw/VduFxAAVLAI/AAAAAAAAxn0/huRCDzObDoc/s1600/Vazco%2Bda%2BGama%2BRJ.png',
-                       "Campeonato": "Copa do mundo",
-                        "edicao": 20,
-                        "temporada": 2022,
-                        "tipo": "mata-mata",
-                        "rodada": 10,
-                        "status":"0",
-
-
-                    },
-
-                    {
-                        "id": 2,
-                        "banner": 'https://2.bp.blogspot.com/-DtuSGo7zfHw/VduFxAAVLAI/AAAAAAAAxn0/huRCDzObDoc/s1600/Vazco%2Bda%2BGama%2BRJ.png',
-                       "Campeonato": "Brasileirão",
-                        "edicao": 20,
-                        "temporada": 2022,
-                        "tipo": "Rodada 1",
-                        "rodada": 10,
-                        "status":"0",
-
-
-                    }
-                ]}
-                renderItem={({ item }) => <ItemCardCampeonatos data={item} />}
+                data={data}
+                renderItem={({ item }) => <ItemCardCampeonatos click={proxTela} data={item} />}
                 keyExtractor={item => item.id}
             />
 
