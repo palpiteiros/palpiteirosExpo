@@ -1,11 +1,13 @@
 import React from 'react';
-import { SafeAreaView, View, StyleSheet, FlatList } from 'react-native';
-import { Title, Card, Avatar, Subheading, Text, Button, Checkbox } from 'react-native-paper';
+import { SafeAreaView, View, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
+import { Title, Card, Avatar, Subheading, Text, Button } from 'react-native-paper';
 import { colorVerde } from '../../Styles/Cores';
+import CheckBox from "expo-checkbox";
 
 
 
-export default function ItemCardJogos({ data, seleciona, acao }) {
+export default function ItemCardJogos({ data, click }) {
+ 
 
 
     const css = StyleSheet.create({
@@ -51,7 +53,7 @@ export default function ItemCardJogos({ data, seleciona, acao }) {
 
         colunas: { height: '100%', alignItems: 'center', justifyContent: 'center', width: 140 },
 
-        colunaMeio:{ height: '100%', width: 40, justifyContent: 'center', alignItems: 'center' }
+        colunaMeio: { height: '100%', width: 40, justifyContent: 'center', alignItems: 'center' }
 
 
 
@@ -60,25 +62,27 @@ export default function ItemCardJogos({ data, seleciona, acao }) {
     })
 
 
-    let timeCasa = data.jogos.casa;
-    let LogotimeCasa =  data.jogos.logo1;
+    let timeCasa = data.casa;
+    let LogotimeCasa = data.logo1;
 
-    
-    let timeVisitante = data.jogos.visitante;
-    let LogotimeVisitante =  data.jogos.logo2 ;
 
-    
-    let dataJogo = data.jogos.data;
-    let Status = data.jogos.status;
-    let campeonato =  data.Campeonato;
+    let timeVisitante = data.visitante;
+    let LogotimeVisitante = data.logo2;
 
-    
+
+    let dataJogo = data.data;
+    let Status = data.status;
+    let campeonato = data.Campeonato;
+    let selected = data.selected;
+
+
+
 
 
 
     return (
 
-        <Card elevation={8} mode="elevated" style={css.container}>
+        <Card elevation={8} onPress={() => click()} mode="elevated" style={css.container}>
 
             <View style={css.row}>
 
@@ -87,7 +91,7 @@ export default function ItemCardJogos({ data, seleciona, acao }) {
                     <View style={css.colunas}>
                         <Title>Casa</Title>
 
-                        <Avatar.Image source={{ uri: LogotimeCasa}} />
+                        <Avatar.Image source={{ uri: LogotimeCasa }} />
                         <Subheading>{timeCasa}</Subheading>
 
                     </View>
@@ -106,7 +110,7 @@ export default function ItemCardJogos({ data, seleciona, acao }) {
                     <View style={css.colunas}>
                         <Title>Visitante</Title>
 
-                        <Avatar.Image source={{ uri:LogotimeVisitante }} />
+                        <Avatar.Image source={{ uri: LogotimeVisitante }} />
                         <Subheading>{timeVisitante}</Subheading>
 
 
@@ -139,11 +143,11 @@ export default function ItemCardJogos({ data, seleciona, acao }) {
                     </View>
 
 
+
                     <View style={css.cardItens}>
-                        <Checkbox
-                            color={colorVerde}
-                            status={seleciona ? 'checked' : 'unchecked'}
-                            onPress={() => acao()}
+
+                        <View
+                            style={{ height: 15, width: 15, borderRadius: 50, backgroundColor: selected ? 'green' :  'red'}}
                         />
 
                     </View>

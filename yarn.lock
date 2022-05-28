@@ -1944,6 +1944,11 @@
   "resolved" "https://registry.npmjs.org/@protobufjs/utf8/-/utf8-1.1.0.tgz"
   "version" "1.1.0"
 
+"@react-native-community/checkbox@^0.5.12":
+  "integrity" "sha512-Dd3eiAW7AkpRgndwKGdgQ6nNgEmZlVD8+KAOBqwjuZQ/M67BThXJ9Ni+ydpPjNm4e28KXmIILfkvhcDt0ZoFTQ=="
+  "resolved" "https://registry.npmjs.org/@react-native-community/checkbox/-/checkbox-0.5.12.tgz"
+  "version" "0.5.12"
+
 "@react-native-community/cli-debugger-ui@^7.0.3":
   "integrity" "sha512-G4SA6jFI0j22o+j+kYP8/7sxzbCDqSp2QiHA/X5E0lsGEd2o9qN2zbIjiFr8b8k+VVAYSUONhoC0+uKuINvmkA=="
   "resolved" "https://registry.npmjs.org/@react-native-community/cli-debugger-ui/-/cli-debugger-ui-7.0.3.tgz"
@@ -3585,6 +3590,11 @@
     "md5-file" "^3.2.3"
     "path-browserify" "^1.0.0"
     "url-parse" "^1.5.9"
+
+"expo-checkbox@^2.1.0":
+  "integrity" "sha512-5zsw45ZTp91fiVVDV5+ZZ8zWRGnHSZGh4RBy5LZo0y6ezf2zAvO3Dp0dZN4m5bWDilk6t8eHzICz3eo4U1AG+A=="
+  "resolved" "https://registry.npmjs.org/expo-checkbox/-/expo-checkbox-2.1.0.tgz"
+  "version" "2.1.0"
 
 "expo-constants@~13.1.1":
   "integrity" "sha512-QRVHrrMCLenBzWZ8M+EvCXM+jjdQzFMW27YQHRac3SGGoND1hWr81scOmGwlFo2wLZrYXm8HcYt1E6ry3IIwrA=="
@@ -6233,7 +6243,7 @@
     "normalize-css-color" "^1.0.2"
     "prop-types" "^15.6.0"
 
-"react-native@*", "react-native@>=0.42.0", "react-native@>=0.57", "react-native@0.68.2":
+"react-native@*", "react-native@>= 0.62", "react-native@>=0.42.0", "react-native@>=0.57", "react-native@0.68.2":
   "integrity" "sha512-qNMz+mdIirCEmlrhapAtAG+SWVx6MAiSfCbFNhfHqiqu1xw1OKXdzIrjaBEPihRC2pcORCoCHduHGQe/Pz9Yuw=="
   "resolved" "https://registry.npmjs.org/react-native/-/react-native-0.68.2.tgz"
   "version" "0.68.2"

@@ -33,7 +33,7 @@ export default function Step1({ navigation }) {
         setData([
             {
                 "id": 1,
-                "banner": 'https://2.bp.blogspot.com/-DtuSGo7zfHw/VduFxAAVLAI/AAAAAAAAxn0/huRCDzObDoc/s1600/Vazco%2Bda%2BGama%2BRJ.png',
+                "banner": 'https://placar.abril.com.br/wp-content/uploads/2021/09/esporte-copa-taca-20180614-001-1.jpg',
                 "Campeonato": "Copa do mundo",
                 "edicao": 20,
                 "temporada": 2022,
@@ -64,7 +64,7 @@ export default function Step1({ navigation }) {
 
 
     function proxTela() {
-        navigation.navigate('Jogos', data );
+        navigation.navigate('Jogos' );
     }
 
 
