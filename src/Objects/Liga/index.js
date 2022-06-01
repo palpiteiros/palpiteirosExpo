@@ -14,6 +14,7 @@ let Liga = {
     regras: [],
     valorEntrada: 0,
     valorPremio: 0,
+    campeonatoId: '',//id do campeonato retornado pelo api
     //v--- serao atualizados no fechamento da rodada
     topClubes: [], //clubes teve mais palpite de vitoria
     topJogadores: [], //jogadores mais palpitados a marcar gol
@@ -28,3 +29,7 @@ let Liga = {
     theBest: {}, //jogador que mais pontuou
     theChampion: {}, //clube que mais pontuou
 };
+
+export const novaLiga = () => {
+    return Liga;
+}

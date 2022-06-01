@@ -1,26 +1,20 @@
 import React from 'react';
-import { SafeAreaView, View, StyleSheet, FlatList } from 'react-native';
+import { SafeAreaView, View, StyleSheet, FlatList, Image } from 'react-native';
 import BotaoVoltarAoInicio from '../BotaoVoltar';
 import Fab from '../Fab';
 import { Title, Card, Avatar, Subheading, Text , Button } from 'react-native-paper';
 import { colorVerde } from '../../Styles/Cores';
 
 
-
-
-
-
-export default function ItemCardCampeonatos({ data, click }) {
- 
-
-    const css = StyleSheet.create({
+const css = StyleSheet.create({
 
         container: { 
-            margin: 10,
+            margin: 16,
             borderRadius: 12,
             padding: 20,
             justifyContent: 'center',
             alignContent: 'center',
+            flex: 1
         },
 
         heardCard: {
@@ -63,31 +57,42 @@ export default function ItemCardCampeonatos({ data, click }) {
             marginTop: 15
         },
 
-        image:{paddingTop: 9, backgroundColor: 'white'},
+        image:{
+            paddingTop: 9, 
+            backgroundColor: 'white',
+            width: 85,
+            height: 85
+        },
 
 
         footer:{
             marginTop: 20
+        },
+        title: {
+            paddingLeft: 25,
+            maxWidth: 250,
+            flex: 1
         }
 
-    })
+});
 
 
 
+export default function ItemCardCampeonatos({ data, click }) {
 
 
     return (
-        <Card  elevation={8} mode="elevated" style={css.container}>
+        <Card  elevation={8}  style={css.container}>
 
             <View style={css.heardCard}>
-                <Avatar.Image style={css.image}  size={70} source={{ uri: data.banner }} />
+                <Image style={css.image}  size={70} source={{ uri: data.logo }} />
 
                 <View>
-                    <Title style={css.txt}>{data.Campeonato}</Title>
+                    <Title numberOfLines={2} style={[css.title]}>{data.nome}</Title>
 
-                    <Subheading style={css.txt}>Edição: {data.edicao}</Subheading>
+                    <Subheading style={css.txt}>Edição: {data.edicao_atual.edicao_id}</Subheading>
 
-                    <Subheading style={css.txt}>Temporada: {data.temporada}</Subheading>
+                    <Subheading style={css.txt}>Temporada: {data.edicao_atual.temporada}</Subheading>
 
                 </View>
 
@@ -112,9 +117,9 @@ export default function ItemCardCampeonatos({ data, click }) {
 
                     <Text style={css.txtBody}>{data.tipo}</Text>
 
-                    <Text style={css.txtBody}>{data.rodada}</Text>
+                    <Text style={css.txtBody}>{data?.rodada_atual?.rodada}</Text>
 
-                    <Text style={css.txtBody}>Ainda não saiu</Text>
+                    <Text style={css.txtBody}>{data.status}</Text>
 
 
 
@@ -124,7 +129,7 @@ export default function ItemCardCampeonatos({ data, click }) {
 
 
             <View style={css.footer}>
-                <Button onPress={()=> click()} color={colorVerde} mode='contained'>Selecionar campeonato</Button>
+                <Button onPress={() => click(data.campeonato_id)} color={colorVerde} mode='contained'>Selecionar campeonato</Button>
             </View>
 
         </Card>

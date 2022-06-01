@@ -1,15 +1,14 @@
 
 import React, {useState, useEffect} from 'react';
 import { Text, SafeAreaView, View, StyleSheet, FlatList } from 'react-native';
+import { getCampeonatos } from '../../Api';
 import ItemCardCampeonatos from '../../Components/ItemCardCampeonatos';
+import Pb from '../../Components/Pb';
 
 
 const css = StyleSheet.create({
     container: {
         flex: 1,
-        paddingTop: 30,
-        paddingLeft: 10,
-        paddingRight: 10,
     },
     row: {
         flexDirection: 'row'
@@ -23,68 +22,33 @@ const css = StyleSheet.create({
 
 
 
-export default function Step1({ navigation }) {
+export default function Step1({setId, avancar}) {
 
-    const [data, setData] = useState();
-
+    const [campeonatos, setCampeonatos] = useState(undefined);
 
     useEffect(()=>{
 
-        setData([
-            {
-                "id": 1,
-                "banner": 'https://placar.abril.com.br/wp-content/uploads/2021/09/esporte-copa-taca-20180614-001-1.jpg',
-                "Campeonato": "Copa do mundo",
-                "edicao": 20,
-                "temporada": 2022,
-                "tipo": "mata-mata",
-                "rodada": 10,
-                "status": "0",
-                "jogos":
-               {
-                    "id": 1,
-                    "nJogo": "1",
-                    "casa": "Brasil",
-                    "visitante": 'Alemanha',
-                    "data":"05/02 as 20h",
-                    "status": "Em andamento",
-                    "logo1":"https://s3.static.brasilescola.uol.com.br/be/2021/11/bandeira-do-brasil.jpg",
-                    "logo2":"https://s5.static.brasilescola.uol.com.br/be/2020/10/bandeira-da-alemanha.jpg",
+        getCampeonatos((list) => {
+            setCampeonatos(list);
+        });
 
-                }, 
+    },[]);
 
-            },
-            
-          
-        ])
-
-    },[])
-
-
-
-
-    function proxTela() {
-        navigation.navigate('Jogos' );
+    function proxTela(idCampeonato) {
+        setId(idCampeonato);
+        avancar();
     }
 
-
-
-
-
+    if(campeonatos == undefined) return <Pb cor="#000" />
 
     return (
         <SafeAreaView style={css.container}>
-
             <FlatList
-                data={data}
+                showsVerticalScrollIndicator={false}
+                data={campeonatos}
                 renderItem={({ item }) => <ItemCardCampeonatos click={proxTela} data={item} />}
                 keyExtractor={item => item.id}
             />
-
-
-
-
-
         </SafeAreaView>
     );
 }

@@ -48,7 +48,6 @@ export default function Cadastro({navigation}) {
         }
         setIsLoading(true);
         const result = await criarUser(email, senha, contato, nome);
-        console.log(result);
 
         if(!result.sucess) {
             Alert.alert('Erro no Cadastro', `${result.msg}`);

@@ -21,7 +21,6 @@ export default function RootNavigator() {
     useEffect(() => {
       // onAuthStateChanged returns an unsubscriber
       const unsubscribeAuth = auth.onAuthStateChanged(async u => {
-        console.log(u);
         setUser(u);
         setIsLoading(false)
         

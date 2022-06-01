@@ -44,7 +44,6 @@ export default function Login({navigation}) {
         }
         setIsLoading(true);
         const result = await logarUser(email, senha);
-        console.log(result);
         if(!result.sucess) {
             Alert.alert('Erro no Login', result.msg);
             setIsLoading(false);

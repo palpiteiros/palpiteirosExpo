@@ -2,10 +2,17 @@ import React from 'react';
 import { View, ActivityIndicator } from 'react-native';
 import { colorBranco, colorVerde } from '../../Styles/Cores';
 
-export default function Pb() {
+export default function Pb({cor}) {
+
+    let color = colorBranco;
+
+    if(cor) {
+      color = cor;
+    }
+
     return (
-        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', marginTop: 10 }}>
-          <ActivityIndicator color={colorBranco} size='large' />
+        <View style={{ flex: 1, marginTop: 40 }}>
+          <ActivityIndicator color={color} size='large' />
         </View>
     );
 }
