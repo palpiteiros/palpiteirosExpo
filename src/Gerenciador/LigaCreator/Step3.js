@@ -57,7 +57,6 @@ export default function Step3({ navigation, route }) {
     const { salvar_dados, loadingSave } = useContext(FirebaseContext);
 
 
-    console.log(route.params);
 
 
     let Lista_de_jogos = route.params;
@@ -67,19 +66,19 @@ export default function Step3({ navigation, route }) {
     let nomeCampeonato = "";
     let idCampeonato = "";
 
-    /*
-            Lista_de_jogos.map((x) => {
-        
-                data_fechamento = x.jogos.data_realizacao;
-                hora_fechamento = x.jogos.hora_realizacao;
-                data_hora_close = data_fechamento + " ás " + hora_fechamento;
-                idCampeonato = x.jogos.campeonato.campeonato_id;
-                nomeCampeonato = x.jogos.campeonato.nome;
-        
-        
-        
-            });
-          */
+
+    Lista_de_jogos.map((x) => {
+
+        data_fechamento = x.jogos.data_realizacao;
+        hora_fechamento = x.jogos.hora_realizacao;
+        data_hora_close = data_fechamento + " ás " + hora_fechamento;
+        idCampeonato = x.jogos.campeonato.campeonato_id;
+        nomeCampeonato = x.jogos.campeonato.nome;
+
+
+
+    });
+
 
 
     const GoChooseFotos = async () => {
