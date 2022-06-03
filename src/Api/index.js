@@ -6,7 +6,7 @@ const LIVE = 'live_c0d23ac538ed108228dfd3c7a60d67';
 //essa chave so retorna um campeonato
 const TESTE = 'test_4f03280014e0d1e4fd7cd594b0bdac';
 
-const chaveApi = LIVE;
+const chaveApi = TESTE;
 
 const extrairLista = json => {
     let list = [];
@@ -39,7 +39,7 @@ export const getInfoCampeonato = (idCampeonato, listener) => {
         }
     }).then(resposta => resposta.json()).then(json => {
         const {rodada_atual} = json;
-        console.log(json);
+        //console.log(json);
 
         getJogosDoCampeonato(rodada_atual.rodada, idCampeonato, listener);
     });
@@ -56,7 +56,7 @@ export const getJogosDoCampeonato = (rodadaId, campeonatoId, listener) => {
         }
     }).then(resposta => resposta.json()).then(json => {
         let {partidas} = json;
-        console.log(json);
+       // console.log(json);
         return listener(partidas);
     });
 };

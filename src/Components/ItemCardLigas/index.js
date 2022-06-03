@@ -2,86 +2,99 @@ import React from 'react';
 import { SafeAreaView, View, StyleSheet, FlatList } from 'react-native';
 import BotaoVoltarAoInicio from '../BotaoVoltar';
 import Fab from '../Fab';
-import { Title, Card, Avatar, Subheading, Text , Button } from 'react-native-paper';
+import { Title, Card, Avatar, Subheading, Text, Button } from 'react-native-paper';
 import { colorVerde } from '../../Styles/Cores';
+import { format, formatDistance, formatRelative, subDays } from 'date-fns'
 
 
 
+const css = StyleSheet.create({
+
+    container: {
+        margin: 10,
+        borderRadius: 12,
+        padding: 20,
+        justifyContent: 'center',
+        alignContent: 'center',
+
+    },
+
+    heardCard: {
+        flexDirection: 'row',
+        alignItems: 'flex-start'
+
+    },
+
+    txt: {
+        paddingLeft: 25,
+    },
+
+    txtBody: {
+        width: 100
+
+    },
+
+    txtBodyTitle: {
+        width: 100,
+        fontWeight: 'bold'
+    },
+
+    bodyCard: {
+
+    },
+
+    row: {
+        flexDirection: 'row',
+        justifyContent: 'space-evenly',
+
+    },
+
+    rowTitle: {
+        flexDirection: 'row',
+        justifyContent: 'space-evenly',
+        marginTop: 15
+    },
+
+
+    footer: {
+        marginTop: 20
+    }
+
+})
 
 
 
-export default function ItemCardLigas({ data }) {
+export default function ItemCardLigas({ data , abreDetalhes}) {
 
 
-    const css = StyleSheet.create({
 
-        container: { 
-            margin: 10,
-            borderRadius: 12,
-            padding: 20,
-            justifyContent: 'center',
-            alignContent: 'center',
-        },
+    const data_criacao = data.data_criacao.toDate().toDateString();
+    const hora_criacao = data.data_criacao.toDate().toLocaleTimeString('pt-BR');
 
-        heardCard: {
-            flexDirection: 'row',
-            width: '100%',
-            alignItems: 'flex-start'
-
-        },
-
-        txt: {
-            paddingLeft: 25,
-        },
-
-        txtBody: {
-            width: 100
-
-        },
-
-        txtBodyTitle: {
-            width: 100,
-            fontWeight: 'bold'
-        },
-
-        bodyCard: {
-            width: '100%',
-
-        },
-
-        row: {
-            flexDirection: 'row',
-            justifyContent: 'space-evenly',
-
-        },
-
-        rowTitle: {
-            flexDirection: 'row',
-            justifyContent: 'space-evenly',
-            marginTop: 15
-        },
+    const data_formated = format(new Date(data_criacao), 'dd/MM/yyyy');
 
 
-        footer:{
-            marginTop: 20
-        }
-
-    })
-
-
+    let resultado = "Ainda não saiu";
+    let data_fechamento = data.documento.dataHoraFechamento;
+    let nomeLiga = data.documento.titulo;
+    let descricaoLiga = data.documento.descricao;
+    let valorEntrada = data.documento.valorEntrada;
+    let valorPremio = data.documento.valorPremio;
+    let avatar = data.documento.banner;
+    let TotalPalpites = 0;
 
 
 
     return (
-        <Card onPress={'click'} elevation={8} mode="elevated" style={css.container}>
+        <Card elevation={8} mode="elevated" style={css.container}>
 
             <View style={css.heardCard}>
-                <Avatar.Image size={70} source={{ uri: data.banner }} />
+                <Avatar.Image size={70} source={{ uri: avatar }} />
 
                 <View>
-                    <Title style={css.txt}>{data.nomeLiga}</Title>
+                    <Title style={css.txt}>{nomeLiga}</Title>
 
-                    <Subheading style={css.txt}>{data.descLiga}</Subheading>
+                    <Subheading style={css.txt}>{descricaoLiga}</Subheading>
                 </View>
 
             </View>
@@ -103,36 +116,17 @@ export default function ItemCardLigas({ data }) {
 
                 <View style={css.row}>
 
-                    <Text style={css.txtBody}>{data.DataCriacao}</Text>
+                    <Text style={css.txtBody}>{data_formated}</Text>
 
-                    <Text style={css.txtBody}>{data.Fechamento}</Text>
+                    <Text style={css.txtBody}>{data_fechamento}</Text>
 
-                    <Text style={css.txtBody}>Ainda não saiu</Text>
-
-
-
-                </View>
-
-
-
-                <View style={css.rowTitle}>
-
-                    <Text style={css.txtBodyTitle}>Jogos p/ mesa</Text>
-                    <Text style={css.txtBodyTitle}>Nº mesas</Text>
-                    <Text style={css.txtBodyTitle}>Nº jogadores</Text>
-
-                </View>
-
-
-                <View style={css.row}>
-
-                    <Text style={css.txtBody}>{data.jogoPmesa}</Text>
-                    <Text style={css.txtBody}>{data.nMesas}</Text>
-                    <Text style={css.txtBody}>{data.nJogadores}</Text>
+                    <Text style={css.txtBody}>{resultado}</Text>
 
 
 
                 </View>
+
+
 
 
 
@@ -140,17 +134,17 @@ export default function ItemCardLigas({ data }) {
                 <View style={css.rowTitle}>
 
                     <Text style={css.txtBodyTitle}>Entrada</Text>
-                    <Text style={css.txtBodyTitle}>Total palpites</Text>
                     <Text style={css.txtBodyTitle}>Prêmio</Text>
+                    <Text style={css.txtBodyTitle}>Total palpites</Text>
 
                 </View>
 
 
                 <View style={css.row}>
 
-                    <Text style={css.txtBody}>{data.Entrada}</Text>
-                    <Text style={css.txtBody}>{data.TotalPalpites}</Text>
-                    <Text style={css.txtBody}>{data.Premio}</Text>
+                    <Text style={css.txtBody}>R$ {valorEntrada},00</Text>
+                    <Text style={css.txtBody}>R$ {valorPremio},00</Text>
+                    <Text style={css.txtBody}>{TotalPalpites}</Text>
 
 
 
@@ -163,7 +157,7 @@ export default function ItemCardLigas({ data }) {
 
 
             <View style={css.footer}>
-                <Button onPress={()=> alert('Abre um modal com informações mais detalhadas sobre a liga')} color={colorVerde} mode='contained'>Ver mais</Button>
+                <Button onPress={() => abreDetalhes(data)} color={colorVerde} mode='contained'>Ver mais</Button>
             </View>
 
         </Card>

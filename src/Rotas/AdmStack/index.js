@@ -6,6 +6,8 @@ import Step1 from '../../Gerenciador/LigaCreator/Step1';
 import Step2 from '../../Gerenciador/LigaCreator/Step2';
 import Step3 from '../../Gerenciador/LigaCreator/Step3';
 import LigaCreator from '../../Gerenciador/LigaCreator';
+import DetalhesLiga from '../../Gerenciador/DetalhesLiga';
+
 
 
 
@@ -21,6 +23,7 @@ export default function AdmStack() {
       <Stack.Screen name='Liga creator' component={LigaCreator} /> 
       <Stack.Screen name="Jogos" component={Step2} />
       <Stack.Screen name="Atributos finais" component={Step3} />
+      <Stack.Screen name="Detalhes liga" component={DetalhesLiga} />
     </Stack.Navigator>
   );
 }

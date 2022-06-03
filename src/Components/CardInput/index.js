@@ -4,7 +4,7 @@ import { colorBranco, colorPretoFraco, colorPretoMaisFraco } from  '../../Styles
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 
-export default function CardInputForm({ widAdapter ,titulo, hint, icone, valor, onChange, senha,iconeColor, tipoTeclado, qntdLetras}) {
+export default function CardInputForm({ widAdapter ,titulo, hint, icone, valor, onChange, senha,iconeColor, tipoTeclado, qntdLetras, bool}) {
 
     return (
         <View style={{ 
@@ -29,6 +29,7 @@ export default function CardInputForm({ widAdapter ,titulo, hint, icone, valor, 
 
             <View style={css.body}>
                 <TextInput
+                    editable={bool}
                     style={css.textInput}
                     placeholder={hint}
                     secureTextEntry={senha}

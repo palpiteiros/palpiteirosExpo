@@ -1,5 +1,5 @@
 
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import { Text, SafeAreaView, View, StyleSheet, FlatList } from 'react-native';
 import { getCampeonatos } from '../../Api';
 import ItemCardCampeonatos from '../../Components/ItemCardCampeonatos';
@@ -22,34 +22,40 @@ const css = StyleSheet.create({
 
 
 
-export default function Step1({setId, avancar}) {
+export default function Step1({ setId, avancar }) {
 
     const [campeonatos, setCampeonatos] = useState(undefined);
 
-    useEffect(()=>{
+    useEffect(() => {
 
         getCampeonatos((list) => {
             setCampeonatos(list);
         });
 
-    },[]);
+    }, []);
 
     function proxTela(idCampeonato) {
         setId(idCampeonato);
         avancar();
     }
 
-    if(campeonatos == undefined) return <Pb cor="#000" />
+    if (campeonatos == undefined) return <Pb cor="#000" />
 
     return (
-        <SafeAreaView style={css.container}>
-            <FlatList
-                showsVerticalScrollIndicator={false}
-                data={campeonatos}
-                renderItem={({ item }) => <ItemCardCampeonatos click={proxTela} data={item} />}
-                keyExtractor={item => item.id}
-            />
-        </SafeAreaView>
+        <>
+            <SafeAreaView style={css.container}>
+
+
+                <FlatList
+                    showsVerticalScrollIndicator={false}
+                    data={campeonatos}
+                    renderItem={({ item }) => <ItemCardCampeonatos click={proxTela} data={item} />}
+                    keyExtractor={item => item.id}
+                />
+
+
+            </SafeAreaView>
+        </>
     );
 }
 

@@ -23,15 +23,17 @@ const css = StyleSheet.create({
     containerColuna: {
         height: 150,
         paddingTop: 5,
-        width: 100
+        width: 100,
+        height: '100%',
+        margin: 10
     },
 
     cardItens: {
-        padding: 2, 
-        width: '100%', 
-        height: 35, 
+        padding: 2,
+        width: '100%',
+        height: 35,
         justifyContent: 'center',
-        alignItems: 'center', 
+        alignItems: 'center',
         flexDirection: 'column'
     },
 
@@ -43,32 +45,32 @@ const css = StyleSheet.create({
         paddingLeft: 30
     },
 
-    containerTimes: { 
-        flexDirection: 'row', 
+    containerTimes: {
+        flexDirection: 'row',
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
         marginLeft: 10,
         marginRight: 10,
-        marginTop: 16, 
+        marginTop: 16,
         marginBottom: 16
     },
 
-    colunas: { 
-        height: '100%', 
-        alignItems: 'center', 
-        justifyContent: 'center', 
+    colunas: {
+        height: '100%',
+        alignItems: 'center',
+        justifyContent: 'center',
     },
 
-    colunaMeio: { 
-        height: '100%', 
-        width: 40, 
-        justifyContent: 'center', 
-        alignItems: 'center' 
+    colunaMeio: {
+        height: '100%',
+        width: 40,
+        justifyContent: 'center',
+        alignItems: 'center'
     },
 
-    image:{
-        paddingTop: 9, 
+    image: {
+        paddingTop: 9,
         backgroundColor: 'white',
         width: 50,
         height: 50
@@ -80,11 +82,11 @@ const css = StyleSheet.create({
 
 });
 
-export default function ItemCardJogos({ data, click }) {
+export default function ItemCardJogos({ data, click, jogosSelecionados }) {
 
-    let {data_realizacao, hora_realizacao} = data;
-    let {placar_mandante, placar_visitante} = data;
-    let {status, estadio, time_mandante, time_visitante} = data;
+    let { data_realizacao, hora_realizacao } = data;
+    let { placar_mandante, placar_visitante } = data;
+    let { status, estadio, time_mandante, time_visitante } = data;
 
     let nomeEstadio = estadio.nome_popular;
 
@@ -95,6 +97,9 @@ export default function ItemCardJogos({ data, click }) {
     let nomeVisitante = time_visitante.nome_popular;
     let escudoTimeVisitante = time_visitante.escudo;
     let siglaVisitante = time_visitante.sigla;
+
+
+
 
     return (
 
@@ -159,7 +164,7 @@ export default function ItemCardJogos({ data, click }) {
                     <View style={css.cardItens}>
 
                         <View
-                            style={{ height: 15, width: 15, borderRadius: 50, backgroundColor: 'green'}}
+                            style={{ height: 15, width: 15, borderRadius: 50, backgroundColor: "red" }}
                         />
 
                     </View>

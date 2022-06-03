@@ -5,6 +5,7 @@ import ItemCardJogos from '../../Components/ItemCardJogos';
 import Fab from '../../Components/Fab';
 import Pb from '../../Components/Pb';
 import { getInfoCampeonato, getJogosDoCampeonato } from '../../Api';
+import BarTop from '../../Components/BarTop';
 
 
 
@@ -25,10 +26,11 @@ const css = StyleSheet.create({
 });
 
 
-
-export default function Step2({ id }) {
+export default function Step2({ id, avancar, setLista }) {
 
     const [jogos, setJogos] = useState(undefined);
+    const [jogosSelecionados, setJogosSelecionados] = useState([]);
+
 
     useEffect(() => {
         getInfoCampeonato(id, (partidas) => {
@@ -40,30 +42,97 @@ export default function Step2({ id }) {
 
 
 
-    if(jogos == undefined) return <Pb cor="#000" />
+    if (jogos == undefined) return <Pb cor="#000" />
+
+
+
+    const handlerClick = (jogos) => {
+        let lista = [];
+
+        lista.push({
+            ...jogosSelecionados,
+            jogos,
+        });
+
+
+
+        setJogosSelecionados(lista);
+        Alert.alert('Escalação dos jogos ', `O jogo ${jogos.time_mandante.nome_popular} x ${jogos.time_visitante.nome_popular} foi selecionando!`)
+
+
+
+    }
+
+
+
+
+
+    const proxTela = () => {
+ 
+    
+        if (jogosSelecionados.length == 0) {
+            Alert.alert("Espera ai", "Escolha ao menos 1 jogo do campeonato para continuar !");
+        } else {
+            setLista(jogosSelecionados);
+        }
+
+
+    }
+
+
+
+
+    const apagaLista = () => {
+        Alert.alert("Remover tudo", "Todos os jogos da lista foram removidos");
+
+        setJogosSelecionados([]);
+    }
+
+
+    const selecionaTodosOsJogos = () => {
+
+        Alert.alert("Selecionar tudo", "Todos os jogos do campeonato foram selecionados");
+
+        let lista = ([]);
+
+        lista.push({
+            ...jogosSelecionados,
+            jogos,
+            isSelected: true
+        });
+
+        setJogosSelecionados([lista]);
+    }
+
+
+
+
+
 
 
     return (
         <SafeAreaView style={css.container}>
 
+            <BarTop selecionaTudo={() => selecionaTodosOsJogos()} removeTudo={() => apagaLista()} />
+
+
+
             <FlatList
                 data={jogos}
                 renderItem={({ item }) => <ItemCardJogos data={item} click={() => handlerClick(item)} />}
-                keyExtractor={item => item.id}
-            />
+                keyExtractor={item => item.id} />
 
 
 
-            <View style={{ flexDirection: 'row' }}>
 
 
-
+            {jogosSelecionados.length != 0 ?
                 <Fab
                     icone={'arrow-right'}
                     acao={() => proxTela()}
                 />
+                : null}
 
-            </View>
 
         </SafeAreaView>
     );

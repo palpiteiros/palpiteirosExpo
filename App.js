@@ -1,11 +1,16 @@
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
+import FirebaseProvider from './src/Contexts/FirebaseContext';
 import Rotas from './src/Rotas';
 
+
+
 export default function App() {
-  return(
-    <Rotas />
+  return (
+    <FirebaseProvider>
+      <Rotas />
+    </FirebaseProvider>
   )
 }
 
