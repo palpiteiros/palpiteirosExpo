@@ -34,17 +34,13 @@ export default function FirebaseProvider({ children }) {
     //FUNCS PARA SALVAR NO FIRESTORE
 
     //Salva uma nova liga no firebase
-    async function salvar_dados(tituloDocumento, documento, imgBanner) {
+    async function salvar_dados(tituloDocumento, documento, imgBanner, listener) {
         setLoadingSave(true);
 
-        await addDoc(collection(db, tituloDocumento), {
+        await addDoc(collection(db, tituloDocumento), documento).then(async (doc) => {
 
-            documento,
-            data_criacao: new Date(),
-            status: 1
 
-        }).then(async (doc) => {
-
+            return listener({sucess: true, text: "Liga Salva com Sucesso!"});
 
             const id_Liga = doc.id;
 
@@ -84,7 +80,7 @@ export default function FirebaseProvider({ children }) {
 
 
         }).catch((x) => {
-            Alert.alert(x);
+            return listener({sucess: false, text: x});
         });
 
     }
@@ -99,7 +95,7 @@ export default function FirebaseProvider({ children }) {
     //FUNCS PARA RECUPERAR DOCS NO FIRESTORE
 
     //Recuperar todos os documentos em uma coleção
-    async function recuperar_todos_dados_colecao(tituloDocumento) {
+    function recuperar_todos_dados_colecao(tituloDocumento) {
 
         setLoading(true);
 
@@ -126,7 +122,9 @@ export default function FirebaseProvider({ children }) {
 
         });
 
-
+        return () => {
+            setDadosRecuperados([]);
+        };
 
     }
 

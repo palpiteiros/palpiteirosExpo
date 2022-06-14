@@ -86,7 +86,7 @@ export default function ItemCardJogos({ data, click, jogosSelecionados }) {
 
     let { data_realizacao, hora_realizacao } = data;
     let { placar_mandante, placar_visitante } = data;
-    let { status, estadio, time_mandante, time_visitante } = data;
+    let { status, estadio, time_mandante, time_visitante, partida_id } = data;
 
     let nomeEstadio = estadio.nome_popular;
 
@@ -112,7 +112,7 @@ export default function ItemCardJogos({ data, click, jogosSelecionados }) {
                     <View style={css.colunas}>
                         <Title>Casa</Title>
 
-                        <Image style={css.image} source={{ uri: escudoTimeMandante }} />
+                        <Image style={css.image} size={50} source={{ uri: escudoTimeMandante }} />
                         <Subheading>{siglaMandante}</Subheading>
                         <View style={css.espaco} />
                         <Headline>{placar_mandante}</Headline>

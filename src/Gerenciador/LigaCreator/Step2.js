@@ -46,19 +46,34 @@ export default function Step2({ id, avancar, setLista }) {
 
 
 
-    const handlerClick = (jogos) => {
+    const handlerClick = (jogoSelecionado) => {
         let lista = [];
 
-        lista.push({
-            ...jogosSelecionados,
-            jogos,
-        });
+        if(jogosSelecionados.length === 0) {
+            lista.push(jogoSelecionado);
+            setJogosSelecionados(lista);
+            Alert.alert('Seleção dos jogos ', `O jogo ${jogoSelecionado.time_mandante.nome_popular} x ${jogoSelecionado.time_visitante.nome_popular} foi adicionado na seleção!`);
+        } else {
+            lista = jogosSelecionados;
+            let jogoJaEstaNosSelecionados = false;
+            lista.forEach(data => {
+                let idJogoSelecionado = jogoSelecionado.partida_id;
+                let idJogoAtualdoLooping = data.partida_id;
+                if(idJogoAtualdoLooping === idJogoSelecionado) {
+                    jogoJaEstaNosSelecionados = true;
+                }
+            });
 
+            if(jogoJaEstaNosSelecionados) {
+                Alert.alert('Seleção dos jogos ', `O jogo ${jogoSelecionado.time_mandante.nome_popular} x ${jogoSelecionado.time_visitante.nome_popular} ja está selecionando!`);
+            } else {
+                lista.push(jogoSelecionado);
+                setJogosSelecionados(lista);
+                Alert.alert('Seleção dos jogos ', `O jogo ${jogoSelecionado.time_mandante.nome_popular} x ${jogoSelecionado.time_visitante.nome_popular} foi adicionado na seleção!`);
+        
+            }
 
-
-        setJogosSelecionados(lista);
-        Alert.alert('Escalação dos jogos ', `O jogo ${jogos.time_mandante.nome_popular} x ${jogos.time_visitante.nome_popular} foi selecionando!`)
-
+        }
 
 
     }
@@ -73,6 +88,7 @@ export default function Step2({ id, avancar, setLista }) {
         if (jogosSelecionados.length == 0) {
             Alert.alert("Espera ai", "Escolha ao menos 1 jogo do campeonato para continuar !");
         } else {
+            console.log(jogosSelecionados);
             setLista(jogosSelecionados);
         }
 

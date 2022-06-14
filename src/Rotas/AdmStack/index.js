@@ -15,10 +15,8 @@ const Stack = createNativeStackNavigator();
 
 export default function AdmStack() {
   return (
-    <Stack.Navigator screenOptions={{
-   
-      }}  headerMode='none'>
-      <Stack.Screen name='Menu' component={AdmMenu} />
+    <Stack.Navigator>
+      <Stack.Screen name='Menu' options={{headerShown: false}} component={AdmMenu} />
       <Stack.Screen name='Ligas' component={LigaManager} />
       <Stack.Screen name='Liga creator' component={LigaCreator} /> 
       <Stack.Screen name="Jogos" component={Step2} />

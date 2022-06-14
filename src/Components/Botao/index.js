@@ -11,7 +11,7 @@ export default function Botao({cor, click, titulo}) {
             uppercase={false} 
             labelStyle={css.txtBt}
             onPress={click}>
-                {titulo}
+                {String(titulo).toLocaleUpperCase()}
         </Button>
     );
 }
@@ -20,19 +20,13 @@ const css = StyleSheet.create({
     container: {
         flex: 1
     },
-    botao: {
-        height: 55,
-        justifyContent: 'center',
-        borderRadius: 6,
-        marginTop: 12
-    },
     botaoCadastro: {
-        height: 55,
+        height: 50,
         justifyContent: 'center',
         borderRadius: 15,
-        marginTop: 12
+        marginTop: 12,
     },
     txtBt: {
-        fontSize: 18
+        fontSize: 18,
     },
 });

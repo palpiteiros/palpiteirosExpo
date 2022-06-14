@@ -29,13 +29,23 @@ const css = StyleSheet.create({
   },
 
   font: {
-    paddingLeft: 20
+    paddingLeft: 20,
+    marginTop: 10,
+    marginBottom: 10
   }
 });
 
 
 
-
+function getTitle(ligas, loading) {
+  if(ligas.length == 0 && loading) {
+    return 'Carregando...'
+  } else if (ligas.length > 0) {
+    return 'Ligas Recentes';
+  } else {
+    return 'Nenhuma Liga criada';
+  }
+};
 
 
 export default function LigaManager({ navigation }) {
@@ -48,7 +58,11 @@ export default function LigaManager({ navigation }) {
 
   useEffect(() => {
 
-    recuperar_todos_dados_colecao("ligas");
+    const getData = recuperar_todos_dados_colecao("ligas");
+
+    return () => {
+      
+    };
 
   }, []);
 
@@ -57,6 +71,9 @@ export default function LigaManager({ navigation }) {
 
     setLigas(dadosRecuperados);
 
+    return () => {
+      setLigas([]);
+    };
 
   }, [dadosRecuperados]);
 
@@ -82,14 +99,13 @@ export default function LigaManager({ navigation }) {
 
       <View style={css.body}>
 
-        <Title style={css.font}>Todas as ligas</Title>
+        <Title style={css.font}>{getTitle(ligas, loading)}</Title>
 
 
         {loading ?
           <Pb cor={"#000000"} />
           :
           <FlatList
-            showsVerticalScrollIndicator={false}
             data={ligas}
             renderItem={({ item }) => <ItemCardLigas data={item} abreDetalhes={DetalhesLiga}/>}
             keyExtractor={item => item.id}

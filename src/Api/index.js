@@ -6,7 +6,7 @@ const LIVE = 'live_c0d23ac538ed108228dfd3c7a60d67';
 //essa chave so retorna um campeonato
 const TESTE = 'test_4f03280014e0d1e4fd7cd594b0bdac';
 
-const chaveApi = TESTE;
+const chaveApi = LIVE;
 
 const extrairLista = json => {
     let list = [];

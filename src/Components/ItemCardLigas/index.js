@@ -75,12 +75,12 @@ export default function ItemCardLigas({ data , abreDetalhes}) {
 
 
     let resultado = "Ainda não saiu";
-    let data_fechamento = data.documento.dataHoraFechamento;
-    let nomeLiga = data.documento.titulo;
-    let descricaoLiga = data.documento.descricao;
-    let valorEntrada = data.documento.valorEntrada;
-    let valorPremio = data.documento.valorPremio;
-    let avatar = data.documento.banner;
+    let data_fechamento = data.dataHoraFechamento;
+    let nomeLiga = data.titulo;
+    let descricaoLiga = data.descricao;
+    let valorEntrada = data.valorEntrada;
+    let valorPremio = data.valorPremio;
+    let avatar = data.banner;
     let TotalPalpites = 0;
 
 

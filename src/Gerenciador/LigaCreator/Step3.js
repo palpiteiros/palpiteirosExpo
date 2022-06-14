@@ -2,7 +2,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { Text, SafeAreaView, View, StyleSheet, ScrollView, Image, Alert } from 'react-native';
 import { Card } from 'react-native-paper';
-import CardInputForm from '../../Components/CardInput';
+import CardInput from '../../Components/CardInput';
 import Botao from '../../Components/Botao'
 import { colorVerdePadrao } from '../../Styles/Paleta/Paleta_cores';
 import { colorVerde, colorVerdeClaro } from '../../Styles/Cores';
@@ -44,7 +44,7 @@ const css = StyleSheet.create({
 
 
 
-export default function Step3({ navigation, route }) {
+export default function Step3({ onSucess, jogos }) {
 
     const [fechamento, setFechamento] = useState('');
     const [resultado, setResultado] = useState('');
@@ -53,33 +53,20 @@ export default function Step3({ navigation, route }) {
     const [entrada, setEntrada] = useState('');
     const [premio, setPremio] = useState('');
     const [banner, setBanner] = useState(null);
+    const [lista, setLista] = useState([]);
 
     const { salvar_dados, loadingSave } = useContext(FirebaseContext);
 
 
 
 
-    let Lista_de_jogos = route.params;
+    
+    console.log(jogos);
     let data_fechamento = "";
     let hora_fechamento = "";
     let data_hora_close = "";
     let nomeCampeonato = "";
     let idCampeonato = "";
-
-
-    Lista_de_jogos.map((x) => {
-
-        data_fechamento = x.jogos.data_realizacao;
-        hora_fechamento = x.jogos.hora_realizacao;
-        data_hora_close = data_fechamento + " ás " + hora_fechamento;
-        idCampeonato = x.jogos.campeonato.campeonato_id;
-        nomeCampeonato = x.jogos.campeonato.nome;
-
-
-
-    });
-
-
 
     const GoChooseFotos = async () => {
 
@@ -108,19 +95,21 @@ export default function Step3({ navigation, route }) {
         if (resultado == '' || resultado == undefined) return Alert.alert("Atenção", "Campo resultado vazio");
         if (entrada == '' || entrada == undefined) return Alert.alert("Atenção", "Campo entrada vazio");
         if (premio == '' || premio == undefined) return Alert.alert("Atenção", "Campo prêmio vazio");
-        if (banner == null || banner == undefined) return Alert.alert("Atenção", "O banner está vazio");
+        //if (banner == null || banner == undefined) return Alert.alert("Atenção", "O banner está vazio");
 
 
 
         let Liga = {
+            data_criacao: new Date(),
+            status: 1,
             titulo: nomeLiga,
             descricao: descLiga,
-            banner: banner,
+            banner: (!banner ? '' : banner),
             tipo: 1,
             status: 1,
-            dataHoraFechamento: data_hora_close,
-            horaResultado: 0,
-            listaDeJogos: Lista_de_jogos,
+            dataHoraFechamento: fechamento,
+            horaResultado: resultado,
+            listaDeJogos: jogos,
             regras: [],
             valorEntrada: entrada,
             valorPremio: premio,
@@ -140,8 +129,15 @@ export default function Step3({ navigation, route }) {
             theChampion: {}, //clube que mais pontuou
         };
 
-        salvar_dados("ligas", Liga, banner);
-        navigation.navigate("Ligas");
+        salvar_dados("ligas", Liga, banner, ({sucess, text}) => {
+            if(sucess) {
+                onSucess();
+            } else {
+                Alert.alert("Erro ao salvar Liga", text);
+            }
+        });
+        //navigation.navigate("Ligas");
+        
 
     }
 
@@ -162,10 +158,10 @@ export default function Step3({ navigation, route }) {
                     <View style={css.containerColuna}>
 
 
-                        <CardInputForm
+                        <CardInput
                             titulo={'Nome da liga'}
                             hint={'Digite o nome'}
-                            icone={'pencil-outline'}
+                            icone={'pencil'}
                             valor={nomeLiga}
                             onChange={setNomeLiga}
                             senha={false}
@@ -173,7 +169,7 @@ export default function Step3({ navigation, route }) {
                             tipoTeclado={'default'}
                         />
 
-                        <CardInputForm
+                        <CardInput
                             titulo={'Descrição da liga'}
                             hint={'Digite uma breve descrição'}
                             icone={'pencil-outline'}
@@ -192,12 +188,11 @@ export default function Step3({ navigation, route }) {
 
                     <View style={css.containerRow}>
 
-                        <CardInputForm
-                            bool={false}
+                        <CardInput
                             titulo={'Fechamento'}
                             hint={'Fechamento'}
                             icone={'time-outline'}
-                            valor={data_fechamento + " ás " + hora_fechamento}
+                            valor={fechamento}
                             onChange={setFechamento}
                             senha={false}
                             iconeColor={'black'}
@@ -207,7 +202,7 @@ export default function Step3({ navigation, route }) {
 
 
 
-                        <CardInputForm
+                        <CardInput
                             titulo={'Resultado'}
                             hint={'Resultado'}
                             icone={'trending-up-outline'}
@@ -230,7 +225,7 @@ export default function Step3({ navigation, route }) {
 
 
 
-                        <CardInputForm
+                        <CardInput
                             titulo={'Entrada'}
                             hint={'Entrada'}
                             icone={'cash-outline'}
@@ -244,7 +239,7 @@ export default function Step3({ navigation, route }) {
 
 
 
-                        <CardInputForm
+                        <CardInput
                             titulo={'Prêmio'}
                             hint={'Prêmio'}
                             icone={'trophy-outline'}
@@ -284,7 +279,7 @@ export default function Step3({ navigation, route }) {
                         <Pb cor={"#000000"} />
                         :
                         <View style={css.footer}>
-                            <Botao click={() => cria_nova_liga()} cor={colorVerdeClaro} titulo={'Criar liga'} />
+                            <Botao click={() => cria_nova_liga()} cor={colorVerde} titulo={'Criar liga'} />
 
                         </View>
                     }
