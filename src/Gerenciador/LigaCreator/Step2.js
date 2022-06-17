@@ -4,7 +4,7 @@ import { Text, SafeAreaView, View, StyleSheet, FlatList, Alert } from 'react-nat
 import ItemCardJogos from '../../Components/ItemCardJogos';
 import Fab from '../../Components/Fab';
 import Pb from '../../Components/Pb';
-import { getInfoCampeonato, getJogosDoCampeonato } from '../../Api';
+import { getInfoCampeonato, getJogosDoCampeonato, getMatchsRound, getRoundCurrent } from '../../Api';
 import BarTop from '../../Components/BarTop';
 
 
@@ -33,9 +33,15 @@ export default function Step2({ id, avancar, setLista }) {
 
 
     useEffect(() => {
-        getInfoCampeonato(id, (partidas) => {
-            setJogos(partidas);
-        });
+        getRoundCurrent('2022', id, round => {
+
+            getMatchsRound('2022', id, round, lista => {
+                if(lista.length > 0) {
+                    setJogos(lista);
+                }
+            });
+
+        })
 
     }, []);
 
@@ -119,7 +125,6 @@ export default function Step2({ id, avancar, setLista }) {
 
         setJogosSelecionados([lista]);
     }
-
 
 
 

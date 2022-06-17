@@ -85,18 +85,12 @@ const css = StyleSheet.create({
 export default function ItemCardJogos({ data, click, jogosSelecionados }) {
 
     let { data_realizacao, hora_realizacao } = data;
-    let { placar_mandante, placar_visitante } = data;
-    let { status, estadio, time_mandante, time_visitante, partida_id } = data;
-
-    let nomeEstadio = estadio.nome_popular;
-
-    let nomeMandante = time_mandante.nome_popular;
-    let escudoTimeMandante = time_mandante.escudo;
-    let siglaMandante = time_mandante.sigla;
-
-    let nomeVisitante = time_visitante.nome_popular;
-    let escudoTimeVisitante = time_visitante.escudo;
-    let siglaVisitante = time_visitante.sigla;
+    const {fixture, teams, goals, score} = data;
+    const {id, date, timestamp, venue} = fixture;
+    const golsHome = goals.home;
+    const golsAway = goals.away;
+    const timeMandante = teams.home;
+    const timeVisitante = teams.away;
 
 
 
@@ -112,10 +106,10 @@ export default function ItemCardJogos({ data, click, jogosSelecionados }) {
                     <View style={css.colunas}>
                         <Title>Casa</Title>
 
-                        <Image style={css.image} size={50} source={{ uri: escudoTimeMandante }} />
-                        <Subheading>{siglaMandante}</Subheading>
+                        <Image style={css.image} size={50} source={{ uri: timeMandante.logo }} />
+                        <Subheading>{timeMandante.name}</Subheading>
                         <View style={css.espaco} />
-                        <Headline>{placar_mandante}</Headline>
+                        <Headline>{`ID: ${timeMandante.id}`}</Headline>
 
                     </View>
 
@@ -126,10 +120,10 @@ export default function ItemCardJogos({ data, click, jogosSelecionados }) {
                     <View style={css.colunas}>
                         <Title>Visitante</Title>
 
-                        <Image style={css.image} source={{ uri: escudoTimeVisitante }} />
-                        <Subheading>{siglaVisitante}</Subheading>
+                        <Image style={css.image} source={{ uri: timeVisitante.logo }} />
+                        <Subheading>{timeVisitante.name}</Subheading>
                         <View style={css.espaco} />
-                        <Headline>{placar_visitante}</Headline>
+                        <Headline>{`ID: ${timeVisitante.id}`}</Headline>
 
                     </View>
 
@@ -140,21 +134,21 @@ export default function ItemCardJogos({ data, click, jogosSelecionados }) {
 
                     <View style={css.cardItens}>
 
-                        <Text style={css.txt}>{`${data_realizacao}`}</Text>
+                        <Text style={css.txt}>{`${date}`}</Text>
 
                     </View>
 
 
                     <View style={css.cardItens}>
 
-                        <Text style={css.txt}>{String(status).toUpperCase()}</Text>
+                        <Text style={css.txt}>{`${golsHome} x ${golsAway}`}</Text>
 
 
                     </View>
 
 
                     <View style={css.cardItens}>
-                        <Text style={css.txt}>{nomeEstadio}</Text>
+                        <Text style={css.txt}>{venue.name}</Text>
 
 
                     </View>

@@ -80,19 +80,22 @@ const css = StyleSheet.create({
 
 export default function ItemCardCampeonatos({ data, click }) {
 
+    const {country, league, seasons} = data;
+
+    const temporadas = seasons.length > 1 ? `${seasons.length} Temporadas` : `${seasons[0].year}`;
 
     return (
         <Card  elevation={8}  style={css.container}>
 
             <View style={css.heardCard}>
-                <Image style={css.image}  size={70} source={{ uri: data.logo }} />
+                <Image style={css.image}  size={70} source={{ uri: league.logo }} />
 
                 <View>
-                    <Title numberOfLines={2} style={[css.title]}>{data.nome}</Title>
+                    <Title numberOfLines={2} style={[css.title]}>{league.name}</Title>
 
-                    <Subheading style={css.txt}>Edição: {data.edicao_atual.edicao_id}</Subheading>
+                    <Subheading style={css.txt}>País: {country.name}</Subheading>
 
-                    <Subheading style={css.txt}>Temporada: {data.edicao_atual.temporada}</Subheading>
+                    <Subheading style={css.txt}>Temporada: {temporadas}</Subheading>
 
                 </View>
 
@@ -105,22 +108,12 @@ export default function ItemCardCampeonatos({ data, click }) {
 
                     <Text style={css.txtBodyTitle}>Tipo</Text>
 
-                    <Text style={css.txtBodyTitle}>Rodada</Text>
-
-                    <Text style={css.txtBodyTitle}>Status</Text>
-
-
 
                 </View>
 
                 <View style={css.row}>
 
-                    <Text style={css.txtBody}>{data.tipo}</Text>
-
-                    <Text style={css.txtBody}>{data?.rodada_atual?.rodada}</Text>
-
-                    <Text style={css.txtBody}>{data.status}</Text>
-
+                    <Text style={css.txtBody}>{league.type}</Text>
 
 
                 </View>
@@ -129,7 +122,7 @@ export default function ItemCardCampeonatos({ data, click }) {
 
 
             <View style={css.footer}>
-                <Button onPress={() => click(data.campeonato_id)} color={colorVerde} mode='contained'>Selecionar campeonato</Button>
+                <Button onPress={() => click(league.id)} color={colorVerde} mode='contained'>Selecionar campeonato</Button>
             </View>
 
         </Card>

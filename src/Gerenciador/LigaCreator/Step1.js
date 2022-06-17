@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { Text, SafeAreaView, View, StyleSheet, FlatList } from 'react-native';
-import { getCampeonatos } from '../../Api';
+import { getCampeonatos, getLeagues } from '../../Api';
 import ItemCardCampeonatos from '../../Components/ItemCardCampeonatos';
 import Pb from '../../Components/Pb';
 
@@ -29,7 +29,7 @@ export default function Step1({ setId, avancar }) {
 
     useEffect(() => {
 
-        getCampeonatos((list) => {
+        getLeagues('2022', 'Brazil', null, (list) => {
             setCampeonatos(list);
         });
 
@@ -41,6 +41,8 @@ export default function Step1({ setId, avancar }) {
     }
 
     if (campeonatos == undefined) return <Pb cor="#000" />
+
+    
 
     return (
             <SafeAreaView style={css.container}>

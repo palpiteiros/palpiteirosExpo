@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { Text, SafeAreaView, View, StyleSheet } from 'react-native';
-import { getCampeonatos } from '../../Api';
+import { getCampeonatosNovo, getLeagues } from '../../Api';
 import ItemGridMenu from '../../Components/ItemGridMenu';
 import Toolbar from '../../Components/Toolbar';
 
@@ -40,7 +40,7 @@ export default function AdmMenu({ navigation }) {
 
 
     useEffect(() => {
-        getCampeonatos();
+        //getLeagues();
     }, [])
 
 
