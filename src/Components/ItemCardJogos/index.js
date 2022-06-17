@@ -107,7 +107,7 @@ export default function ItemCardJogos({ data, click, jogosSelecionados }) {
                         <Title>Casa</Title>
 
                         <Image style={css.image} size={50} source={{ uri: timeMandante.logo }} />
-                        <Subheading>{timeMandante.name}</Subheading>
+                        <Subheading>{timeMandante.name.substring(0, 14)}</Subheading>
                         <View style={css.espaco} />
                         <Headline>{`ID: ${timeMandante.id}`}</Headline>
 
@@ -121,7 +121,7 @@ export default function ItemCardJogos({ data, click, jogosSelecionados }) {
                         <Title>Visitante</Title>
 
                         <Image style={css.image} source={{ uri: timeVisitante.logo }} />
-                        <Subheading>{timeVisitante.name}</Subheading>
+                        <Subheading>{timeVisitante.name.substring(0, 10)}</Subheading>
                         <View style={css.espaco} />
                         <Headline>{`ID: ${timeVisitante.id}`}</Headline>
 
