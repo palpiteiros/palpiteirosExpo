@@ -8,9 +8,10 @@ const css = StyleSheet.create({
         backgroundColor: 'white',
         justifyContent: 'space-evenly',
         alignItems: 'center',
-        marginLeft: 10,
-        marginRight: 10,
-        marginBottom: 10
+        marginLeft: 20,
+        marginRight: 20,
+        marginBottom: 10,
+        marginTop: 20
     },
 
     botao: {

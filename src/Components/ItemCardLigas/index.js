@@ -1,5 +1,5 @@
 import React from 'react';
-import { SafeAreaView, View, StyleSheet, FlatList } from 'react-native';
+import { SafeAreaView, View, StyleSheet, FlatList, Image } from 'react-native';
 import BotaoVoltarAoInicio from '../BotaoVoltar';
 import Fab from '../Fab';
 import { Title, Card, Avatar, Subheading, Text, Button } from 'react-native-paper';
@@ -12,8 +12,9 @@ const css = StyleSheet.create({
 
     container: {
         margin: 10,
+        marginLeft: 16,
+        marginRight: 16,
         borderRadius: 12,
-        padding: 20,
         justifyContent: 'center',
         alignContent: 'center',
 
@@ -21,8 +22,9 @@ const css = StyleSheet.create({
 
     heardCard: {
         flexDirection: 'row',
-        alignItems: 'flex-start'
-
+        alignItems: 'flex-start',
+        paddingTop: 20
+        
     },
 
     txt: {
@@ -40,7 +42,7 @@ const css = StyleSheet.create({
     },
 
     bodyCard: {
-
+        padding: 10
     },
 
     row: {
@@ -57,11 +59,22 @@ const css = StyleSheet.create({
 
 
     footer: {
-        marginTop: 20
+        marginTop: 20,
+        marginBottom: 20,
+        marginRight: 20,
+        marginLeft: 20
+    },
+    img: {
+        width: '100%',
+        height: 190,
+        borderTopLeftRadius: 12,
+        borderTopRightRadius: 12
     }
 
 })
 
+
+let urlImg = 'https://i0.wp.com/www.linhaesportiva.com.br/wp-content/uploads/2017/02/16002904_1857749167828776_5108168482056053606_n.jpg?resize=759%2C315&ssl=1';
 
 
 export default function ItemCardLigas({ data , abreDetalhes}) {
@@ -80,7 +93,7 @@ export default function ItemCardLigas({ data , abreDetalhes}) {
     let descricaoLiga = data.descricao;
     let valorEntrada = data.valorEntrada;
     let valorPremio = data.valorPremio;
-    let avatar = data.banner;
+    let avatar = (data.banner === '' ? urlImg : data.banner);
     let TotalPalpites = 0;
 
 
@@ -88,8 +101,10 @@ export default function ItemCardLigas({ data , abreDetalhes}) {
     return (
         <Card elevation={8} mode="elevated" style={css.container}>
 
+            <Image style={css.img} source={{ uri: avatar }} />
+
             <View style={css.heardCard}>
-                <Avatar.Image size={70} source={{ uri: avatar }} />
+                
 
                 <View>
                     <Title style={css.txt}>{nomeLiga}</Title>

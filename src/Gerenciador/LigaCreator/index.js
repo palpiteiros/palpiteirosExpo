@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Text, SafeAreaView, View, StyleSheet, Alert } from 'react-native';
 import Pb from '../../Components/Pb';
-import { novaLiga } from '../../Objects/Liga';
+import { newMatch, novaLiga } from '../../Objects/Liga';
 import Step1 from './Step1';
 import Step2 from './Step2';
 import Step3 from './Step3';
@@ -45,34 +45,14 @@ export default function LigaCreator({ navigation }) {
         console.log(lista);
         lista.forEach((data) => {
 
-            let { data_realizacao, hora_realizacao } = data;
-            let { placar_mandante, placar_visitante } = data;
-            let { status, estadio, time_mandante, time_visitante } = data;
+            const {fixture, teams, goals, score} = data;
+            const {id, date, timestamp, venue, status} = fixture;
+            const golsHome = goals.home;
+            const golsAway = goals.away;
+            const timeMandante = teams.home;
+            const timeVisitante = teams.away;
     
-            let nomeEstadio = (estadio.nome_popular == undefined ? "" : estadio.nome_popular);
-    
-            let nomeMandante = time_mandante.nome_popular;
-            let escudoTimeMandante = time_mandante.escudo;
-            let siglaMandante = time_mandante.sigla;
-    
-            let nomeVisitante = time_visitante.nome_popular;
-            let escudoTimeVisitante = time_visitante.escudo;
-            let siglaVisitante = time_visitante.sigla;
-    
-            const jogoObjt = {
-                data_realizacao,
-                hora_realizacao,
-                placar_mandante,
-                placar_visitante,
-                status,
-                nomeEstadio, 
-                nomeMandante,
-                escudoTimeMandante,
-                siglaMandante,
-                nomeVisitante,
-                escudoTimeVisitante,
-                siglaVisitante
-            };
+            const jogoObjt = newMatch(date, timestamp, id, golsHome, golsAway, status.long, venue.name, timeMandante.name, timeMandante.logo, timeMandante.id, timeVisitante.name, timeVisitante.logo, timeVisitante.id);
 
             listaEditada.push(jogoObjt);
     

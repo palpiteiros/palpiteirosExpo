@@ -34,3 +34,22 @@ export const novaLiga = () => {
     return Liga;
 };
  
+export const newMatch = (date, timestamp, id, golHome, golAway, stts, stadio, home, fotoHome, idHome, away, fotoAway, idAway) => {
+    return {
+        dateRealizacao: date,
+        timestampRealizacao: timestamp,
+        idPartida: id,
+        golsMandante: golHome,
+        golsVisitante: golAway,
+        status: stts,
+        nomeEstadio: stadio, 
+
+        nomeMandante: home,
+        escudoTimeMandante: fotoHome,
+        idMandante: idHome,
+
+        nomeVisitante: away,
+        escudoTimeVisitante: fotoAway,
+        idVisitante: idAway
+    };
+};

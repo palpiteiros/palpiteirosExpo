@@ -1,18 +1,30 @@
 import React from 'react';
 import { SafeAreaView, View, StyleSheet, FlatList, TouchableOpacity, Image } from 'react-native';
 import { Title, Card, Avatar, Subheading, Text, Button, Headline } from 'react-native-paper';
-import { colorVerde } from '../../Styles/Cores';
+import { colorCinzaClaro, colorVerde, colorVerdeEscuro } from '../../Styles/Cores';
 import CheckBox from "expo-checkbox";
+import { dateToYMD } from '../../Objects/Datas';
 
 const css = StyleSheet.create({
 
     container: {
         margin: 10,
         borderRadius: 12,
+        marginLeft: 20,
+        marginRight: 20,
+        height: 200
     },
 
     txt: {
-        fontSize: 14
+        fontSize: 14,
+        marginTop: 8,
+        textAlign: 'center'
+    },
+
+    txtEstadio: {
+        fontSize: 12,
+        marginBottom: 20,
+        textAlign: 'center'
     },
 
     row: {
@@ -23,7 +35,7 @@ const css = StyleSheet.create({
     containerColuna: {
         height: 150,
         paddingTop: 5,
-        width: 100,
+        width: 90,
         height: '100%',
         margin: 10
     },
@@ -31,7 +43,6 @@ const css = StyleSheet.create({
     cardItens: {
         padding: 2,
         width: '100%',
-        height: 35,
         justifyContent: 'center',
         alignItems: 'center',
         flexDirection: 'column'
@@ -52,11 +63,12 @@ const css = StyleSheet.create({
         alignItems: 'center',
         marginLeft: 10,
         marginRight: 10,
-        marginTop: 16,
+        marginTop: 10,
         marginBottom: 16
     },
 
     colunas: {
+        flex: 1,
         height: '100%',
         alignItems: 'center',
         justifyContent: 'center',
@@ -84,7 +96,6 @@ const css = StyleSheet.create({
 
 export default function ItemCardJogos({ data, click, jogosSelecionados }) {
 
-    let { data_realizacao, hora_realizacao } = data;
     const {fixture, teams, goals, score} = data;
     const {id, date, timestamp, venue} = fixture;
     const golsHome = goals.home;
@@ -92,12 +103,19 @@ export default function ItemCardJogos({ data, click, jogosSelecionados }) {
     const timeMandante = teams.home;
     const timeVisitante = teams.away;
 
+    let jogoJaEstaNosSelecionados = false;
 
+    jogosSelecionados.map(jSelect => {
+        const idJogoSelect = jSelect.fixture.id;
+        if(idJogoSelect === id) {
+            jogoJaEstaNosSelecionados = true;
+        }
+    });
 
 
     return (
 
-        <Card elevation={8} onPress={() => click()} mode="elevated" style={css.container}>
+        <Card elevation={8} onPress={() => click(data)} mode="elevated" style={css.container}>
 
             <View style={css.row}>
 
@@ -107,9 +125,9 @@ export default function ItemCardJogos({ data, click, jogosSelecionados }) {
                         <Title>Casa</Title>
 
                         <Image style={css.image} size={50} source={{ uri: timeMandante.logo }} />
-                        <Subheading>{timeMandante.name.substring(0, 14)}</Subheading>
+                        <Subheading>{timeMandante.name.substring(0, 10)}</Subheading>
                         <View style={css.espaco} />
-                        <Headline>{`ID: ${timeMandante.id}`}</Headline>
+                        <Text>{`ID: ${timeMandante.id}`}</Text>
 
                     </View>
 
@@ -123,7 +141,7 @@ export default function ItemCardJogos({ data, click, jogosSelecionados }) {
                         <Image style={css.image} source={{ uri: timeVisitante.logo }} />
                         <Subheading>{timeVisitante.name.substring(0, 10)}</Subheading>
                         <View style={css.espaco} />
-                        <Headline>{`ID: ${timeVisitante.id}`}</Headline>
+                        <Text>{`ID: ${timeVisitante.id}`}</Text>
 
                     </View>
 
@@ -134,36 +152,23 @@ export default function ItemCardJogos({ data, click, jogosSelecionados }) {
 
                     <View style={css.cardItens}>
 
-                        <Text style={css.txt}>{`${date}`}</Text>
-
-                    </View>
-
-
-                    <View style={css.cardItens}>
-
-                        <Text style={css.txt}>{`${golsHome} x ${golsAway}`}</Text>
-
-
-                    </View>
-
-
-                    <View style={css.cardItens}>
-                        <Text style={css.txt}>{venue.name}</Text>
-
-
-                    </View>
-
-
-
-                    <View style={css.cardItens}>
-
                         <View
-                            style={{ height: 15, width: 15, borderRadius: 50, backgroundColor: "red" }}
+                            style={{marginTop: 18, marginBottom: 12, height: 15, width: 15, borderRadius: 30, backgroundColor: (jogoJaEstaNosSelecionados ? colorVerdeEscuro : colorCinzaClaro) }}
                         />
 
                     </View>
 
+                    <View style={css.cardItens}>
 
+                        <Text style={css.txt}>{`${dateToYMD(new Date(date))}`}</Text>
+
+                    </View>
+
+                    <View style={css.cardItens}>
+                        <Text style={css.txtEstadio}>{venue.name}</Text>
+
+
+                    </View>
 
                 </View>
 

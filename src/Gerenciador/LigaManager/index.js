@@ -13,8 +13,6 @@ import Pb from '../../Components/Pb';
 const css = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: 10,
-    paddingBottom: 60
   },
   row: {
     flexDirection: 'row'
@@ -30,9 +28,13 @@ const css = StyleSheet.create({
 
   font: {
     paddingLeft: 20,
-    marginTop: 10,
+    marginTop: 20,
     marginBottom: 10
-  }
+  },
+
+  footer: {
+    height: 100
+}
 });
 
 
@@ -99,19 +101,18 @@ export default function LigaManager({ navigation }) {
 
       <View style={css.body}>
 
-        <Title style={css.font}>{getTitle(ligas, loading)}</Title>
-
-
         {loading ?
           <Pb cor={"#000000"} />
           :
           <FlatList
             data={ligas}
+            showsVerticalScrollIndicator={false}
+            ListHeaderComponent={() => <Title style={css.font}>{getTitle(ligas, loading)}</Title>}
+            ListFooterComponent={() => <View style={css.footer} />}
             renderItem={({ item }) => <ItemCardLigas data={item} abreDetalhes={DetalhesLiga}/>}
             keyExtractor={item => item.id}
           />
         }
-
 
 
       </View>

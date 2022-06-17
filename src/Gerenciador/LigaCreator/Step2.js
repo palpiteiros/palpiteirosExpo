@@ -6,15 +6,13 @@ import Fab from '../../Components/Fab';
 import Pb from '../../Components/Pb';
 import { getInfoCampeonato, getJogosDoCampeonato, getMatchsRound, getRoundCurrent } from '../../Api';
 import BarTop from '../../Components/BarTop';
+import { colorVerdeClaro } from '../../Styles/Cores';
 
 
 
 const css = StyleSheet.create({
     container: {
         flex: 1,
-        paddingTop: 30,
-        paddingLeft: 10,
-        paddingRight: 10,
     },
     row: {
         flexDirection: 'row'
@@ -22,6 +20,9 @@ const css = StyleSheet.create({
 
     heard: {
         height: 150,
+    },
+    footer: {
+        height: 100
     }
 });
 
@@ -29,7 +30,7 @@ const css = StyleSheet.create({
 export default function Step2({ id, avancar, setLista }) {
 
     const [jogos, setJogos] = useState(undefined);
-    const [jogosSelecionados, setJogosSelecionados] = useState([]);
+    const [selecionados, setSelecionados] = useState([]);
 
 
     useEffect(() => {
@@ -53,29 +54,32 @@ export default function Step2({ id, avancar, setLista }) {
 
 
     const handlerClick = (jogoSelecionado) => {
+        console.log(jogoSelecionado);
         let lista = [];
 
-        if(jogosSelecionados.length === 0) {
+        if(selecionados.length === 0) {
             lista.push(jogoSelecionado);
-            setJogosSelecionados(lista);
-            Alert.alert('Seleção dos jogos ', `O jogo ${jogoSelecionado.time_mandante.nome_popular} x ${jogoSelecionado.time_visitante.nome_popular} foi adicionado na seleção!`);
+            setSelecionados(lista);
+            Alert.alert('Primeiro Jogo Selecionado ', `O jogo ${jogoSelecionado.teams.home.name} x ${jogoSelecionado.teams.away.name} foi adicionado na seleção!`);
         } else {
-            lista = jogosSelecionados;
             let jogoJaEstaNosSelecionados = false;
-            lista.forEach(data => {
-                let idJogoSelecionado = jogoSelecionado.partida_id;
-                let idJogoAtualdoLooping = data.partida_id;
+            selecionados.map(data => {
+                let idJogoSelecionado = jogoSelecionado.fixture.id;
+                let idJogoAtualdoLooping = data.fixture.id;
                 if(idJogoAtualdoLooping === idJogoSelecionado) {
                     jogoJaEstaNosSelecionados = true;
+                } else {
+                    lista.push(data);
                 }
             });
 
             if(jogoJaEstaNosSelecionados) {
-                Alert.alert('Seleção dos jogos ', `O jogo ${jogoSelecionado.time_mandante.nome_popular} x ${jogoSelecionado.time_visitante.nome_popular} ja está selecionando!`);
+                setSelecionados(lista);
+                Alert.alert('Jogo Removido', `O jogo ${jogoSelecionado.teams.home.name} x ${jogoSelecionado.teams.away.name} foi removido!`);
             } else {
                 lista.push(jogoSelecionado);
-                setJogosSelecionados(lista);
-                Alert.alert('Seleção dos jogos ', `O jogo ${jogoSelecionado.time_mandante.nome_popular} x ${jogoSelecionado.time_visitante.nome_popular} foi adicionado na seleção!`);
+                setSelecionados(lista);
+                Alert.alert('Seleção dos jogos ', `O jogo ${jogoSelecionado.teams.home.name} x ${jogoSelecionado.teams.away.name} foi adicionado na seleção!`);
         
             }
 
@@ -91,11 +95,11 @@ export default function Step2({ id, avancar, setLista }) {
     const proxTela = () => {
  
     
-        if (jogosSelecionados.length == 0) {
+        if (selecionados.length == 0) {
             Alert.alert("Espera ai", "Escolha ao menos 1 jogo do campeonato para continuar !");
         } else {
-            console.log(jogosSelecionados);
-            setLista(jogosSelecionados);
+            console.log(selecionados);
+            setLista(selecionados);
         }
 
 
@@ -107,7 +111,7 @@ export default function Step2({ id, avancar, setLista }) {
     const apagaLista = () => {
         Alert.alert("Remover tudo", "Todos os jogos da lista foram removidos");
 
-        setJogosSelecionados([]);
+        setSelecionados([]);
     }
 
 
@@ -118,36 +122,33 @@ export default function Step2({ id, avancar, setLista }) {
         let lista = ([]);
 
         lista.push({
-            ...jogosSelecionados,
+            ...selecionados,
             jogos,
             isSelected: true
         });
 
-        setJogosSelecionados([lista]);
+        setSelecionados(jogos);
     }
 
 
 
-
+    
 
 
     return (
         <SafeAreaView style={css.container}>
 
-            <BarTop selecionaTudo={() => selecionaTodosOsJogos()} removeTudo={() => apagaLista()} />
-
-
 
             <FlatList
+                ListHeaderComponent={() => <BarTop selecionaTudo={() => selecionaTodosOsJogos()} removeTudo={() => apagaLista()} />}
+                ListFooterComponent={() => <View style={css.footer} />}
                 data={jogos}
-                renderItem={({ item }) => <ItemCardJogos data={item} click={() => handlerClick(item)} />}
-                keyExtractor={item => item.id} />
+                showsVerticalScrollIndicator={false}
+                renderItem={({ item }) => <ItemCardJogos jogosSelecionados={selecionados} data={item} click={handlerClick} />}
+                keyExtractor={item => item.fixture.id} />
 
 
-
-
-
-            {jogosSelecionados.length != 0 ?
+            {selecionados.length != 0 ?
                 <Fab
                     icone={'arrow-right'}
                     acao={() => proxTela()}

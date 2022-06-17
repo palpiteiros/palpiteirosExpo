@@ -46,7 +46,7 @@ export const getLeagues = (season, country, idLeague, listener) => {
     };
 
     axios(config).then(({data}) => {
-        console.log(data.response);
+        //console.log(data.response);
         let lista = extrairLista(data.response);
         return listener(lista);
     }).catch(error => {
@@ -77,7 +77,7 @@ export const getRoundCurrent = (season, idLeague, listener) => {
     };
 
     axios(config).then(({data}) => {
-        console.log(data.response);
+        //console.log(data.response);
         
         return listener(data.response[0]);
     }).catch(error => {
@@ -111,7 +111,7 @@ export const getMatchsRound = (season, idLeague, round, listener) => {
     };
 
     axios(config).then(({data}) => {
-        console.log(data.response);
+        //console.log(data.response);
         let lista = extrairLista(data.response);
         return listener(lista);
     }).catch(error => {
