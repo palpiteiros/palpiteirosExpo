@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Text, SafeAreaView, View, StyleSheet } from 'react-native';
+import { getCampeonatos } from '../../Api';
 import ItemGridMenu from '../../Components/ItemGridMenu';
-import Toolbar from '../../Components/Toolbar'; 
+import Toolbar from '../../Components/Toolbar';
 
 
 
@@ -26,7 +27,7 @@ const css = StyleSheet.create({
 const ligas = require('../../Img/ligas.png');
 const mesas = require('../../Img/mesas.png');
 const palpites = require('../../Img/palpites.png');
-const palpiteiro = require('../../Img/palpiteiro.png'); 
+const palpiteiro = require('../../Img/palpiteiro.png');
 
 
 
@@ -34,18 +35,25 @@ const palpiteiro = require('../../Img/palpiteiro.png');
 
 
 
-export default function AdmMenu({navigation}) {
+export default function AdmMenu({ navigation }) {
+
+
+
+    useEffect(() => {
+        getCampeonatos();
+    }, [])
+
 
     return (
         <SafeAreaView style={css.container}>
-            <Toolbar 
+            <Toolbar
                 titulo={'Menu Principal'}
             />
             <View style={css.row}>
                 <ItemGridMenu
                     titulo={'Ligas'}
                     img={ligas}
-                    click={()=> navigation.navigate('Ligas')}
+                    click={() => navigation.navigate('Ligas')}
                 />
                 <ItemGridMenu
                     titulo={'Palpiteiros'}
