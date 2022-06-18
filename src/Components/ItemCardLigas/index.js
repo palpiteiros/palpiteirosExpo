@@ -5,6 +5,7 @@ import Fab from '../Fab';
 import { Title, Card, Avatar, Subheading, Text, Button } from 'react-native-paper';
 import { colorVerde } from '../../Styles/Cores';
 import { format, formatDistance, formatRelative, subDays } from 'date-fns'
+import { dateToYMD } from '../../Objects/Datas';
 
 
 
@@ -81,21 +82,12 @@ export default function ItemCardLigas({ data , abreDetalhes}) {
 
 
 
-    const data_criacao = data.data_criacao.toDate().toDateString();
-    const hora_criacao = data.data_criacao.toDate().toLocaleTimeString('pt-BR');
-
-    const data_formated = format(new Date(data_criacao), 'dd/MM/yyyy');
+    const {titulo, descricao, banner, horaFechamento, horaResultado, valorEntrada, valorPremio, listaDeJogos, horaCriacao} = data;
 
 
-    let resultado = "Ainda não saiu";
-    let data_fechamento = data.dataHoraFechamento;
-    let nomeLiga = data.titulo;
-    let descricaoLiga = data.descricao;
-    let valorEntrada = data.valorEntrada;
-    let valorPremio = data.valorPremio;
-    let avatar = (data.banner === '' ? urlImg : data.banner);
+
+    let avatar = (banner === '' ? urlImg : banner);
     let TotalPalpites = 0;
-
 
 
     return (
@@ -107,9 +99,9 @@ export default function ItemCardLigas({ data , abreDetalhes}) {
                 
 
                 <View>
-                    <Title style={css.txt}>{nomeLiga}</Title>
+                    <Title style={css.txt}>{titulo}</Title>
 
-                    <Subheading style={css.txt}>{descricaoLiga}</Subheading>
+                    <Subheading style={css.txt}>{descricao}</Subheading>
                 </View>
 
             </View>
@@ -131,11 +123,11 @@ export default function ItemCardLigas({ data , abreDetalhes}) {
 
                 <View style={css.row}>
 
-                    <Text style={css.txtBody}>{data_formated}</Text>
+                    <Text style={css.txtBody}>{dateToYMD(new Date(horaCriacao))}</Text>
 
-                    <Text style={css.txtBody}>{data_fechamento}</Text>
+                    <Text style={css.txtBody}>{horaFechamento}</Text>
 
-                    <Text style={css.txtBody}>{resultado}</Text>
+                    <Text style={css.txtBody}>{horaResultado}</Text>
 
 
 
@@ -157,8 +149,8 @@ export default function ItemCardLigas({ data , abreDetalhes}) {
 
                 <View style={css.row}>
 
-                    <Text style={css.txtBody}>R$ {valorEntrada},00</Text>
-                    <Text style={css.txtBody}>R$ {valorPremio},00</Text>
+                    <Text style={css.txtBody}>R$ {valorEntrada}</Text>
+                    <Text style={css.txtBody}>R$ {valorPremio}</Text>
                     <Text style={css.txtBody}>{TotalPalpites}</Text>
 
 

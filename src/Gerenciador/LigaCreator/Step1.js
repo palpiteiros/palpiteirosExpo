@@ -51,8 +51,8 @@ export default function Step1({ setId, avancar }) {
                 <FlatList
                     showsVerticalScrollIndicator={false}
                     data={campeonatos}
-                    renderItem={({ item }) => <ItemCardCampeonatos key={item.nome} click={proxTela} data={item} />}
-                    keyExtractor={item => item.nome}
+                    renderItem={({ item }) => <ItemCardCampeonatos key={item.league.id} click={proxTela} data={item} />}
+                    keyExtractor={item => item.league.id}
                 />
 
 

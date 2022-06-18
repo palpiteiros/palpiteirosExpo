@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect, useContext } from 'react';
 import { Text, SafeAreaView, View, StyleSheet, ScrollView, Image, Alert } from 'react-native';
-import { Card } from 'react-native-paper';
+import { Card, Title } from 'react-native-paper';
 import CardInput from '../../Components/CardInput';
 import Botao from '../../Components/Botao'
 import { colorVerdePadrao } from '../../Styles/Paleta/Paleta_cores';
@@ -25,7 +25,7 @@ const css = StyleSheet.create({
 
     containerRow: { flexDirection: 'row', justifyContent: 'space-evenly' },
 
-    card: { height: 150, },
+    card: { height: 190, },
 
     body: { marginTop: 20 },
 
@@ -34,7 +34,7 @@ const css = StyleSheet.create({
         marginBottom: 20
     },
 
-    ViewIcon: { height: '100%', paddingTop: 30, alignItems: 'center' },
+    ViewIcon: { height: '100%', justifyContent: 'center', alignItems: 'center' },
 
     img: { height: '100%' }
 
@@ -44,16 +44,58 @@ const css = StyleSheet.create({
 
 
 
-export default function Step3({ onSucess, jogos }) {
+export default function Step3({ onSucess, liga, setLiga}) {
 
-    const [fechamento, setFechamento] = useState('');
-    const [resultado, setResultado] = useState('');
-    const [nomeLiga, setNomeLiga] = useState('');
-    const [descLiga, setDescLiga] = useState('');
-    const [entrada, setEntrada] = useState('');
-    const [premio, setPremio] = useState('');
-    const [banner, setBanner] = useState(null);
-    const [lista, setLista] = useState([]);
+    const {titulo, descricao, banner, horaFechamento, horaResultado, valorEntrada, valorPremio, listaDeJogos} = liga;
+
+    const setFechamento = (value) => {
+        setLiga((prevState) => ({
+            ...prevState,
+            horaFechamento: value
+        }));
+    };
+
+    const setBanner = (value) => {
+        setLiga((prevState) => ({
+            ...prevState,
+            banner: value
+        }));
+    };
+
+    const setResultado = (value) => {
+        setLiga((prevState) => ({
+            ...prevState,
+            horaResultado: value
+        }));
+    };
+
+    const setNomeLiga = (value) => {
+        setLiga((prevState) => ({
+            ...prevState,
+            titulo: value
+        }));
+    };
+
+    const setDescLiga = (value) => {
+        setLiga((prevState) => ({
+            ...prevState,
+            descricao: value
+        }));
+    };
+
+    const setPremio = (value) => {
+        setLiga((prevState) => ({
+            ...prevState,
+            valorPremio: value
+        }));
+    };
+
+    const setEntrada = (value) => {
+        setLiga((prevState) => ({
+            ...prevState,
+            valorEntrada: value
+        }));
+    };
 
     const { salvar_dados, loadingSave } = useContext(FirebaseContext);
 
@@ -61,12 +103,8 @@ export default function Step3({ onSucess, jogos }) {
 
 
     
-    console.log(jogos);
-    let data_fechamento = "";
-    let hora_fechamento = "";
-    let data_hora_close = "";
-    let nomeCampeonato = "";
-    let idCampeonato = "";
+    //console.log(listaDeJogos);
+    
 
     const GoChooseFotos = async () => {
 
@@ -75,7 +113,6 @@ export default function Step3({ onSucess, jogos }) {
         let result = await ImagePicker.launchImageLibraryAsync({
             mediaTypes: ImagePicker.MediaTypeOptions.All,
             allowsEditing: true,
-            aspect: [4, 3],
             quality: 1,
         });
 
@@ -90,46 +127,18 @@ export default function Step3({ onSucess, jogos }) {
     const cria_nova_liga = () => {
 
 
-        if (nomeLiga == '' || nomeLiga == undefined) return Alert.alert("Atenção", "Campo nome vazio");
-        if (descLiga == '' || descLiga == undefined) return Alert.alert("Atenção", "Campo descrição vazio");
-        if (resultado == '' || resultado == undefined) return Alert.alert("Atenção", "Campo resultado vazio");
-        if (entrada == '' || entrada == undefined) return Alert.alert("Atenção", "Campo entrada vazio");
-        if (premio == '' || premio == undefined) return Alert.alert("Atenção", "Campo prêmio vazio");
+        if (titulo == '' || titulo == undefined) return Alert.alert("Atenção", "Campo nome vazio");
+        if (descricao == '' || descricao == undefined) return Alert.alert("Atenção", "Campo descrição vazio");
+        if (horaResultado == '' || horaResultado == undefined) return Alert.alert("Atenção", "Campo resultado vazio");
+        if (valorEntrada == '' || valorEntrada == undefined) return Alert.alert("Atenção", "Campo entrada vazio");
+        if (valorPremio == '' || valorPremio == undefined) return Alert.alert("Atenção", "Campo prêmio vazio");
         //if (banner == null || banner == undefined) return Alert.alert("Atenção", "O banner está vazio");
 
 
 
-        let Liga = {
-            data_criacao: new Date(),
-            status: 1,
-            titulo: nomeLiga,
-            descricao: descLiga,
-            banner: (!banner ? '' : banner),
-            tipo: 1,
-            status: 1,
-            dataHoraFechamento: fechamento,
-            horaResultado: resultado,
-            listaDeJogos: jogos,
-            regras: [],
-            valorEntrada: entrada,
-            valorPremio: premio,
-            campeonatoId: idCampeonato,//id do campeonato retornado pelo api
-            nomeCampeonato: nomeCampeonato,
-            //v--- serao atualizados no fechamento da rodada
-            topClubes: [], //clubes teve mais palpite de vitoria
-            topJogadores: [], //jogadores mais palpitados a marcar gol 
-            numPalpiteiros: 0,
-            numPalpites: 0,
-            //v--- serao atualizados no resultado da rodada
-            topPalpiteiros: [],
-            rankingMedia: [],
-            rankingPonto: [],
-            vencedores: [],
-            theBest: {}, //jogador que mais pontuou
-            theChampion: {}, //clube que mais pontuou
-        };
+        
 
-        salvar_dados("ligas", Liga, banner, ({sucess, text}) => {
+        salvar_dados(liga, banner, ({sucess, text}) => {
             if(sucess) {
                 onSucess();
             } else {
@@ -140,7 +149,6 @@ export default function Step3({ onSucess, jogos }) {
         
 
     }
-
 
 
 
@@ -162,7 +170,7 @@ export default function Step3({ onSucess, jogos }) {
                             titulo={'Nome da liga'}
                             hint={'Digite o nome'}
                             icone={'pencil'}
-                            valor={nomeLiga}
+                            valor={titulo}
                             onChange={setNomeLiga}
                             senha={false}
                             iconeColor={'black'}
@@ -173,7 +181,7 @@ export default function Step3({ onSucess, jogos }) {
                             titulo={'Descrição da liga'}
                             hint={'Digite uma breve descrição'}
                             icone={'pencil-outline'}
-                            valor={descLiga}
+                            valor={descricao}
                             onChange={setDescLiga}
                             senha={false}
                             iconeColor={'black'}
@@ -192,7 +200,7 @@ export default function Step3({ onSucess, jogos }) {
                             titulo={'Fechamento'}
                             hint={'Fechamento'}
                             icone={'time-outline'}
-                            valor={fechamento}
+                            valor={horaFechamento}
                             onChange={setFechamento}
                             senha={false}
                             iconeColor={'black'}
@@ -206,7 +214,7 @@ export default function Step3({ onSucess, jogos }) {
                             titulo={'Resultado'}
                             hint={'Resultado'}
                             icone={'trending-up-outline'}
-                            valor={resultado}
+                            valor={horaResultado}
                             onChange={setResultado}
                             senha={false}
                             iconeColor={'black'}
@@ -229,7 +237,7 @@ export default function Step3({ onSucess, jogos }) {
                             titulo={'Entrada'}
                             hint={'Entrada'}
                             icone={'cash-outline'}
-                            valor={entrada}
+                            valor={valorEntrada}
                             onChange={setEntrada}
                             senha={false}
                             iconeColor={'black'}
@@ -243,7 +251,7 @@ export default function Step3({ onSucess, jogos }) {
                             titulo={'Prêmio'}
                             hint={'Prêmio'}
                             icone={'trophy-outline'}
-                            valor={premio}
+                            valor={valorPremio}
                             onChange={setPremio}
                             senha={false}
                             iconeColor={'black'}
@@ -266,8 +274,8 @@ export default function Step3({ onSucess, jogos }) {
                                 <Image resizeMode='cover' style={css.img} source={{ uri: banner }} />
                                 :
                                 <View style={css.ViewIcon}>
-                                    <Ionicons name='camera-outline' size={80} />
-
+                                    <Ionicons name='camera-outline' size={50} />
+                                    <Title>Adiconar Foto</Title>
                                 </View>}
 
 
@@ -275,8 +283,9 @@ export default function Step3({ onSucess, jogos }) {
                     </View>
 
 
-                    {loadingSave ?
-                        <Pb cor={"#000000"} />
+                    {
+                        loadingSave ?
+                        <Pb cor={"#000"} />
                         :
                         <View style={css.footer}>
                             <Botao click={() => cria_nova_liga()} cor={colorVerde} titulo={'Criar liga'} />

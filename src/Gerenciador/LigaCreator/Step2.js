@@ -54,7 +54,7 @@ export default function Step2({ id, avancar, setLista }) {
 
 
     const handlerClick = (jogoSelecionado) => {
-        console.log(jogoSelecionado);
+        //console.log(jogoSelecionado);
         let lista = [];
 
         if(selecionados.length === 0) {
@@ -98,7 +98,7 @@ export default function Step2({ id, avancar, setLista }) {
         if (selecionados.length == 0) {
             Alert.alert("Espera ai", "Escolha ao menos 1 jogo do campeonato para continuar !");
         } else {
-            console.log(selecionados);
+            //console.log(selecionados);
             setLista(selecionados);
         }
 

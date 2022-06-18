@@ -27,63 +27,68 @@ export default function FirebaseProvider({ children }) {
 
     //SALVAR FOTOS
 
-
+    console.log(loadingSave);
 
 
 
     //FUNCS PARA SALVAR NO FIRESTORE
 
     //Salva uma nova liga no firebase
-    async function salvar_dados(tituloDocumento, documento, imgBanner, listener) {
+    async function salvar_dados(documento, imgBanner, listener) {
         setLoadingSave(true);
 
-        await addDoc(collection(db, tituloDocumento), documento).then(async (doc) => {
+        const refLiga = doc(collection(db, 'Ligas'));
+        const idRefLiga = refLiga.id;
+
+        Object.assign(documento, {id: idRefLiga});
+        Object.assign(documento, {horaCriacao: Date.now()});
 
 
-            return listener({sucess: true, text: "Liga Salva com Sucesso!"});
-
-            const id_Liga = doc.id;
-
-            const img = await fetch(imgBanner);
-            const btes = await img.blob();
-            const caminho = 'BannerLigas/' + `images_banner_ligas${id_Liga}.png`;
+        const img = await fetch(imgBanner);
+        const btes = await img.blob();
+        const caminho = 'BannerLigas/' + `${idRefLiga}.png`;
 
 
-            const storageRef = ref(storage, caminho);
-            uploadBytes(storageRef, btes)
-                .then(() => {
+        const storageRef = ref(storage, caminho);
 
-                    Alert.alert("Sucesso", "A liga foi criada com sucesso...");
+        uploadBytes(storageRef, btes).then(() => {
+
+                    
+            getDownloadURL(storageRef).then(async (url) => {
+    
+                Object.assign(documento, {banner: url});
+
+                
+
+                await setDoc(refLiga, documento).then(() => {
+
                     setLoadingSave(false);
 
-
-                    /*
-                    getDownloadURL(ref(storage, caminho)).
-                    then(async (url) => {
-    
-                        const atualizaDoc = doc(db, "ligas", "documento", id_Liga);
-                        await updateDoc(atualizaDoc, {
-                            bannerImg: url
-                        }).then(() => {
-                         
-                        })
-    
-                    }).catch((e) => {
-                        Alert.alert(e);
-                    });
-    
-                    */
-
+                    return listener({sucess: true, text: "Liga Salva com Sucesso!"});
+        
+        
+        
                 }).catch((e) => {
-                    Alert.alert(e);
+                    setLoadingSave(false);
+                    return listener({sucess: false, text: e});
                 });
+                
+    
+            }).catch((e) => {
+                setLoadingSave(false);
+                return listener({sucess: false, text: e});
+            });
+    
+                    
 
-
-        }).catch((x) => {
+        }).catch((e) => {
+            setLoadingSave(false);
             return listener({sucess: false, text: x});
         });
 
-    }
+        
+
+    };
 
 
 
@@ -101,17 +106,14 @@ export default function FirebaseProvider({ children }) {
 
 
 
-        const q = query(collection(db, tituloDocumento), orderBy('data_criacao', 'asc'));
+        const q = query(collection(db, tituloDocumento), orderBy('horaCriacao', 'asc'));
         const querySnapshot = onSnapshot(q, (querySnap) => {
 
             const list = ([]);
 
             querySnap.forEach(doc => {
 
-                list.push({
-                    ...doc.data(),
-                    id: doc.id
-                });
+                list.push(doc.data());
             });
 
 

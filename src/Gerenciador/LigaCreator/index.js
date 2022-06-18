@@ -14,7 +14,14 @@ export default function LigaCreator({ navigation }) {
 
     const [steps, setSteps] = useState(0);
     const [liga, setLiga] = useState(novaLiga());
-    const [listaJogos, setListaJogos] = useState([]);
+    
+    const listaJogos = liga.listaDeJogos;
+    const setListaJogos = (value) => {
+        setLiga((prevState) => ({
+            ...prevState,
+            listaDeJogos: value
+        }));
+    };
 
 
     const definirCampeonato = (id) => {
@@ -42,7 +49,7 @@ export default function LigaCreator({ navigation }) {
     const avancar_com_lista_de_jogos = (lista) => {
 
         let listaEditada = [];
-        console.log(lista);
+        //console.log(lista);
         lista.forEach((data) => {
 
             const {fixture, teams, goals, score} = data;
@@ -65,7 +72,7 @@ export default function LigaCreator({ navigation }) {
 
    
     const saveSucess = () => {
-        Alert.alert("Tudo Certo", 'Liga Salva com sucesso, mas ainda falta salvar o baner no storage e sua url no firestore');
+        Alert.alert("Tudo Certo", 'Liga Salva com sucesso');
         navigation.navigate("Ligas");
     };
 
@@ -76,7 +83,7 @@ export default function LigaCreator({ navigation }) {
         case 1:
             return <Step2 id={liga.campeonatoId} setLista={avancar_com_lista_de_jogos} />
         case 2:
-            return <Step3 jogos={listaJogos} onSucess={saveSucess} />
+            return <Step3 onSucess={saveSucess} liga={liga} setLiga={setLiga} />
         default:
             return <Pb />
     }

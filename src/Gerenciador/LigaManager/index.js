@@ -60,7 +60,7 @@ export default function LigaManager({ navigation }) {
 
   useEffect(() => {
 
-    const getData = recuperar_todos_dados_colecao("ligas");
+    const getData = recuperar_todos_dados_colecao("Ligas");
 
     return () => {
       
