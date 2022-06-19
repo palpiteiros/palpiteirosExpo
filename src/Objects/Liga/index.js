@@ -1,19 +1,19 @@
 let Liga = {
     id: '',
-    horaCriacao: 0,
-    titulo: 'Teste',
-    descricao: 'teste',
+    horaCriacao: 0,//é o timestamp do date no momento atual da criacao
+    titulo: '',
+    descricao: '',
     banner: null,
     tipo: 1,
     status: 1,
-    horaFechamento: '20/06/22 as 18:00',
-    horaResultado: '23/06/22 as 18:00',
+    horaFechamento: '',//ideal ser timestamp de um date
+    horaResultado: '',//ideal ser timestamp de um date
     jogosPorMesa: 0,
     palpiteirosPorMesa: 0,
     listaDeJogos: [],
     regras: [],
-    valorEntrada: '5,00',
-    valorPremio: '200,00',
+    valorEntrada: '',//ideal ser um numero pra facilitar fazer calculos
+    valorPremio: '',//ideal ser um numero pra facilitar fazer calculos
     campeonatoId: '',//id do campeonato retornado pelo api
     //v--- serao atualizados no fechamento da rodada
     topClubes: [], //clubes teve mais palpite de vitoria

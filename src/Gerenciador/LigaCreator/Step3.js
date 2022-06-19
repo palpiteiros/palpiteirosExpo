@@ -99,11 +99,6 @@ export default function Step3({ onSucess, liga, setLiga}) {
 
     const { salvar_dados, loadingSave } = useContext(FirebaseContext);
 
-
-
-
-    
-    //console.log(listaDeJogos);
     
 
     const GoChooseFotos = async () => {
@@ -123,7 +118,6 @@ export default function Step3({ onSucess, liga, setLiga}) {
     }
 
 
-
     const cria_nova_liga = () => {
 
 
@@ -132,8 +126,7 @@ export default function Step3({ onSucess, liga, setLiga}) {
         if (horaResultado == '' || horaResultado == undefined) return Alert.alert("Atenção", "Campo resultado vazio");
         if (valorEntrada == '' || valorEntrada == undefined) return Alert.alert("Atenção", "Campo entrada vazio");
         if (valorPremio == '' || valorPremio == undefined) return Alert.alert("Atenção", "Campo prêmio vazio");
-        //if (banner == null || banner == undefined) return Alert.alert("Atenção", "O banner está vazio");
-
+        if (banner == null || banner == undefined) return Alert.alert("Atenção", "O banner está vazio");
 
 
         

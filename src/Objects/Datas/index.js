@@ -17,5 +17,5 @@ export function dateToYMD(date) {
     if(String(min).toString().length === 1) {
         min = `0${min}`;
     }
-    return `${d}/${m}/${y} \nAs ${hora}:${min}`;
+    return `${d}/${m}/${y}\n${hora}:${min}`;
 }

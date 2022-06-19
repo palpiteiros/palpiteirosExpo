@@ -84,7 +84,7 @@ export default function LigaManager({ navigation }) {
 
 
   const DetalhesLiga = (data) => {
-    navigation.navigate('Detalhes liga', data);
+    navigation.navigate('Detalhes liga', {data: data});
   }
 
 
