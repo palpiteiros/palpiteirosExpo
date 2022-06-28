@@ -23,7 +23,7 @@ const css = StyleSheet.create({
     },
     contentRight: {
         flex: 0.6,
-        paddingTop: 6,
+        paddingTop: 15,
         paddingBottom: 6
     },
     txtRight: {
@@ -34,7 +34,7 @@ const css = StyleSheet.create({
     },
     timePlacar: {
         flexDirection: 'row',
-        marginLeft: 16,
+        marginLeft: 5,
         marginRight: 16,
         marginBottom: 6,
         marginTop: 6
@@ -46,11 +46,12 @@ const css = StyleSheet.create({
     txtCenter: {
         textAlign: 'center',
         marginLeft: 8,
-        marginRight: 12
+        marginRight: 12,
+        fontSize: 15
     },
     bold: {
         fontWeight: 'bold',
-        fontSize: 26
+        fontSize: 20
     },
     row: {
         flexDirection: 'row'
@@ -86,7 +87,7 @@ function TimePlacar({ logo, nome, gols }) {
     )
 }
 
-export default function ItemJogoMasterAdm({ data }) {
+export default function ItemJogoUser({ data }) {
 
     const { nomeVisitante, escudoTimeVisitante, golsVisitante, nomeMandante, escudoTimeMandante, golsMandante, idPartida, status, dateRealizacao } = data;
 
@@ -133,16 +134,12 @@ export default function ItemJogoMasterAdm({ data }) {
                     <Text style={css.txtRight}>
                         {dateToYMD(new Date(dateRealizacao))}
                     </Text>
-                    <Text style={css.txtRight}>
-                        #{idPartida}
-                    </Text>
+                     
                     <Text style={[css.txtRight, getColor(status)]}>
                         {getStatus(status)}
                     </Text>
                 </View>
             </View>
-                <Button onPress={() => Alert.alert('Abrir JogoMasterEditor', 'Fazer requisiçao da api apos o fim da partida para atualizar os detalhes de cada jogo e apurar os pontos de todos os palpites que incluem esse jogo')} style={css.botao} color={colorVerde} mode='contained'>Consultar Detalhes</Button>
-              
         </Card>
     );
 }

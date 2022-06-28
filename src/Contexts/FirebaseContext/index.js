@@ -4,32 +4,18 @@ import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { Alert } from 'react-native';
 import firebase from '../../../config/firebase';
 
-
-
 export const FirebaseContext = createContext({});
 
 const db = getFirestore(firebase);
 const storage = getStorage(firebase);
 
-
-
 export default function FirebaseProvider({ children }) {
 
     const [dadosRecuperados, setDadosRecuperados] = useState([]);
+    const [palpitesVerificacao, setPalpitesVerificacao] = useState([]);
 
     const [loading, setLoading] = useState(false);
     const [loadingSave, setLoadingSave] = useState(false);
-
-
-
-
-
-
-    //SALVAR FOTOS
-
-    console.log(loadingSave);
-
-
 
     //FUNCS PARA SALVAR NO FIRESTORE
 
@@ -40,8 +26,8 @@ export default function FirebaseProvider({ children }) {
         const refLiga = doc(collection(db, 'Ligas'));
         const idRefLiga = refLiga.id;
 
-        Object.assign(documento, {id: idRefLiga});
-        Object.assign(documento, {horaCriacao: Date.now()});
+        Object.assign(documento, { id: idRefLiga });
+        Object.assign(documento, { horaCriacao: Date.now() });
 
 
         const img = await fetch(imgBanner);
@@ -53,49 +39,73 @@ export default function FirebaseProvider({ children }) {
 
         uploadBytes(storageRef, btes).then(() => {
 
-                    
-            getDownloadURL(storageRef).then(async (url) => {
-    
-                Object.assign(documento, {banner: url});
 
-                
+            getDownloadURL(storageRef).then(async (url) => {
+
+                Object.assign(documento, { banner: url });
+
+
 
                 await setDoc(refLiga, documento).then(() => {
 
                     setLoadingSave(false);
 
-                    return listener({sucess: true, text: "Liga Salva com Sucesso!"});
-        
-        
-        
+                    return listener({ sucess: true, text: "Liga Salva com Sucesso!" });
+
+
+
                 }).catch((e) => {
                     setLoadingSave(false);
-                    return listener({sucess: false, text: e});
+                    return listener({ sucess: false, text: e });
                 });
-                
-    
+
+
             }).catch((e) => {
                 setLoadingSave(false);
-                return listener({sucess: false, text: e});
+                return listener({ sucess: false, text: e });
             });
-    
-                    
+
+
 
         }).catch((e) => {
             setLoadingSave(false);
-            return listener({sucess: false, text: x});
+            return listener({ sucess: false, text: x });
         });
 
-        
+
 
     };
 
+    //Salva um novo palpite no firebase
+    async function salvar_Palpite(documento,id, idLiga, listener) {
+        setLoadingSave(true);
 
+        const refPalpite = doc(collection(db, 'Palpites'));
+        const idRefPalpite = refPalpite.id;
+        /*
+        Object.assign(documento, { IdPalpite: idRefPalpite });
+        Object.assign(documento, { HoraCriacaoPalpite: Date.now() });*/
+         
+        let bodyPalpite = {
+            IdPalpite: idRefPalpite ,
+            Uid: id,
+            Idliga: idLiga,
+            horaInicio: null,
+            HoraConclusao: null,
+            HoraCriacaoPalpite:Date.now(),
+            Partidas: documento
+        }
 
+        await setDoc(refPalpite, bodyPalpite).then(() => {
+            setLoadingSave(false);
+            return listener({ sucess: true, text: "Palpite salvo com Sucesso!" });
 
+        }).catch((e) => {
+            setLoadingSave(false);
+            return listener({ sucess: false, text: e });
+        });
 
-
-
+    };
 
     //FUNCS PARA RECUPERAR DOCS NO FIRESTORE
 
@@ -104,45 +114,40 @@ export default function FirebaseProvider({ children }) {
 
         setLoading(true);
 
-
-
         const q = query(collection(db, tituloDocumento), orderBy('horaCriacao', 'asc'));
         const querySnapshot = onSnapshot(q, (querySnap) => {
-
             const list = ([]);
-
             querySnap.forEach(doc => {
-
                 list.push(doc.data());
             });
-
-
             setDadosRecuperados(list);
             setLoading(false);
-
-
-
         });
-
         return () => {
             setDadosRecuperados([]);
         };
-
     }
 
-
-
-
-
-
-
-
-
+    function verifica_palpite_por_user(tituloDocumento, id) {
+        setLoading(true);
+        const q = query(collection(db, tituloDocumento), where('IdUser', '==', id), orderBy('HoraCriacaoPalpite', 'asc'));
+        const querySnapshot = onSnapshot(q, (querySnap) => {
+            const list = ([]);
+            querySnap.forEach(doc => {
+                list.push(doc.data());
+            });
+            setPalpitesVerificacao(list);
+            setLoading(false);
+        });
+    }
 
     return (
         <FirebaseContext.Provider value={{
             salvar_dados,
+            salvar_Palpite,
             recuperar_todos_dados_colecao,
+            verifica_palpite_por_user,
+            palpitesVerificacao,
             dadosRecuperados,
             loading,
             loadingSave

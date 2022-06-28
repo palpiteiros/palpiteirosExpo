@@ -37,8 +37,8 @@ export default function RootNavigator() {
     }
 
     //Para o app do cliente
-    //let ComponentStack = <AppStack />;
-    let ComponentStack = <AdmStack />;
+    let ComponentStack = <AppStack />;
+    //let ComponentStack = <AdmStack />;
     
     return (
       <NavigationContainer>

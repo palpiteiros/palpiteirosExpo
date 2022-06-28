@@ -6,6 +6,8 @@ import { Title, Card, Avatar, Subheading, Text, Button } from 'react-native-pape
 import { colorVerde } from '../../Styles/Cores';
 import { format, formatDistance, formatRelative, subDays } from 'date-fns'
 import { dateToYMD } from '../../Objects/Datas';
+import VariacaoBotao from '../VariacaoBotao';
+import Botao from '../Botao';
 
 
 
@@ -25,16 +27,16 @@ const css = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'flex-start',
         paddingTop: 20
-        
+
     },
 
     txt: {
-        paddingLeft: 25,
+        paddingLeft: 15,
     },
 
     txtBody: {
-        width: 100
-
+        width: 100,
+        fontSize: 13
     },
 
     txtBodyTitle: {
@@ -78,93 +80,58 @@ const css = StyleSheet.create({
 let urlImg = 'https://i0.wp.com/www.linhaesportiva.com.br/wp-content/uploads/2017/02/16002904_1857749167828776_5108168482056053606_n.jpg?resize=759%2C315&ssl=1';
 
 
-export default function ItemCardLigas({ data , abreDetalhes}) {
+export default function ItemCardLigas({ data, abreDetalhes }) {
 
-
-
-    const {titulo, descricao, banner, horaFechamento, horaResultado, valorEntrada, valorPremio, listaDeJogos, horaCriacao} = data;
-
-
+    const { titulo, descricao, banner, horaFechamento, horaResultado, valorEntrada, valorPremio, listaDeJogos, horaCriacao } = data;
 
     let avatar = (banner === '' ? urlImg : banner);
     let TotalPalpites = 0;
 
-
     return (
         <Card elevation={8} mode="elevated" style={css.container}>
-
             <Image style={css.img} source={{ uri: avatar }} />
-
             <View style={css.heardCard}>
-                
 
                 <View>
                     <Title style={css.txt}>{titulo}</Title>
-
                     <Subheading style={css.txt}>{descricao}</Subheading>
                 </View>
 
             </View>
 
-
             <View style={css.bodyCard}>
-
                 <View style={css.rowTitle}>
-
                     <Text style={css.txtBodyTitle}>Criação</Text>
-
                     <Text style={css.txtBodyTitle}>Fechamento</Text>
-
                     <Text style={css.txtBodyTitle}>Resultado</Text>
-
-
-
                 </View>
 
                 <View style={css.row}>
-
                     <Text style={css.txtBody}>{dateToYMD(new Date(horaCriacao))}</Text>
-
                     <Text style={css.txtBody}>{horaFechamento}</Text>
-
                     <Text style={css.txtBody}>{horaResultado}</Text>
-
-
-
                 </View>
 
-
-
-
-
-
                 <View style={css.rowTitle}>
-
                     <Text style={css.txtBodyTitle}>Entrada</Text>
                     <Text style={css.txtBodyTitle}>Prêmio</Text>
                     <Text style={css.txtBodyTitle}>Total palpites</Text>
-
                 </View>
 
 
                 <View style={css.row}>
-
                     <Text style={css.txtBody}>R$ {valorEntrada}</Text>
                     <Text style={css.txtBody}>R$ {valorPremio}</Text>
                     <Text style={css.txtBody}>{TotalPalpites}</Text>
-
-
-
                 </View>
-
-
-
-
             </View>
 
-
             <View style={css.footer}>
-                <Button onPress={() => abreDetalhes(data)} color={colorVerde} mode='contained'>Ver mais</Button>
+                <VariacaoBotao
+                    acao={() => abreDetalhes(data)}
+                    TituloBotao={'Ver mais'}
+                    icone={'return-up-forward-outline'}
+                />
             </View>
 
         </Card>
