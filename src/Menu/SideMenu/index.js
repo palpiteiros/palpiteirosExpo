@@ -5,7 +5,10 @@ import Home from '../../Layout/Home';
 import MeuPerfil from '../../Layout/MeuPerfil';
 import { colorVerdeClaro } from '../../Styles/Cores';
 import Logo from '../../Components/Logo';
-
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import { colorVerdePadrao } from '../../Styles/Paleta/Paleta_cores';
+import MinhaCarteira from '../../Layout/MinhaCarteira';
+import MeusPalpites from '../../Layout/MeusPalpites';
 
 
 
@@ -56,6 +59,7 @@ const CostumDrawer = (props) => {
             <View>
                 <TouchableOpacity onPress={() => sairConta()}>
                     <View style={css.footer}>
+                        <Ionicons style={{marginRight: 15}} size={20} name='log-out-outline' />
                         <Text>Sair da conta</Text>
                     </View>
                 </TouchableOpacity>
@@ -67,18 +71,21 @@ const CostumDrawer = (props) => {
     );
 }
 
-export default function SideMenu() {
+export default function SideMenu({ navigation }) {
 
     const Drawer = createDrawerNavigator();
+    const GoToNotification = () => {
+        navigation.navigate("Notificacoes")
+    }
 
     return (
         <Drawer.Navigator screenOptions={{
-            headerShadowVisible:true,
+            headerShadowVisible: true,
             drawerActiveBackgroundColor: colorVerdeClaro,
             drawerActiveTintColor: 'black',
             drawerInactiveTintColor: '#888888',
             drawerLabelStyle: {
-                //  marginLeft: -20,
+              marginLeft: -20,
             }
         }}
             drawerContent={(props) => <CostumDrawer {...props} />}
@@ -91,11 +98,44 @@ export default function SideMenu() {
                     title: 'Inicio',
                     headerTitle: 'Inicio',
                     headerStyle: {
-                        backgroundColor: colorVerdeClaro
+                        backgroundColor: 'white'
                     },
                     headerTintColor: 'black',
                     headerTitleStyle: {
                     },
+                    headerRight: () => (
+                        <Ionicons
+                            onPress={() => GoToNotification()}
+                            style={{ marginRight: 20 }}
+                            name='notifications' color={"#2b2b2b"} size={25} />
+
+                    ),
+                    drawerIcon: ({ color }) => (
+                        <Ionicons size={20} color={color} name='home-outline' />
+                    )
+
+                }} />
+
+            <Drawer.Screen
+                name="MeusPalpites"
+                component={MeusPalpites}
+                options={{
+                    title: 'Meus palpites',
+                    headerTitle: 'Meus palpites',
+                    drawerIcon: ({ color }) => (
+                        <Ionicons size={20} color={color} name='clipboard-outline' />
+                    )
+                }} />
+
+            <Drawer.Screen
+                name="MinhaCarteira"
+                component={MinhaCarteira}
+                options={{
+                    title: 'Minha carteira',
+                    headerTitle: 'Minha carteira',
+                    drawerIcon: ({ color }) => (
+                        <Ionicons size={20} color={color} name='wallet-outline' />
+                    )
                 }} />
 
             <Drawer.Screen
@@ -103,7 +143,10 @@ export default function SideMenu() {
                 component={MeuPerfil}
                 options={{
                     title: 'Meu perfil',
-                    headerTitle: 'Meu perfil'
+                    headerTitle: 'Meu perfil',
+                    drawerIcon: ({ color }) => (
+                        <Ionicons size={20} color={color} name='person-outline' />
+                    )
                 }} />
 
         </Drawer.Navigator>

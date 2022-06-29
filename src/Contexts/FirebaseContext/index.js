@@ -10,7 +10,6 @@ const db = getFirestore(firebase);
 const storage = getStorage(firebase);
 
 export default function FirebaseProvider({ children }) {
-
     const [dadosRecuperados, setDadosRecuperados] = useState([]);
     const [palpitesVerificacao, setPalpitesVerificacao] = useState([]);
 
@@ -18,7 +17,6 @@ export default function FirebaseProvider({ children }) {
     const [loadingSave, setLoadingSave] = useState(false);
 
     //FUNCS PARA SALVAR NO FIRESTORE
-
     //Salva uma nova liga no firebase
     async function salvar_dados(documento, imgBanner, listener) {
         setLoadingSave(true);
@@ -88,12 +86,13 @@ export default function FirebaseProvider({ children }) {
          
         let bodyPalpite = {
             IdPalpite: idRefPalpite ,
-            Uid: id,
+            IdUser: id,
             Idliga: idLiga,
             horaInicio: null,
             HoraConclusao: null,
             HoraCriacaoPalpite:Date.now(),
-            Partidas: documento
+            Partidas: documento,
+            status: 0
         }
 
         await setDoc(refPalpite, bodyPalpite).then(() => {
@@ -104,14 +103,11 @@ export default function FirebaseProvider({ children }) {
             setLoadingSave(false);
             return listener({ sucess: false, text: e });
         });
-
     };
 
     //FUNCS PARA RECUPERAR DOCS NO FIRESTORE
-
     //Recuperar todos os documentos em uma coleção
     function recuperar_todos_dados_colecao(tituloDocumento) {
-
         setLoading(true);
 
         const q = query(collection(db, tituloDocumento), orderBy('horaCriacao', 'asc'));

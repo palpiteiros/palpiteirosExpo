@@ -3,6 +3,7 @@ import React from 'react';
 import DetalhesJogosUser from '../../Layout/DetalhesJogosUser';
 import DetalhesLigasUser from '../../Layout/DetalhesLigasUser';
 import Home from '../../Layout/Home';
+import Notificacoes from '../../Layout/Notificacoes';
 import SideMenu from '../../Menu/SideMenu';
 
 
@@ -29,7 +30,7 @@ export default function HomeStack() {
         component={DetalhesLigasUser}
         options={{
           title: 'Detalhes da liga',
-          headerTitle: 'Detalhes da liga'
+          headerTitle: 'Detalhes da liga',
         }}
       />
 
@@ -42,6 +43,18 @@ export default function HomeStack() {
           headerShown: false
         }}
       />
+
+      <Stack.Screen
+        name='Notificacoes'
+        component={Notificacoes}
+        options={{
+          title: 'Notificações',
+          headerTitle: 'Notificações',
+          headerShown: true
+        }}
+      />
+
+      
 
     </Stack.Navigator>
   );

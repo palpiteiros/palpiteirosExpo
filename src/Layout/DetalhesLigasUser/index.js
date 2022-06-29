@@ -167,7 +167,6 @@ export default function DetalhesLigasUser({ route, navigation }) {
         listaDeJogos: data.listaDeJogos
     }
     const ComprarTicketPalpite = () => { 
-      
         navigation.navigate('DetalhesJogosUser', {data: dataLiga, dataLeagueCompleta:data})
     } 
 
