@@ -1,3 +1,5 @@
+import { format } from "date-fns";
+
 let palpite = {
     IdLiga: '',
     IdJogo: '',
@@ -9,7 +11,7 @@ let palpite = {
     horaCriacao: 0,
 }
 
-export const novoPalpite = (idLiga, idJogo, idPalpite, palpiteGolsMandante, palpiteGolsVisitante, palpiteResultado, idUser, idTimeMandante, idTimeVisitante  ) => {
+export const novoPalpite = (idLiga, idJogo, idPalpite, palpiteGolsMandante, palpiteGolsVisitante, palpiteResultado, idUser, idTimeMandante, idTimeVisitante, timeMandante, timeVisitante  ) => {
 
     let palpite = {
         IdLiga: idLiga,
@@ -22,7 +24,9 @@ export const novoPalpite = (idLiga, idJogo, idPalpite, palpiteGolsMandante, palp
         resultado: palpiteResultado,
         ranking: null,
         IdTimeMandante: idTimeMandante,
-        IdTimeVisitante: idTimeVisitante
+        IdTimeVisitante: idTimeVisitante,
+        TimeMandante: timeMandante, 
+        TimeVisitante: timeVisitante 
     } 
 
     return palpite;

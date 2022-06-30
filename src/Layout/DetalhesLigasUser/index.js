@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, Image, TouchableOpacity, Alert, FlatList } from 'react-native';
+import { View, Text, StyleSheet, Image, TouchableOpacity, Alert, FlatList, BackHandler } from 'react-native';
 import { Divider, Headline, List, Subheading } from 'react-native-paper';
 import Botao from '../../Components/Botao';
 import ItemDataHora from '../../Components/ItemDataHora';
@@ -169,6 +169,10 @@ export default function DetalhesLigasUser({ route, navigation }) {
     const ComprarTicketPalpite = () => { 
         navigation.navigate('DetalhesJogosUser', {data: dataLiga, dataLeagueCompleta:data})
     } 
+
+    BackHandler.addEventListener('hardwareBackPress', function(){
+        navigation.navigate('SideMenu')
+    })
 
     return (
         <View style={css.container}>

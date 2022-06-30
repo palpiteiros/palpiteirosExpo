@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useEffect, useState } from 'react';
+import React, { useCallback, useContext, useEffect, useLayoutEffect, useState } from 'react';
 import { View, Text, StatusBar, Image, StyleSheet, Dimensions, TouchableOpacity, Platform, ScrollView, Alert } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 import Modal from "react-native-modal";
@@ -26,9 +26,9 @@ const css = StyleSheet.create({
         flexDirection: 'row'
     },
 
-    rowFull:{
+    rowFull: {
         flexDirection: 'row',
-        justifyContent:'space-between',
+        justifyContent: 'space-between',
         paddingRight: 25,
         alignItems: 'center'
     },
@@ -159,7 +159,7 @@ function TimePlacar({ id, escudo, tipo, placar, nome, clickSelecionaTime, result
 
     return (
         <TouchableOpacity
-            onPress={() => clickSelecionaTime({ id, escudo, placar, nome, tipo })}
+            //onPress={() => clickSelecionaTime({ id, escudo, placar, nome, tipo })}
             style={css.columMain}>
             {resultado != null ?
                 (
@@ -261,12 +261,12 @@ function TituloHeader({ titulo }) {
     );
 }
 
-function BotaoLimpar ({titulo, acao}){
-    return(
-        <TouchableOpacity onPress={()=> acao()}>
-            <Subheading style={{fontSize: 12}}>{titulo}</Subheading>
+function BotaoLimpar({ titulo, acao }) {
+    return (
+        <TouchableOpacity onPress={() => acao()}>
+            <Subheading style={{ fontSize: 12 }}>{titulo}</Subheading>
         </TouchableOpacity>
-         );
+    );
 }
 
 export default function ModalPalpites({
@@ -295,46 +295,37 @@ export default function ModalPalpites({
     const [placarMandante, setPlacarMandante] = useState(0);
     const { salvar_Palpite, loadingSave } = useContext(FirebaseContext);
     const { user } = useContext(UserContext);
-    const [current, setCurrent] = useState(false);
 
     useEffect(() => {
-        if (escolheResultado != null && escolheResultado.tipo != 'Empate' && placarMandante != 0 && placarMandante == placarVisitante) {
+        if (placarMandante > placarVisitante) {
             setEscolheResultado({
-                escudoTime: [
-                    escudoTimeMandante,
-                    escudoTimeVisitante,
-                ],
-                idTime: "Empate",
-                nomeTime: [
-                    nomeMandante,
-                    nomeVisitante,
-                ],
-                tipo: "Empate",
-            })
-        }
-        if (escolheResultado != null && escolheResultado.tipo == 'Mandante' && placarVisitante > placarMandante) {
-            setEscolheResultado({
-                escudoTime: escudoTimeVisitante,
-                idTime: idVisitante,
-                nomeTime: nomeVisitante,
-                tipo: 'Visitante',
-            })
-        }
-        if (escolheResultado != null && escolheResultado.tipo == 'Visitante' && placarMandante > placarVisitante) {
-            setEscolheResultado({
-                escudoTime: escudoTimeMandante,
                 idTime: idMandante,
+                escudoTime: escudoTimeMandante,
                 nomeTime: nomeMandante,
-                tipo: 'Mandante',
+                tipo: 'Mandante'
+            })
+        } else if (placarMandante < placarVisitante) {
+            setEscolheResultado({
+                idTime: idVisitante,
+                escudoTime: escudoTimeVisitante,
+                nomeTime: nomeVisitante,
+                tipo: 'Visitante'
+            })
+        } else if (placarMandante != 0 && placarVisitante != 0 && placarMandante == placarVisitante) {
+            setEscolheResultado({
+                idTime: 'Empate',
+                escudoTime: [escudoTimeVisitante, escudoTimeMandante],
+                nomeTime: [nomeVisitante, nomeMandante],
+                tipo: 'Empate'
             })
         }
-    }, [placarMandante, placarVisitante, escolheResultado]);
+    }, [placarMandante, placarVisitante])
 
     const HandlerFazerPalpite = useCallback(() => {
-        if (escolheResultado != null) {
+        if (idPartida != undefined && escolheResultado != null) {
             salvarPalpite(idPartida, placarMandante, placarVisitante, escolheResultado)
         } else {
-            Alert.alert("Erro ao palpitar", "Você precisa escolher um resultado e definir o placar da partida...")
+            Alert.alert("Erro ao palpitar", "Você precisa definir o placar da partida...")
         }
     }, [escolheResultado, placarMandante, placarVisitante]);
 
@@ -345,12 +336,10 @@ export default function ModalPalpites({
         escolheResultado,
     ) => {
 
-        let palpite = novoPalpite(idLiga, idPartida, null, placarMandante, escolheResultado.tipo == "Empate" ? placarMandante : placarVisitante, escolheResultado, user.uid, idMandante, idVisitante)
-
+        let palpite = novoPalpite(idLiga, idPartida, null, placarMandante, escolheResultado.tipo == "Empate" ? placarMandante : placarVisitante, escolheResultado, user.uid, idMandante, idVisitante, nomeMandante, nomeVisitante)
         armazenaPalpites([
             ...PalpitesArmazenados,
             palpite]);
-
         setEscolheResultado(null);
         setPlacarMandante(0);
         setPlacarVisitante(0);
@@ -367,13 +356,6 @@ export default function ModalPalpites({
         }
         setEscolheResultado(data);
     }
-
-    useEffect(() => {
-        if (escolheResultado != null) {
-            setEsconderDefinicaoPlacar(false);
-        }
-    }, [escolheResultado])
-
 
     const addGolMandante = () => {
         const add = 1 + placarMandante
@@ -458,46 +440,32 @@ export default function ModalPalpites({
                                 />
                             </View>
                         </View>
-                        {esconderDefinicaoPlacar ?
-                            null
-                            : <View>
-                                <Topico
-                                    titulo={'Defina o placar da partida'}
-                                />
-                                <View style={css.cont} >
-                                    <>
-                                        {escolheResultado != null && escolheResultado.tipo == "Empate" ?
-                                            <DefinePlacar
-                                                escudo={[escudoTimeMandante, escudoTimeVisitante]}
-                                                nome={[nomeMandante + " - " + nomeVisitante]}
-                                                tipo={'Empate'}
-                                                placar={placarMandante}
-                                                acaoAdd={addGolMandante}
-                                                acaoDiminuir={diminuiGolMandante}
-                                            />
-                                            : <>
-                                                <DefinePlacar
-                                                    escudo={escudoTimeMandante}
-                                                    nome={nomeMandante}
-                                                    tipo={'Mandante'}
-                                                    placar={placarMandante}
-                                                    acaoAdd={addGolMandante}
-                                                    acaoDiminuir={diminuiGolMandante}
-                                                />
-                                                <DefinePlacar
-                                                    escudo={escudoTimeVisitante}
-                                                    nome={nomeVisitante}
-                                                    tipo={'Visitante'}
-                                                    placar={placarVisitante}
-                                                    acaoAdd={addGolVisitante}
-                                                    acaoDiminuir={diminuiGolVisitante}
-                                                />
-                                            </>
-                                        }
-                                    </>
-                                </View>
+                        <View>
+                            <Topico
+                                titulo={'Defina o placar da partida'}
+                            />
+                            <View style={css.cont} >
+                                <>
+                                    <DefinePlacar
+                                        escudo={escudoTimeMandante}
+                                        nome={nomeMandante}
+                                        tipo={'Mandante'}
+                                        placar={placarMandante}
+                                        acaoAdd={addGolMandante}
+                                        acaoDiminuir={diminuiGolMandante}
+                                    />
+                                    <DefinePlacar
+                                        escudo={escudoTimeVisitante}
+                                        nome={nomeVisitante}
+                                        tipo={'Visitante'}
+                                        placar={placarVisitante}
+                                        acaoAdd={addGolVisitante}
+                                        acaoDiminuir={diminuiGolVisitante}
+                                    />
+                                </>
+                            </View>
 
-                            </View>}
+                        </View>
                         <View style={{ margin: 20 }}>
                             {loadingSave ?
                                 <Pb cor={'black'} /> :

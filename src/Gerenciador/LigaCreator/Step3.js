@@ -139,25 +139,16 @@ export default function Step3({ onSucess, liga, setLiga}) {
             }
         });
         //navigation.navigate("Ligas");
-        
+
 
     }
 
-
-
-
-
-
-
     return (
         <SafeAreaView style={css.container}>
-
             <View style={css.body}>
                 <ScrollView>
 
-
                     <View style={css.containerColuna}>
-
 
                         <CardInput
                             titulo={'Nome da liga'}
@@ -180,12 +171,7 @@ export default function Step3({ onSucess, liga, setLiga}) {
                             iconeColor={'black'}
                             tipoTeclado={'default'}
                         />
-
-
                     </View>
-
-
-
 
                     <View style={css.containerRow}>
 
@@ -201,8 +187,6 @@ export default function Step3({ onSucess, liga, setLiga}) {
                             widAdapter={'48%'}
                         />
 
-
-
                         <CardInput
                             titulo={'Resultado'}
                             hint={'Resultado'}
@@ -215,16 +199,9 @@ export default function Step3({ onSucess, liga, setLiga}) {
                             widAdapter={'48%'}
                         />
 
-
                     </View>
 
-
-
-
-
                     <View style={css.containerRow}>
-
-
 
                         <CardInput
                             titulo={'Entrada'}
@@ -238,8 +215,6 @@ export default function Step3({ onSucess, liga, setLiga}) {
                             widAdapter={'48%'}
                         />
 
-
-
                         <CardInput
                             titulo={'Prêmio'}
                             hint={'Prêmio'}
@@ -251,18 +226,10 @@ export default function Step3({ onSucess, liga, setLiga}) {
                             tipoTeclado={'default'}
                             widAdapter={'48%'}
                         />
-
-
-
-
-
                     </View>
-
-
 
                     <View style={css.containerColuna}>
                         <Card elevation={6} onPress={() => GoChooseFotos()} mode='elevated' style={css.card}>
-
                             {banner ?
                                 <Image resizeMode='cover' style={css.img} source={{ uri: banner }} />
                                 :
@@ -270,11 +237,8 @@ export default function Step3({ onSucess, liga, setLiga}) {
                                     <Ionicons name='camera-outline' size={50} />
                                     <Title>Adiconar Foto</Title>
                                 </View>}
-
-
                         </Card>
                     </View>
-
 
                     {
                         loadingSave ?
@@ -282,19 +246,10 @@ export default function Step3({ onSucess, liga, setLiga}) {
                         :
                         <View style={css.footer}>
                             <Botao click={() => cria_nova_liga()} cor={colorVerde} titulo={'Criar liga'} />
-
                         </View>
                     }
-
-
-
-
                 </ScrollView>
-
             </View>
-
-
-
 
         </SafeAreaView>
     );

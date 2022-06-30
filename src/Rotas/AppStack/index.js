@@ -4,8 +4,8 @@ import DetalhesJogosUser from '../../Layout/DetalhesJogosUser';
 import DetalhesLigasUser from '../../Layout/DetalhesLigasUser';
 import Home from '../../Layout/Home';
 import Notificacoes from '../../Layout/Notificacoes';
+import Recibo from '../../Layout/Recibo';
 import SideMenu from '../../Menu/SideMenu';
-
 
 export default function HomeStack() {
 
@@ -54,7 +54,15 @@ export default function HomeStack() {
         }}
       />
 
-      
+      <Stack.Screen
+        name='Recibo'
+        component={Recibo}
+        options={{
+          title: 'Recibo',
+          headerTitle: 'Recibo',
+          headerShown: false
+        }}
+      />
 
     </Stack.Navigator>
   );

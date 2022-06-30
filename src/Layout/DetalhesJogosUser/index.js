@@ -65,6 +65,7 @@ export default function DetalhesJogosUser({ route }) {
 
     const handleSheetChange = useCallback((index) => {
     }, []);
+
     const handleSnapPress = (index, data) => {
         sheetRef.current?.snapToIndex(index);
         setMatchSelected(data);
@@ -77,18 +78,20 @@ export default function DetalhesJogosUser({ route }) {
 
     useEffect(() => {
         setPalpitesVerificacao(palpites);
-    }, [palpites])
+    }, [palpites]);
+
     const confirmar = () => {
         salvar_Palpite(palpites, IdUser, ligaId, ({ sucess, text }) => {
             if (sucess) {
                 setPalpites([]);
                 Alert.alert("Palpites confirmados", "Seus palpites foram realizados com sucesso!");
-                navigation.dispatch(StackActions.replace('SideMenu'));
+                navigation.dispatch(StackActions.replace('Recibo'));
             } else {
                 Alert.alert("Erro ao fazer palpite", text.message);
             }
         })
     }
+
     return (
         <SafeAreaView style={css.bg}>
             <View style={css.container}>
@@ -112,8 +115,8 @@ export default function DetalhesJogosUser({ route }) {
                     </View>
                     : null}
 
-
                 <BottomSheet
+                    enablePanDownToClose={true}
                     ref={sheetRef}
                     snapPoints={snapPoints}
                     onChange={handleSheetChange}
@@ -126,7 +129,6 @@ export default function DetalhesJogosUser({ route }) {
                         PalpitesArmazenados={palpites}
                     />
                 </BottomSheet>
-
 
             </View>
         </SafeAreaView>

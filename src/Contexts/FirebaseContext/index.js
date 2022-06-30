@@ -3,6 +3,7 @@ import { getFirestore, collection, getDocs, doc, setDoc, getDoc, addDoc, updateD
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { Alert } from 'react-native';
 import firebase from '../../../config/firebase';
+import { format } from 'date-fns';
 
 export const FirebaseContext = createContext({});
 
@@ -16,7 +17,7 @@ export default function FirebaseProvider({ children }) {
     const [loading, setLoading] = useState(false);
     const [loadingSave, setLoadingSave] = useState(false);
 
-    //FUNCS PARA SALVAR NO FIRESTORE
+
     //Salva uma nova liga no firebase
     async function salvar_dados(documento, imgBanner, listener) {
         setLoadingSave(true);
@@ -75,7 +76,7 @@ export default function FirebaseProvider({ children }) {
     };
 
     //Salva um novo palpite no firebase
-    async function salvar_Palpite(documento,id, idLiga, listener) {
+    async function salvar_Palpite(documento, id, idLiga, listener) {
         setLoadingSave(true);
 
         const refPalpite = doc(collection(db, 'Palpites'));
@@ -83,14 +84,15 @@ export default function FirebaseProvider({ children }) {
         /*
         Object.assign(documento, { IdPalpite: idRefPalpite });
         Object.assign(documento, { HoraCriacaoPalpite: Date.now() });*/
-         
+
+
         let bodyPalpite = {
-            IdPalpite: idRefPalpite ,
+            IdPalpite: idRefPalpite,
             IdUser: id,
             Idliga: idLiga,
             horaInicio: null,
             HoraConclusao: null,
-            HoraCriacaoPalpite:Date.now(),
+            HoraCriacaoPalpite: format(new Date(), 'dd/MM/yyyy','HH/mm') ,
             Partidas: documento,
             status: 0
         }
@@ -105,7 +107,7 @@ export default function FirebaseProvider({ children }) {
         });
     };
 
-    //FUNCS PARA RECUPERAR DOCS NO FIRESTORE
+
     //Recuperar todos os documentos em uma coleção
     function recuperar_todos_dados_colecao(tituloDocumento) {
         setLoading(true);
@@ -124,6 +126,7 @@ export default function FirebaseProvider({ children }) {
         };
     }
 
+
     function verifica_palpite_por_user(tituloDocumento, id) {
         setLoading(true);
         const q = query(collection(db, tituloDocumento), where('IdUser', '==', id), orderBy('HoraCriacaoPalpite', 'asc'));
@@ -137,12 +140,23 @@ export default function FirebaseProvider({ children }) {
         });
     }
 
+    function recibo_palpite(tituloDocumento, id) {
+        setLoading(true);
+        const q = query(collection(db, tituloDocumento), where('IdUser', '==', id), orderBy('HoraCriacaoPalpite', 'asc'));
+        const querySnapshot = onSnapshot(q, (querySnap) => {
+            querySnap.forEach(doc => {
+                setPalpitesVerificacao(doc.data());
+            });
+        });
+    }
+
     return (
         <FirebaseContext.Provider value={{
             salvar_dados,
             salvar_Palpite,
             recuperar_todos_dados_colecao,
             verifica_palpite_por_user,
+            recibo_palpite,
             palpitesVerificacao,
             dadosRecuperados,
             loading,

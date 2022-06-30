@@ -2,6 +2,16 @@
   "expo": {
     "name": "palpiteirosExpo",
     "slug": "palpiteirosExpo",
+    "plugins": [
+      [
+        "expo-media-library",
+        {
+          "photosPermission": "Allow $(palpiteirosExpo} to access your photos.",
+          "savePhotosPermission": "Allow $(palpiteirosExpo) to save photos.",
+          "isAccessMediaLocationEnabled": true
+        }
+      ]
+    ],
     "version": "1.0.0",
     "assetBundlePatterns": [
       "**/*"

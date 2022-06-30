@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { View, Text, SafeAreaView, StyleSheet, FlatList, TouchableOpacity, Alert } from 'react-native';
+import { View, Text, SafeAreaView, StyleSheet, FlatList, TouchableOpacity, Alert, BackHandler } from 'react-native';
 import Botao from '../../Components/Botao';
 import ItemCardLigas from '../../Components/ItemCardLigas';
 import { FirebaseContext } from '../../Contexts/FirebaseContext';
@@ -12,7 +12,7 @@ import { colorVerdePadrao } from '../../Styles/Paleta/Paleta_cores';
 const css = StyleSheet.create({
   bg: {
     flex: 1,
-    paddingTop: 70,
+    paddingTop: 10,
     backgroundColor: '#f7f7f7'
   },
 
@@ -49,8 +49,8 @@ const css = StyleSheet.create({
 
   card: {
     margin: 15,
-    marginTop: -50,
-    marginBottom: -0
+    marginTop: 10,
+    marginBottom: 10
   }
 
 });
@@ -79,6 +79,17 @@ export default function Home({ navigation }) {
   const [ligas, setLigas] = useState([]);
   const [palpites, setPalpites] = useState([]);
   const { recuperar_todos_dados_colecao, dadosRecuperados, loading, verifica_palpite_por_user, palpitesVerificacao } = useContext(FirebaseContext);
+
+  BackHandler.addEventListener('hardwareBackPress', function(){
+    Alert.alert("Confirmar saida","Você deseja sair do aplicativo ?", [{
+      text:"Não",
+      onPress: ()=> {}
+    }, {
+      text:"Sim",
+      onPress: ()=> {}
+    }]);
+    return true;
+  })
 
   useEffect(() => {
     recuperar_todos_dados_colecao('Ligas');
