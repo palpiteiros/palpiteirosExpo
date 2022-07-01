@@ -1,10 +1,16 @@
 import React from 'react';
-import { View, SafeAreaView } from 'react-native';
+import { View, SafeAreaView, StyleSheet } from 'react-native';
 
+const css = StyleSheet.create({
+    bg:{
+        backgroundColor: 'white',
+        flex: 1
+    }
+})
 
 export default function MeusPalpites() {
     return (
-        <SafeAreaView>
+        <SafeAreaView style={css.bg}>
 
         </SafeAreaView>
     );

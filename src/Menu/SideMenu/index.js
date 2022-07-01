@@ -11,7 +11,6 @@ import MinhaCarteira from '../../Layout/MinhaCarteira';
 import MeusPalpites from '../../Layout/MeusPalpites';
 
 
-
 const css = StyleSheet.create({
     footer: {
         paddingLeft: 15,
@@ -41,17 +40,14 @@ const alertaMensage = (titulo, msg, acao) => {
     )
 }
 
-
 const sairConta = () => {
     alertaMensage("Confirmar saida", "Você tem certeza que deseja sair do app?")
 }
-
 
 const CostumDrawer = (props) => {
     return (
         <View style={{ flex: 1 }}>
             <DrawerContentScrollView {...props}>
-
                 <Logo />
                 <DrawerItemList {...props}>
                 </DrawerItemList>
@@ -59,15 +55,12 @@ const CostumDrawer = (props) => {
             <View>
                 <TouchableOpacity onPress={() => sairConta()}>
                     <View style={css.footer}>
-                        <Ionicons style={{marginRight: 15}} size={20} name='log-out-outline' />
+                        <Ionicons style={{ marginRight: 15 }} size={20} name='log-out-outline' />
                         <Text>Sair da conta</Text>
                     </View>
                 </TouchableOpacity>
-
             </View>
-
         </View>
-
     );
 }
 
@@ -85,7 +78,7 @@ export default function SideMenu({ navigation }) {
             drawerActiveTintColor: 'black',
             drawerInactiveTintColor: '#888888',
             drawerLabelStyle: {
-              marginLeft: -20,
+                marginLeft: -20,
             }
         }}
             drawerContent={(props) => <CostumDrawer {...props} />}
@@ -96,9 +89,10 @@ export default function SideMenu({ navigation }) {
                 component={Home}
                 options={{
                     title: 'Inicio',
+                    headerShadowVisible: false,
                     headerTitle: 'Inicio',
                     headerStyle: {
-                        backgroundColor: 'white'
+                        backgroundColor: 'white',
                     },
                     headerTintColor: 'black',
                     headerTitleStyle: {
@@ -112,8 +106,7 @@ export default function SideMenu({ navigation }) {
                     ),
                     drawerIcon: ({ color }) => (
                         <Ionicons size={20} color={color} name='home-outline' />
-                    )
-
+                    ),
                 }} />
 
             <Drawer.Screen
@@ -124,7 +117,8 @@ export default function SideMenu({ navigation }) {
                     headerTitle: 'Meus palpites',
                     drawerIcon: ({ color }) => (
                         <Ionicons size={20} color={color} name='clipboard-outline' />
-                    )
+                    ),
+                    headerShadowVisible: false
                 }} />
 
             <Drawer.Screen
@@ -135,7 +129,8 @@ export default function SideMenu({ navigation }) {
                     headerTitle: 'Minha carteira',
                     drawerIcon: ({ color }) => (
                         <Ionicons size={20} color={color} name='wallet-outline' />
-                    )
+                    ),
+                    headerShadowVisible: false
                 }} />
 
             <Drawer.Screen
@@ -146,7 +141,8 @@ export default function SideMenu({ navigation }) {
                     headerTitle: 'Meu perfil',
                     drawerIcon: ({ color }) => (
                         <Ionicons size={20} color={color} name='person-outline' />
-                    )
+                    ),
+                    headerShadowVisible: false
                 }} />
 
         </Drawer.Navigator>

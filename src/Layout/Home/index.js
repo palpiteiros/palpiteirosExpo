@@ -13,7 +13,7 @@ const css = StyleSheet.create({
   bg: {
     flex: 1,
     paddingTop: 10,
-    backgroundColor: '#f7f7f7'
+    backgroundColor: 'white'
   },
 
   containerCard: {
@@ -50,7 +50,8 @@ const css = StyleSheet.create({
   card: {
     margin: 15,
     marginTop: 10,
-    marginBottom: 10
+    marginBottom: 10,
+    elevation: 5
   }
 
 });
@@ -78,7 +79,7 @@ export default function Home({ navigation }) {
   const { user, setUser } = useContext(UserContext);
   const [ligas, setLigas] = useState([]);
   const [palpites, setPalpites] = useState([]);
-  const { recuperar_todos_dados_colecao, dadosRecuperados, loading, verifica_palpite_por_user, palpitesVerificacao } = useContext(FirebaseContext);
+  const { recuperar_todos_dados_colecao, dadosRecuperados, recupera_dados_perfil, loading, verifica_palpite_por_user, palpitesVerificacao } = useContext(FirebaseContext);
 
   BackHandler.addEventListener('hardwareBackPress', function(){
     Alert.alert("Confirmar saida","Você deseja sair do aplicativo ?", [{
@@ -94,6 +95,7 @@ export default function Home({ navigation }) {
   useEffect(() => {
     recuperar_todos_dados_colecao('Ligas');
     verifica_palpite_por_user('Palpites', user.uid);
+    recupera_dados_perfil('Usuario', user.uid);
   }, []);
 
   useEffect(() => {

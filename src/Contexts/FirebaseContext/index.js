@@ -13,6 +13,7 @@ const storage = getStorage(firebase);
 export default function FirebaseProvider({ children }) {
     const [dadosRecuperados, setDadosRecuperados] = useState([]);
     const [palpitesVerificacao, setPalpitesVerificacao] = useState([]);
+    const [dadosUser, setDadosUser] = useState(null);
 
     const [loading, setLoading] = useState(false);
     const [loadingSave, setLoadingSave] = useState(false);
@@ -92,7 +93,8 @@ export default function FirebaseProvider({ children }) {
             Idliga: idLiga,
             horaInicio: null,
             HoraConclusao: null,
-            HoraCriacaoPalpite: format(new Date(), 'dd/MM/yyyy','HH/mm') ,
+            HoraCriacaoPalpiteFormat: format(new Date(), ['dd/MM/yyyy'+' - '+'HH:mm']),
+            HoraCriacaoPalpite: Date.now(),
             Partidas: documento,
             status: 0
         }
@@ -126,7 +128,6 @@ export default function FirebaseProvider({ children }) {
         };
     }
 
-
     function verifica_palpite_por_user(tituloDocumento, id) {
         setLoading(true);
         const q = query(collection(db, tituloDocumento), where('IdUser', '==', id), orderBy('HoraCriacaoPalpite', 'asc'));
@@ -150,12 +151,25 @@ export default function FirebaseProvider({ children }) {
         });
     }
 
+    function recupera_dados_perfil(tituloDocumento, id) {
+        const q = query(collection(db, tituloDocumento), where('uid', '==', id));
+        const queryS = onSnapshot(q, (querySnap) => {
+            querySnap.forEach(doc => { 
+                setDadosUser(doc.data());
+                console.log(doc.data());
+            });
+        });
+    } 
+
+
     return (
         <FirebaseContext.Provider value={{
             salvar_dados,
             salvar_Palpite,
             recuperar_todos_dados_colecao,
             verifica_palpite_por_user,
+            recupera_dados_perfil,
+            dadosUser,
             recibo_palpite,
             palpitesVerificacao,
             dadosRecuperados,

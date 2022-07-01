@@ -111,13 +111,13 @@ function ListaPalpites({ data }) {
 }
 
 function HeaderRecibo({ detalhesPalpites }) {
-  const { HoraCriacaoPalpite, IdPalpite, Partidas } = detalhesPalpites;
+  const { HoraCriacaoPalpite,HoraCriacaoPalpiteFormat, IdPalpite, Partidas } = detalhesPalpites;
 
   return (
     <View style={css.BgColor}> 
       <Title style={css.header}>Recibo do palpite</Title>
       <Subheading style={css.txtComVariacao}>Código palpite: {String(IdPalpite).substring(0, 8)}</Subheading>
-      <Subheading style={{ margin: 10 }}>Data: {HoraCriacaoPalpite}</Subheading>
+      <Subheading style={{ margin: 10 }}>Data: {HoraCriacaoPalpiteFormat}</Subheading>
       <Divider style={css.divisor} />
 
     </View>
