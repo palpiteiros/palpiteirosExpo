@@ -41,11 +41,21 @@ const css = StyleSheet.create({
 
     container: {
         flex: 1,
-        paddingTop: 10,
     },
 
+    headePalpite: {
+        marginTop: 20
+    }
 })
 
+
+function HeaderPalpite() {
+    return(
+        <View style={css.headePalpite}>
+
+        </View>
+    )
+}
 
 export default function DetalhesJogosUser({ route }) {
     const { salvar_Palpite, loadingSave } = useContext(FirebaseContext);
@@ -61,20 +71,21 @@ export default function DetalhesJogosUser({ route }) {
     const [palpitesVerificacao, setPalpitesVerificacao] = useState([]);
 
     const sheetRef = useRef(null);
-    const snapPoints = useMemo(() => ["1%", "50%", "90%"], []);
+    const [index, setIndex] = useState(-1);
 
-    const handleSheetChange = useCallback((index) => {
+
+    const snapPoints = useMemo(() => ['95%'], []);
+
+    const handleSheetChange = useCallback((i) => {
+        setIndex(i);
     }, []);
 
     const handleSnapPress = (index, data) => {
-        sheetRef.current?.snapToIndex(index);
+        sheetRef.current.expand({duration: 500});
         setMatchSelected(data);
     }
 
-    BackHandler.addEventListener('hardwareBackPress', function () {
-        Alert.alert("Termine de palpitar", "Você só pode voltar após finalizar a sequência de palpites");
-        return true;
-    });
+    
 
     useEffect(() => {
         setPalpitesVerificacao(palpites);
@@ -95,30 +106,38 @@ export default function DetalhesJogosUser({ route }) {
     return (
         <SafeAreaView style={css.bg}>
             <View style={css.container}>
-                {loadingSave ?
-                    <Pb cor={'black'} /> :
-                    <FlatList
-                        data={listadejogos}
-                        renderItem={({ item }) =>
-                            <ItemCardJogosUser
-                                data={item}
-                                palpites={palpitesVerificacao}
-                                abre={handleSnapPress} />}
-                    />
-                }
-                {palpites.length == listadejogos.length ?
-                    <View style={css.margin}>
-                        <VariacaoBotao
-                            TituloBotao={'Confirmar sequência de palpites'}
-                            acao={confirmar}
+                <View>
+                    {
+                        loadingSave ?
+                        <Pb cor={'black'} /> :
+                        <FlatList
+                            data={listadejogos}
+                            ListHeaderComponent={() => <HeaderPalpite />}
+                            renderItem={({ item }) =>
+                                <ItemCardJogosUser
+                                    data={item}
+                                    palpites={palpitesVerificacao}
+                            abre={handleSnapPress} />}
                         />
-                    </View>
-                    : null}
+                    }
+                    {
+                        palpites.length == listadejogos.length ?
+                        <View style={css.margin}>
+                            <VariacaoBotao
+                                TituloBotao={'Confirmar sequência de palpites'}
+                                acao={confirmar}
+                            />
+                        </View>
+                        : null
+                    }
+                </View>
+                
 
                 <BottomSheet
                     enablePanDownToClose={true}
                     ref={sheetRef}
                     snapPoints={snapPoints}
+                    index={index}
                     onChange={handleSheetChange}
                 >
                     <ModalPalpites
@@ -127,6 +146,7 @@ export default function DetalhesJogosUser({ route }) {
                         refer={sheetRef}
                         armazenaPalpites={setPalpites}
                         PalpitesArmazenados={palpites}
+                        fechar={() => {if(sheetRef.current !== undefined) sheetRef.current.close({duration: 300})}}
                     />
                 </BottomSheet>
 

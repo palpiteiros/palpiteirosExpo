@@ -81,8 +81,7 @@ export default function SideMenu({ navigation }) {
                 marginLeft: -20,
             }
         }}
-            drawerContent={(props) => <CostumDrawer {...props} />}
-            initialRouteName="Home">
+            drawerContent={(props) => <CostumDrawer {...props} />}>
 
             <Drawer.Screen
                 name="Home"

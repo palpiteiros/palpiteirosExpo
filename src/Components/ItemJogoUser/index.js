@@ -2,7 +2,7 @@ import React from 'react';
 import { View, StyleSheet, Image, Text, Alert } from 'react-native';
 import { Avatar, Button, Card, Headline, Title } from 'react-native-paper';
 import { dateToYMD } from '../../Objects/Datas';
-import { colorAmarelo, colorCinza, colorVerde, colorVerdeEscuro, colorVermelho } from '../../Styles/Cores';
+import { colorAmarelo, colorBranco, colorCinza, colorVerde, colorVerdeEscuro, colorVermelho } from '../../Styles/Cores';
 import Botao from '../Botao';
 
 
@@ -13,10 +13,10 @@ const css = StyleSheet.create({
         marginTop: 10,
         marginLeft: 10,
         marginRight: 10,
-        borderRadius: 10,
+        borderRadius: 8,
         paddingTop: 12,
         paddingBottom: 12,
-        elevation: 2
+        backgroundColor: colorBranco
     },
     content: {
         flex: 1,
@@ -115,7 +115,7 @@ export default function ItemJogoUser({ data }) {
     }
 
     return (
-        <Card style={css.container}>
+        <View style={css.container}>
             <View style={css.row}>
 
                 <View style={css.content}>
@@ -140,6 +140,6 @@ export default function ItemJogoUser({ data }) {
                     </Text>
                 </View>
             </View>
-        </Card>
+        </View>
     );
 }

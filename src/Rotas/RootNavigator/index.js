@@ -43,6 +43,7 @@ export default function RootNavigator() {
     return (
       <NavigationContainer>
         <StatusBar  barStyle='light-content' />
+        
         {user ? ComponentStack : <AuthStack />}
       </NavigationContainer>
     );

@@ -7,7 +7,7 @@ import ItemJogoMasterAdm from '../../Components/ItemJogoMasterAdm';
 import ItemJogoUser from '../../Components/ItemJogoUser';
 import VariacaoBotao from '../../Components/VariacaoBotao';
 import { dateToYMD } from '../../Objects/Datas';
-import { colorCinza, colorVerdeClaro } from '../../Styles/Cores';
+import { colorBranco, colorCinza, colorVerdeClaro } from '../../Styles/Cores';
 
 const css = StyleSheet.create({
     container: {
@@ -59,7 +59,7 @@ const css = StyleSheet.create({
         flexDirection: 'row',
         paddingLeft: 5,
         paddingRight: 5,
-        paddingTop: 2
+        paddingTop: 8
     },
 
 
@@ -86,7 +86,12 @@ const css = StyleSheet.create({
     },
 
     botaoCont: { 
-        margin: 20
+        padding: 20,
+        elevation: 10
+     },
+
+     back: {
+        backgroundColor: colorBranco,
      }
 
 });
@@ -117,8 +122,8 @@ function HeaderDetalhes({ data , compraTicket}) {
                 {data.descricao}
             </Subheading>
             <View style={css.row}>
-                <ItemDataHora titulo={horaFechamento} descricao={'Fechamento'} />
-                <ItemDataHora titulo={horaResultado} descricao={'Resultado'} />
+                <ItemDataHora titulo={'Fechamento'} descricao={horaFechamento} />
+                <ItemDataHora titulo={'Resultado'} descricao={horaResultado} />
             </View>
 
             <Divider style={css.divider} />
@@ -142,15 +147,6 @@ function HeaderDetalhes({ data , compraTicket}) {
                 />
             </View>
 
-
-
-            <View style={css.botaoCont}>
-                <VariacaoBotao
-                    icone={'return-up-forward-outline'}
-                    TituloBotao={"R$ "+valorEntrada+' para palpitar nesta liga'}
-                    acao={compraTicket}
-                />
-            </View>
 
         </View>
     );
@@ -180,8 +176,15 @@ export default function DetalhesLigasUser({ route, navigation }) {
                 ListHeaderComponent={() => <HeaderDetalhes data={data} compraTicket={ComprarTicketPalpite}/>}
                 data={data.listaDeJogos}
                 showsVerticalScrollIndicator={false}
-                renderItem={({ item }) => <ItemJogoUser data={item} verificaAdm={false} />}
+                renderItem={({ item }) => <ItemJogoUser data={item} key={item.idPartida} verificaAdm={false} />}
             />
+            <View style={[css.botaoCont, css.back]}>
+                <VariacaoBotao
+                    icone={'return-up-forward-outline'}
+                    TituloBotao={'Palpitar agora'}
+                    acao={ComprarTicketPalpite}
+                />
+            </View>
         </View>
 
     );

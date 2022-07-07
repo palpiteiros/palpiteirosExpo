@@ -2,18 +2,17 @@ import React, { useCallback, useContext, useEffect, useLayoutEffect, useState } 
 import { View, Text, StatusBar, Image, StyleSheet, Dimensions, TouchableOpacity, Platform, ScrollView, Alert } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 import Modal from "react-native-modal";
-import { Button, Subheading, Title } from 'react-native-paper';
+import { Button, Subheading, Title, DefaultTheme } from 'react-native-paper';
 import { FirebaseContext } from '../../Contexts/FirebaseContext';
 import { UserContext } from '../../Rotas/UserProvider';
-import { colorVerdeClaro } from '../../Styles/Cores';
+import { colorCinza, colorVerdeClaro } from '../../Styles/Cores';
 import VariacaoBotao from '../VariacaoBotao';
 import Pb from '../../Components/Pb';
 import { novoPalpite } from '../../Objects/Palpite';
 
 const css = StyleSheet.create({
     containerModal: {
-        flex: 1,
-        height: '90%',
+        
         backgroundColor: 'white',
     },
 
@@ -146,8 +145,20 @@ const css = StyleSheet.create({
         textAlign: 'center',
         marginTop: 15,
         marginBottom: 15
+    },
+
+    btVoltar: {
+        margin: 8
     }
-})
+});
+
+const theme = {
+    ...DefaultTheme,
+    colors: {
+        primary: colorCinza,
+        
+    }
+};
 
 function TimePlacar({ id, escudo, tipo, placar, nome, clickSelecionaTime, resultado }) {
 
@@ -274,7 +285,8 @@ export default function ModalPalpites({
     data,
     refer,
     armazenaPalpites,
-    PalpitesArmazenados
+    PalpitesArmazenados,
+    fechar
 }) {
     const {
         idPartida,
@@ -469,11 +481,14 @@ export default function ModalPalpites({
                         <View style={{ margin: 20 }}>
                             {loadingSave ?
                                 <Pb cor={'black'} /> :
-                                <VariacaoBotao
-                                    TituloBotao={'Confirmar palpite'}
-                                    icone={'checkmark-circle-outline'}
-                                    acao={HandlerFazerPalpite}
-                                />
+                                <>
+                                    <VariacaoBotao
+                                        TituloBotao={'Confirmar palpite'}
+                                        icone={'checkmark-circle-outline'}
+                                        acao={HandlerFazerPalpite}
+                                    />
+                                    <Button onPress={fechar} style={css.btVoltar} theme={theme} mode='text'>Fechar</Button>
+                                </>
                             }
 
                         </View>

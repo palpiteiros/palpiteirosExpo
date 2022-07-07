@@ -75,22 +75,13 @@ function MostraCardPalpite({nave}) {
   );
 }
 
-export default function Home({ navigation }) {
+export default function Home({ navigation, route }) {
   const { user, setUser } = useContext(UserContext);
   const [ligas, setLigas] = useState([]);
   const [palpites, setPalpites] = useState([]);
   const { recuperar_todos_dados_colecao, dadosRecuperados, recupera_dados_perfil, loading, verifica_palpite_por_user, palpitesVerificacao } = useContext(FirebaseContext);
 
-  BackHandler.addEventListener('hardwareBackPress', function(){
-    Alert.alert("Confirmar saida","Você deseja sair do aplicativo ?", [{
-      text:"Não",
-      onPress: ()=> {}
-    }, {
-      text:"Sim",
-      onPress: ()=> {}
-    }]);
-    return true;
-  })
+  
 
   useEffect(() => {
     recuperar_todos_dados_colecao('Ligas');

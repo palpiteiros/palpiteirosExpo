@@ -14,19 +14,21 @@ const css = StyleSheet.create({
         flexDirection: 'row',
         paddingLeft: 15,
         paddingRight: 15,
-        borderRadius: 8
+        borderRadius: 8,
     },
 
     tituloBotao: {
         fontSize: 16,
-        color: 'black'
+        color: 'black',
+        fontWeight: '500'
     }
-})
+});
+
 
 export default function VariacaoBotao({ TituloBotao, acao, icone, data }) {
     return (
-        <TouchableOpacity style={css.botaostyle} onPress={() => acao(2, data)} >
-            <Text style={css.tituloBotao}>{TituloBotao}</Text>
+        <TouchableOpacity style={css.botaostyle} onPress={() => acao(0, data)} >
+            <Text style={css.tituloBotao}>{String(TituloBotao).toLocaleUpperCase()}</Text>
             <Ionicons name={icone} size={25} color={'black'}/>
         </TouchableOpacity>
     );

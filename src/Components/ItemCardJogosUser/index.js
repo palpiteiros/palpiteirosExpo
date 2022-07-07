@@ -11,7 +11,9 @@ import BottomSheet from '@gorhom/bottom-sheet';
 
 const css = StyleSheet.create({
     container: {
-        margin: 10,
+        marginLeft: 10,
+        marginRight: 10,
+        marginTop: 16,
         borderRadius: 5,
     },
     headerTxt: { fontSize: 15 },
@@ -222,7 +224,7 @@ export default function ItemCardJogosUser({
     }, [palpites])
 
     return (
-        <Card elevation={8} mode="elevated" style={css.container}>
+        <Card mode="elevated" style={css.container}>
             <View style={css.headerCard}>
                 <Title style={css.headerTxt}>Mandante</Title>
                 <Title style={css.headerTxt}>Visitante</Title>
