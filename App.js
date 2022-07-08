@@ -9,8 +9,8 @@ import 'react-native-gesture-handler';
 export default function App() {
   return (
     <FirebaseProvider>
-    <StatusBar/>
-    <Rotas />
+      <StatusBar/>
+      <Rotas />
     </FirebaseProvider>
   )
 }

@@ -156,7 +156,7 @@ export default function FirebaseProvider({ children }) {
         const queryS = onSnapshot(q, (querySnap) => {
             querySnap.forEach(doc => { 
                 setDadosUser(doc.data());
-                console.log(doc.data());
+                //console.log(doc.data());
             });
         });
     } 

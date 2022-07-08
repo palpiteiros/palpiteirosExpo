@@ -8,7 +8,7 @@ import { getAuth} from "firebase/auth";
 import AppStack from '../AppStack';
 import AuthStack from '../AuthStack';
 import { StatusBar } from 'expo-status-bar';
-import { colorAmarelo, colorVerde, colorVerdeEscuro } from '../../Styles/Cores';
+import { colorAmarelo, colorBranco, colorVerde, colorVerdeEscuro } from '../../Styles/Cores';
 import Pb from '../../Components/Pb';
 import AdmStack from '../AdmStack';
 
@@ -42,7 +42,7 @@ export default function RootNavigator() {
     
     return (
       <NavigationContainer>
-        <StatusBar  barStyle='light-content' />
+        <StatusBar  backgroundColor={colorBranco} barStyle="dark-content" />
         
         {user ? ComponentStack : <AuthStack />}
       </NavigationContainer>

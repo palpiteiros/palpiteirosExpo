@@ -1,4 +1,4 @@
-import { View, SafeAreaView, Image, StyleSheet, Share, Alert, BackHandler, TouchableOpacity, PixelRatio } from 'react-native';
+import { View, SafeAreaView, Image, StyleSheet, Share, Alert, TouchableOpacity, PixelRatio } from 'react-native';
 import React, { useContext, useEffect, useRef, useState, useCallback } from 'react';
 import { StackActions, useNavigation, NavigationAction } from '@react-navigation/native';
 import { FlatList } from 'react-native-gesture-handler';
@@ -140,10 +140,7 @@ export default function Recibo() {
     setPalpite(palpitesVerificacao);
   }, [palpitesVerificacao]);
 
-  BackHandler.addEventListener('hardwareBackPress', function () {
-    Alert.alert("Recibo do palpite", "Para voltar você precisa tocar no botão de 'Voltar ao inicio'");
-    return true;
-  })
+  
 
   const voltarAoInicio = () => {
     navigation.reset({

@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useCallback, useMemo, useRef, useContext } from 'react';
-import { SafeAreaView, Text, StyleSheet, View, FlatList, Dimensions, Alert, BackHandler } from 'react-native';
+import { SafeAreaView, Text, StyleSheet, View, FlatList, Dimensions, Alert } from 'react-native';
 import { Card, Button, Subheading, Paragraph, Title, } from 'react-native-paper';
 import ItemCardJogosUser from '../../Components/ItemCardJogosUser';
 import BottomSheet, { useBottomSheetTimingConfigs } from '@gorhom/bottom-sheet';
@@ -9,7 +9,8 @@ import VariacaoBotao from '../../Components/VariacaoBotao';
 import { FirebaseContext } from '../../Contexts/FirebaseContext';
 import { UserContext } from '../../Rotas/UserProvider';
 import Pb from '../../Components/Pb';
-import { StackActions, useNavigation } from '@react-navigation/native';
+import { StackActions } from '@react-navigation/native';
+
 const css = StyleSheet.create({
     bg: {
         flex: 1
@@ -44,7 +45,7 @@ const css = StyleSheet.create({
     },
 
     headePalpite: {
-        marginTop: 20
+        marginTop: 0
     }
 })
 
@@ -57,11 +58,10 @@ function HeaderPalpite() {
     )
 }
 
-export default function DetalhesJogosUser({ route }) {
+export default function DetalhesJogosUser({ route, navigation }) {
     const { salvar_Palpite, loadingSave } = useContext(FirebaseContext);
     const { user } = useContext(UserContext)
     const { dataLeagueCompleta } = route.params.data;
-    const navigation = useNavigation();
     var listadejogos = route.params.data.listaDeJogos;
     var ligaId = route.params.data.campeonatoId;
     let IdUser = user.uid;
@@ -113,6 +113,7 @@ export default function DetalhesJogosUser({ route }) {
                         <FlatList
                             data={listadejogos}
                             ListHeaderComponent={() => <HeaderPalpite />}
+                            keyExtractor={(item) => item.idPartida}
                             renderItem={({ item }) =>
                                 <ItemCardJogosUser
                                     data={item}

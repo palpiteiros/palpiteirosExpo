@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { View, Text, SafeAreaView, StyleSheet, FlatList, TouchableOpacity, Alert, BackHandler } from 'react-native';
+import { View, Text, SafeAreaView, StyleSheet, FlatList, TouchableOpacity, Alert } from 'react-native';
 import Botao from '../../Components/Botao';
 import ItemCardLigas from '../../Components/ItemCardLigas';
 import { FirebaseContext } from '../../Contexts/FirebaseContext';
@@ -96,7 +96,7 @@ export default function Home({ navigation, route }) {
   }, [dadosRecuperados, palpitesVerificacao]);
 
   const navegaParaDetalhes = (data) => {
-    navigation.navigate('DetalhesLigasUser', { data: data })
+    navigation.navigate('Detalhes Da Liga', { data: data })
   }
 
   return (

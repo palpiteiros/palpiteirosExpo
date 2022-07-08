@@ -219,7 +219,7 @@ export default function ItemCardJogosUser({
                 setPlacarMandante(item.golsMandante);
                 setPlacarVisitante(item.golsVisitante);
             }
-            console.log(item);
+            //console.log(item);
         })
     }, [palpites])
 
