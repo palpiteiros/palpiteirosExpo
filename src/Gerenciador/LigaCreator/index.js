@@ -44,6 +44,12 @@ export default function LigaCreator({ navigation }) {
     };
 
 
+    const setRodada = (round) => {
+        setLiga((prevState) => ({
+            ...prevState,
+            rodada: round
+        }));
+    };
  
 
     const avancar_com_lista_de_jogos = (lista) => {
@@ -81,7 +87,7 @@ export default function LigaCreator({ navigation }) {
         case 0:
             return <Step1 setId={definirCampeonato} avancar={avancarStep} />
         case 1:
-            return <Step2 id={liga.campeonatoId} setLista={avancar_com_lista_de_jogos} />
+            return <Step2 id={liga.campeonatoId} setLista={avancar_com_lista_de_jogos} setRound={setRodada} />
         case 2:
             return <Step3 onSucess={saveSucess} liga={liga} setLiga={setLiga} />
         default:

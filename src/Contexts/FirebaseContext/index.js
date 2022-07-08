@@ -109,6 +109,15 @@ export default function FirebaseProvider({ children }) {
         });
     };
 
+    async function update_matchs(id, list, listener) {
+        updateDoc(doc(db, 'Ligas', id), {
+            listaDeJogos: list
+        }).then(() => {
+            return listener({sucess: true});
+        }).catch(error => {
+            return listener({sucess: false});
+        });
+    }
 
     //Recuperar todos os documentos em uma coleção
     function recuperar_todos_dados_colecao(tituloDocumento) {
@@ -166,6 +175,7 @@ export default function FirebaseProvider({ children }) {
         <FirebaseContext.Provider value={{
             salvar_dados,
             salvar_Palpite,
+            update_matchs,
             recuperar_todos_dados_colecao,
             verifica_palpite_por_user,
             recupera_dados_perfil,

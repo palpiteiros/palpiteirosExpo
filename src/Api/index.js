@@ -111,7 +111,39 @@ export const getMatchsRound = (season, idLeague, round, listener) => {
     };
 
     axios(config).then(({data}) => {
-        //console.log(data.response);
+        let lista = extrairLista(data.response);
+        return listener(lista);
+    }).catch(error => {
+        console.log(error);
+    });
+}
+
+export const getMatchsResult = (season, idLeague, round, listener) => {
+    let objParamns = {};
+    if(season !== undefined && season !== null) {
+        Object.assign(objParamns, {season: season});
+    } 
+
+    if(idLeague != undefined && idLeague !== null) {
+        Object.assign(objParamns, {league: idLeague});
+    }
+    
+    if(round != undefined && round !== null) {
+        Object.assign(objParamns, {round: round});
+    }
+
+    let leagueEndpoint = endpoint + '/fixtures';
+    let config = {
+        method: 'get',
+        url: leagueEndpoint,
+        headers: {
+            'x-apisports-key': apiKey,
+            'x-apisports-host': 'v3.football.api-sports.io',
+        },
+        params: objParamns
+    };
+
+    axios(config).then(({data}) => {
         let lista = extrairLista(data.response);
         return listener(lista);
     }).catch(error => {

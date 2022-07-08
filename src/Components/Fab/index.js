@@ -1,16 +1,19 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { FAB } from 'react-native-paper';
-import { colorVerde } from '../../Styles/Cores';
+import { colorCinzaClaro, colorVerde } from '../../Styles/Cores';
+import { colorVerdePadrao } from '../../Styles/Paleta/Paleta_cores';
 
 
 
-export default function Fab({ icone, acao }) {
+export default function Fab({ icone, acao, title, enabled, loading}) {
     return (
         <FAB
-            style={css.fab}
+            style={enabled !== false ? css.fab : css.fabOff}
             icon={icone}
+            loading={loading}
             onPress={acao}
+            label={title}
         />
     );
 }
@@ -20,11 +23,22 @@ export default function Fab({ icone, acao }) {
 const css = StyleSheet.create({
 
     fab: {
-
-        position: 'absolute',
-        margin: 15,
+        marginTop: 10,
+        marginBottom: 10,
+        marginRight: 20,
+        marginLeft: 20,
         right: 0,
-        bottom: 13,
-        backgroundColor: colorVerde
+        fontSize: 20,
+        fontWeight: '800',
+        backgroundColor: colorVerdePadrao
+    },
+
+    fabOff: {
+        marginTop: 10,
+        marginBottom: 10,
+        marginRight: 20,
+        marginLeft: 20,
+        right: 0,
+        backgroundColor: colorCinzaClaro
     },
 })

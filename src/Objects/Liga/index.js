@@ -15,6 +15,7 @@ let Liga = {
     valorEntrada: '',//ideal ser um numero pra facilitar fazer calculos
     valorPremio: '',//ideal ser um numero pra facilitar fazer calculos
     campeonatoId: '',//id do campeonato retornado pelo api
+    rodada: '',
     //v--- serao atualizados no fechamento da rodada
     topClubes: [], //clubes teve mais palpite de vitoria
     topJogadores: [], //jogadores mais palpitados a marcar gol

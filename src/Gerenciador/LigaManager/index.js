@@ -120,6 +120,7 @@ export default function LigaManager({ navigation }) {
 
 
       <Fab
+        title={'Nova Liga'}
         icone={'plus'}
         acao={() => navigation.navigate('Liga creator')}
       />

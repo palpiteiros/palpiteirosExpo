@@ -49,7 +49,8 @@ let Usuario = {
     pontos: 0,
     media: 0,
     cash: 0,
-    cripto: 0
+    cripto: 0,
+    numPalpites: 0
 };
 
 //tipos de restricoes que o app adm pode da a um user
@@ -82,7 +83,8 @@ export const novoUsuario = (uid, nome, phone, email) => {
         pontos: 0,
         media: 0,
         cash: 0,
-        cripto: 0
+        cripto: 0,
+        numPalpites: 0
     }
 
     return user;

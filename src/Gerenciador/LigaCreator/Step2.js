@@ -27,7 +27,7 @@ const css = StyleSheet.create({
 });
 
 
-export default function Step2({ id, avancar, setLista }) {
+export default function Step2({ id, avancar, setLista, setRound }) {
 
     const [jogos, setJogos] = useState(undefined);
     const [selecionados, setSelecionados] = useState([]);
@@ -36,13 +36,15 @@ export default function Step2({ id, avancar, setLista }) {
     useEffect(() => {
         getRoundCurrent('2022', id, round => {
 
+            setRound(round);
+
             getMatchsRound('2022', id, round, lista => {
                 if(lista.length > 0) {
                     setJogos(lista);
                 }
             });
 
-        })
+        });
 
     }, []);
 

@@ -141,8 +141,6 @@ export default function ItemJogoMasterAdm({ data }) {
                     </Text>
                 </View>
             </View>
-                <Button onPress={() => Alert.alert('Abrir JogoMasterEditor', 'Fazer requisiçao da api apos o fim da partida para atualizar os detalhes de cada jogo e apurar os pontos de todos os palpites que incluem esse jogo')} style={css.botao} color={colorVerde} mode='contained'>Consultar Detalhes</Button>
-              
         </Card>
     );
 }
