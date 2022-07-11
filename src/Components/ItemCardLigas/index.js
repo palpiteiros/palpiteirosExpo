@@ -3,7 +3,7 @@ import { SafeAreaView, View, StyleSheet, FlatList, Image } from 'react-native';
 import BotaoVoltarAoInicio from '../BotaoVoltar';
 import Fab from '../Fab';
 import { Title, Card, Avatar, Subheading, Text, Button } from 'react-native-paper';
-import { colorVerde } from '../../Styles/Cores';
+import { colorCinzaClaro, colorGrafite, colorVerde } from '../../Styles/Cores';
 import { format, formatDistance, formatRelative, subDays } from 'date-fns'
 import { dateToYMD } from '../../Objects/Datas';
 import VariacaoBotao from '../VariacaoBotao';
@@ -72,6 +72,10 @@ const css = StyleSheet.create({
         height: 190,
         borderTopLeftRadius: 12,
         borderTopRightRadius: 12
+    },
+
+    bt: {
+        backgroundColor: colorGrafite
     }
 
 })
@@ -129,7 +133,8 @@ export default function ItemCardLigas({ data, abreDetalhes }) {
             <View style={css.footer}>
                 <VariacaoBotao
                     acao={() => abreDetalhes(data)}
-                    TituloBotao={'Ver mais'}
+                    TituloBotao={'Ver detalhes'}
+                    style={css.bt}
                     icone={'return-up-forward-outline'}
                 />
             </View>

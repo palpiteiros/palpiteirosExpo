@@ -115,7 +115,7 @@ export default function ItemCardJogos({ data, click, jogosSelecionados }) {
 
     return (
 
-        <Card elevation={8} onPress={() => click(data)} mode="elevated" style={css.container}>
+        <Card elevation={2} onPress={() => click(data)} mode="elevated" style={css.container}>
 
             <View style={css.row}>
 

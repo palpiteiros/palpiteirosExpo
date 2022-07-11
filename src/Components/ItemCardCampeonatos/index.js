@@ -3,8 +3,9 @@ import { SafeAreaView, View, StyleSheet, FlatList, Image } from 'react-native';
 import BotaoVoltarAoInicio from '../BotaoVoltar';
 import Fab from '../Fab';
 import { Title, Card, Avatar, Subheading, Text , Button } from 'react-native-paper';
-import { colorVerde } from '../../Styles/Cores';
+import { colorCinzaClaro, colorGrafite, colorVerde, colorVerdeClaro } from '../../Styles/Cores';
 import { colorVerdePadrao } from '../../Styles/Paleta/Paleta_cores';
+import VariacaoBotao from '../VariacaoBotao';
 
 
 const css = StyleSheet.create({
@@ -73,6 +74,9 @@ const css = StyleSheet.create({
             paddingLeft: 25,
             maxWidth: 250,
             flex: 1
+        },
+        bt:{
+            backgroundColor: colorGrafite
         }
 
 });
@@ -86,7 +90,7 @@ export default function ItemCardCampeonatos({ data, click }) {
     const temporadas = seasons.length > 1 ? `${seasons.length} Temporadas` : `${seasons[0].year}`;
 
     return (
-        <Card  elevation={8}  style={css.container}>
+        <Card  elevation={2}  style={css.container}>
 
             <View style={css.heardCard}>
                 <Image style={css.image}  size={70} source={{ uri: league.logo }} />
@@ -123,7 +127,12 @@ export default function ItemCardCampeonatos({ data, click }) {
 
 
             <View style={css.footer}>
-                <Button onPress={() => click(league.id)} color={colorVerdePadrao} mode='contained'>Selecionar campeonato</Button>
+                <VariacaoBotao
+                    TituloBotao={'Selecionar campeonato'}
+                    acao={() => click(league.id)}
+                    icone={'return-up-forward-outline'}
+                    style={css.bt}
+                />
             </View>
 
         </Card>

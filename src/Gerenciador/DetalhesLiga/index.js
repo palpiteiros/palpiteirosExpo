@@ -5,10 +5,11 @@ import { getMatchsResult, getMatchsRound } from '../../Api';
 import Fab from '../../Components/Fab';
 import ItemDataHora from '../../Components/ItemDataHora';
 import ItemJogoMasterAdm from '../../Components/ItemJogoMasterAdm';
+import VariacaoBotao from '../../Components/VariacaoBotao';
 import { FirebaseContext } from '../../Contexts/FirebaseContext';
 import { dateToYMD } from '../../Objects/Datas';
 import { newMatch } from '../../Objects/Liga';
-import { colorAmarelo, colorCinza, colorVermelho } from '../../Styles/Cores';
+import { colorAmarelo, colorBranco, colorCinza, colorGrafite, colorVermelho, colorVermelhoClaro } from '../../Styles/Cores';
 
 const css = StyleSheet.create({
     container: {
@@ -62,12 +63,21 @@ const css = StyleSheet.create({
         marginBottom: 16
     },
     footer: {
+        marginTop: 20,
+        marginBottom: 20
     },
     btAmarelo: {
         backgroundColor: colorAmarelo
     },
     btVermelho: {
-        backgroundColor: colorVermelho
+        backgroundColor: colorVermelhoClaro
+    },
+    bt: {
+        marginLeft: 20,
+        marginRight: 20,
+        marginTop: 6,
+        marginBottom: 10,
+        backgroundColor: colorBranco
     }
 });
 
@@ -145,8 +155,10 @@ function HeaderDetalhes({ data }) {
 function FooterLigaUpdate({data, navigation}) {
 
     const [pbResult, setPbResult] = useState(false);
+    const [pbFechar, setPbFechar] = useState(false);
 
-    const { update_matchs, fechar_liga } = useContext(FirebaseContext);
+
+    const { update_matchs, fechar_liga, abrir_liga } = useContext(FirebaseContext);
 
     const atualizarResultado = (persiste) => {
 
@@ -209,28 +221,68 @@ function FooterLigaUpdate({data, navigation}) {
             Alert.alert('Liga Fechada', 'Essa Liga ja está fechada para palpites');
             return;
         }
-        if(pbResult) return;
-        setPbResult(true);
+        if(pbFechar) return;
+        setPbFechar(true);
         fechar_liga(data.id, ({sucess}) => {
-            setPbResult(false);
+            setPbFechar(false);
             if(sucess) navigation.goBack();
         });
     };
 
-    if(data.status === 1) {
-        //liga aberta
-        return <Fab loading={pbResult} acao={fecharLiga} title={'Fechar Liga'} style={css.btVermelho} />;
-    }
-
+    const abrirLiga = () => {
+        if(data.status === 1) {
+            Alert.alert('Liga Aberta', 'Essa Liga ja está aberta para palpites');
+            return;
+        }
+        if(pbFechar) return;
+        setPbFechar(true);
+        abrir_liga(data.id, ({sucess}) => {
+            setPbFechar(false);
+            if(sucess) navigation.goBack();
+        });
+    };
+    
     const isUpdate = estaAtualizada(data.listaDeJogos);
 
     return (
-        <View style={css.row}>
-            <View style={{flex: 1}}>
-                <Fab enabled={isUpdate} title={'Contabilizar'} />
+        <View style={css.footer}>
+            
+            <View>
+                <VariacaoBotao
+                    TituloBotao={'Contabilizar'}
+                    acao={() => {}}
+                    icone={'stats-chart-outline'}
+                    style={css.bt}
+                />
             </View>
-            <View style={{flex: 1}}>
-                <Fab acao={atualizarResultado} loading={pbResult} enabled={!estaAtualizada(data.listaDeJogos)} title={'Atualizar'} />
+            <View>
+                <VariacaoBotao
+                    TituloBotao={'Atualizar'}
+                    acao={atualizarResultado}
+                    icone={'repeat-outline'}
+                    style={[css.bt]}
+                    loading={pbResult}
+                />
+            </View>
+            <View>
+                {
+                    data.status === 2 ?
+                    <VariacaoBotao
+                        TituloBotao={'Abrir Liga'}
+                        acao={abrirLiga}
+                        icone={'lock-open-outline'}
+                        style={[css.bt]}
+                        loading={pbFechar}
+                    />
+                    :
+                    <VariacaoBotao
+                        TituloBotao={'Fechar Liga'}
+                        acao={fecharLiga}
+                        icone={'close-circle-outline'}
+                        style={[css.bt, css.btVermelho]}
+                        loading={pbFechar}
+                    />
+                }
             </View>
         </View>
     )
@@ -256,12 +308,12 @@ export default function DetalhesLiga({ route, navigation }) {
             <FlatList
                 ListHeaderComponent={() => <HeaderDetalhes data={data} />}
                 data={data.listaDeJogos}
-                ListFooterComponent={() => <View style={{height: 100}} />}
+                ListFooterComponent={() => <FooterLigaUpdate navigation={navigation} data={data} />}
                 showsVerticalScrollIndicator={false}
                 keyExtractor={(item) => item.idPartida}
                 renderItem={({item}) => <ItemJogoMasterAdm data={item} />}
             />
-            <FooterLigaUpdate navigation={navigation} data={data} />
+            
         </View>
         
     );

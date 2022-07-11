@@ -6,6 +6,9 @@ import { Title } from 'react-native-paper';
 import ItemCardLigas from '../../Components/ItemCardLigas';
 import { FirebaseContext } from '../../Contexts/FirebaseContext';
 import Pb from '../../Components/Pb';
+import VariacaoBotao from '../../Components/VariacaoBotao';
+import { colorBranco, colorCinzaClaro, colorPreto, colorVerde, colorVerdeEscuro } from '../../Styles/Cores';
+import { colorVerdePadrao } from '../../Styles/Paleta/Paleta_cores';
 
 
 
@@ -34,7 +37,23 @@ const css = StyleSheet.create({
 
   footer: {
     height: 100
-}
+  },
+
+  bt: {
+    backgroundColor: colorVerdePadrao
+  },
+
+  backBt: {
+    position: 'absolute',
+    elevation: 12,
+    backgroundColor: colorBranco,
+    width: '100%',
+    paddingTop: 20,
+    paddingBottom: 20,
+    paddingLeft: 20,
+    paddingRight: 20,
+    bottom: 0
+  }
 });
 
 
@@ -102,7 +121,7 @@ export default function LigaManager({ navigation }) {
       <View style={css.body}>
 
         {loading ?
-          <Pb cor={"#000000"} />
+          <Pb cor={colorPreto} />
           :
           <FlatList
             data={ligas}
@@ -118,12 +137,14 @@ export default function LigaManager({ navigation }) {
       </View>
 
 
-
-      <Fab
-        title={'Nova Liga'}
-        icone={'plus'}
-        acao={() => navigation.navigate('Liga creator')}
-      />
+      <View style={css.backBt}>
+        <VariacaoBotao
+          style={css.bt}
+          TituloBotao={'Criar Nova Liga'}
+          icone={'add-circle-outline'}
+          acao={() => navigation.navigate('Liga creator')}
+        />
+      </View>
 
 
 

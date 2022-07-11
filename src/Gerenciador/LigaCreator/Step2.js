@@ -6,7 +6,8 @@ import Fab from '../../Components/Fab';
 import Pb from '../../Components/Pb';
 import { getInfoCampeonato, getJogosDoCampeonato, getMatchsRound, getRoundCurrent } from '../../Api';
 import BarTop from '../../Components/BarTop';
-import { colorVerdeClaro } from '../../Styles/Cores';
+import { colorBranco, colorVerdeClaro } from '../../Styles/Cores';
+import VariacaoBotao from '../../Components/VariacaoBotao';
 
 
 
@@ -23,6 +24,20 @@ const css = StyleSheet.create({
     },
     footer: {
         height: 100
+    },
+    bt: {
+        
+    },
+    backBt: {
+        position: 'absolute',
+        elevation: 12,
+        backgroundColor: colorBranco,
+        width: '100%',
+        paddingTop: 20,
+        paddingBottom: 20,
+        paddingLeft: 20,
+        paddingRight: 20,
+        bottom: 0
     }
 });
 
@@ -151,11 +166,14 @@ export default function Step2({ id, avancar, setLista, setRound }) {
 
 
             {selecionados.length != 0 ?
-                <Fab
-                    title={'Continuar'}
-                    icone={'arrow-right'}
-                    acao={() => proxTela()}
-                />
+                <View style={css.backBt}>
+                    <VariacaoBotao
+                        TituloBotao={'Continuar'}
+                        acao={() => proxTela()}
+                        icone={'return-up-forward-outline'}
+                        style={css.bt}
+                    />
+                </View>
                 : null}
 
 

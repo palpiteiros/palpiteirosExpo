@@ -134,11 +134,21 @@ export default function FirebaseProvider({ children }) {
         });
     };
 
+    async function abrir_liga(id, listener) {
+        updateDoc(doc(db, 'Ligas', id), {
+            status: 1
+        }).then(() => {
+            return listener({sucess: true});
+        }).catch(error => {
+            return listener({sucess: false});
+        });
+    };
+
     //Recuperar todos os documentos em uma coleção
     function recuperar_todos_dados_colecao(tituloDocumento) {
         setLoading(true);
 
-        const q = query(collection(db, tituloDocumento), orderBy('horaCriacao', 'asc'));
+        const q = query(collection(db, tituloDocumento), orderBy('horaCriacao', 'desc'));
         const querySnapshot = onSnapshot(q, (querySnap) => {
             const list = ([]);
             querySnap.forEach(doc => {
@@ -192,6 +202,7 @@ export default function FirebaseProvider({ children }) {
             salvar_Palpite,
             update_matchs,
             fechar_liga,
+            abrir_liga,
             recuperar_todos_dados_colecao,
             verifica_palpite_por_user,
             recupera_dados_perfil,

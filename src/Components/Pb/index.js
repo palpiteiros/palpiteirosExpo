@@ -11,7 +11,7 @@ export default function Pb({cor}) {
     }
 
     return (
-        <View style={{ flex: 1, marginTop: 40 }}>
+        <View style={{ flex: 1, minHeight: 48 }}>
           <ActivityIndicator color={color} size='large' />
         </View>
     );
