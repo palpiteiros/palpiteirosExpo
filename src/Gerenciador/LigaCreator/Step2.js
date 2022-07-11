@@ -152,6 +152,7 @@ export default function Step2({ id, avancar, setLista, setRound }) {
 
             {selecionados.length != 0 ?
                 <Fab
+                    title={'Continuar'}
                     icone={'arrow-right'}
                     acao={() => proxTela()}
                 />

@@ -10,6 +10,7 @@ import { FirebaseContext } from '../../Contexts/FirebaseContext';
 import { UserContext } from '../../Rotas/UserProvider';
 import Pb from '../../Components/Pb';
 import { StackActions } from '@react-navigation/native';
+import Fab from '../../Components/Fab';
 
 const css = StyleSheet.create({
     bg: {
@@ -17,7 +18,7 @@ const css = StyleSheet.create({
     },
 
     margin: {
-        margin: 15
+        height: 100
     },
 
     headerTitle: {
@@ -58,12 +59,31 @@ function HeaderPalpite() {
     )
 }
 
+function FooterComponent({confirmar, completo, loading}) {
+
+    if(!completo) return <View style={{height: 40}} />;
+
+    return(
+        <View>
+            <View style={css.margin}>
+                <Fab
+                    loading={loading}
+                    icone={'check'}
+                    title={'Confirmar palpites'}
+                    acao={confirmar}
+                />
+            </View>
+        </View>
+    )
+}
+
 export default function DetalhesJogosUser({ route, navigation }) {
     const { salvar_Palpite, loadingSave } = useContext(FirebaseContext);
     const { user } = useContext(UserContext)
     const { dataLeagueCompleta } = route.params.data;
-    var listadejogos = route.params.data.listaDeJogos;
-    var ligaId = route.params.data.campeonatoId;
+    let listadejogos = route.params.data.listaDeJogos;
+    let ligaId = route.params.data.id;
+    let campeonatoId = route.params.data.campeonatoId;
     let IdUser = user.uid;
 
     const [matchSelected, setMatchSelected] = useState([]);
@@ -85,23 +105,27 @@ export default function DetalhesJogosUser({ route, navigation }) {
         setMatchSelected(data);
     }
 
-    
-
     useEffect(() => {
         setPalpitesVerificacao(palpites);
     }, [palpites]);
 
+
     const confirmar = () => {
-        salvar_Palpite(palpites, IdUser, ligaId, ({ sucess, text }) => {
+        if(loadingSave) return;
+        
+        salvar_Palpite(palpites, IdUser, ligaId, campeonatoId, ({ sucess, text }) => {
             if (sucess) {
                 setPalpites([]);
                 Alert.alert("Palpites confirmados", "Seus palpites foram realizados com sucesso!");
-                navigation.dispatch(StackActions.replace('Recibo'));
+                navigation.navigate('Recibo');
             } else {
                 Alert.alert("Erro ao fazer palpite", text.message);
             }
         })
-    }
+    };
+
+    console.log('Faltam: ' + (listadejogos.length - palpites.length));
+
 
     return (
         <SafeAreaView style={css.bg}>
@@ -114,6 +138,7 @@ export default function DetalhesJogosUser({ route, navigation }) {
                             data={listadejogos}
                             ListHeaderComponent={() => <HeaderPalpite />}
                             keyExtractor={(item) => item.idPartida}
+                            ListFooterComponent={() => <FooterComponent confirmar={confirmar} loading={loadingSave} completo={palpites.length === listadejogos.length} />}
                             renderItem={({ item }) =>
                                 <ItemCardJogosUser
                                     data={item}
@@ -121,16 +146,7 @@ export default function DetalhesJogosUser({ route, navigation }) {
                             abre={handleSnapPress} />}
                         />
                     }
-                    {
-                        palpites.length == listadejogos.length ?
-                        <View style={css.margin}>
-                            <VariacaoBotao
-                                TituloBotao={'Confirmar sequência de palpites'}
-                                acao={confirmar}
-                            />
-                        </View>
-                        : null
-                    }
+                    
                 </View>
                 
 

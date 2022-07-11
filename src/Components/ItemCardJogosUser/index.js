@@ -213,7 +213,7 @@ export default function ItemCardJogosUser({
     }
     useEffect(() => {
         palpites.map((item) => {
-            if (item.IdJogo == data.idPartida) {
+            if (item.idJogo == data.idPartida) {
                 setVerificaSeTem(true);
                 setResultado(item.resultado.tipo);
                 setPlacarMandante(item.golsMandante);

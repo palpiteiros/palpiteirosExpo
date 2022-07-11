@@ -4,6 +4,7 @@ import BotaoVoltarAoInicio from '../BotaoVoltar';
 import Fab from '../Fab';
 import { Title, Card, Avatar, Subheading, Text , Button } from 'react-native-paper';
 import { colorVerde } from '../../Styles/Cores';
+import { colorVerdePadrao } from '../../Styles/Paleta/Paleta_cores';
 
 
 const css = StyleSheet.create({
@@ -122,7 +123,7 @@ export default function ItemCardCampeonatos({ data, click }) {
 
 
             <View style={css.footer}>
-                <Button onPress={() => click(league.id)} color={colorVerde} mode='contained'>Selecionar campeonato</Button>
+                <Button onPress={() => click(league.id)} color={colorVerdePadrao} mode='contained'>Selecionar campeonato</Button>
             </View>
 
         </Card>

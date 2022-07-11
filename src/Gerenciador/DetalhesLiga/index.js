@@ -8,7 +8,7 @@ import ItemJogoMasterAdm from '../../Components/ItemJogoMasterAdm';
 import { FirebaseContext } from '../../Contexts/FirebaseContext';
 import { dateToYMD } from '../../Objects/Datas';
 import { newMatch } from '../../Objects/Liga';
-import { colorCinza } from '../../Styles/Cores';
+import { colorAmarelo, colorCinza, colorVermelho } from '../../Styles/Cores';
 
 const css = StyleSheet.create({
     container: {
@@ -38,7 +38,8 @@ const css = StyleSheet.create({
         marginLeft: 16,
     },
     row: {
-        flexDirection: 'row'
+        flexDirection: 'row',
+        flex: 1
     },
     divider: {
         marginTop: 20,
@@ -61,8 +62,12 @@ const css = StyleSheet.create({
         marginBottom: 16
     },
     footer: {
-        paddingBottom: 20,
-        paddingTop: 20
+    },
+    btAmarelo: {
+        backgroundColor: colorAmarelo
+    },
+    btVermelho: {
+        backgroundColor: colorVermelho
     }
 });
 
@@ -141,12 +146,31 @@ function FooterLigaUpdate({data, navigation}) {
 
     const [pbResult, setPbResult] = useState(false);
 
-    const { update_matchs } = useContext(FirebaseContext);
+    const { update_matchs, fechar_liga } = useContext(FirebaseContext);
 
-    const atualizarResultado = () => {
+    const atualizarResultado = (persiste) => {
+
+        let isAtualizado = estaAtualizada(data.listaDeJogos);
+
+        if (persiste === true) {
+            isAtualizado = false;
+        }
+
+        if(isAtualizado) {
+            Alert.alert('Atualização completa', 'As partidas dessa liga ja foram atualizadas. Deseja Atualizar novamente ?', [
+                {
+                text: "Não",
+                onPress: () => {},
+                style: "cancel"
+                },
+                { text: "Sim", onPress: () => atualizarResultado(true) }
+            ]);
+            return;
+        }
+
         if(pbResult) return;
         setPbResult(true);
-        getMatchsResult('2022', data.campeonatoId, 'Regular Season - 14', lista => {
+        getMatchsResult('2022', data.campeonatoId, data.rodada, lista => {
             
             if(lista.length > 0) {
                 console.log(lista);
@@ -180,13 +204,43 @@ function FooterLigaUpdate({data, navigation}) {
         });
     };
 
+    const fecharLiga = () => {
+        if(data.status === 2) {
+            Alert.alert('Liga Fechada', 'Essa Liga ja está fechada para palpites');
+            return;
+        }
+        if(pbResult) return;
+        setPbResult(true);
+        fechar_liga(data.id, ({sucess}) => {
+            setPbResult(false);
+            if(sucess) navigation.goBack();
+        });
+    };
 
-    return(
-        <View style={css.footer}>
-            <Fab acao={atualizarResultado} loading={pbResult} enabled={!estaAtualizada(data.listaDeJogos)} title={'Atualizar Resultado'} />
-            <Fab enabled={estaAtualizada(data.listaDeJogos)} title={'Contabilizar Pontos'} />
+    if(data.status === 1) {
+        //liga aberta
+        return <Fab loading={pbResult} acao={fecharLiga} title={'Fechar Liga'} style={css.btVermelho} />;
+    }
+
+    const isUpdate = estaAtualizada(data.listaDeJogos);
+
+    return (
+        <View style={css.row}>
+            <View style={{flex: 1}}>
+                <Fab enabled={isUpdate} title={'Contabilizar'} />
+            </View>
+            <View style={{flex: 1}}>
+                <Fab acao={atualizarResultado} loading={pbResult} enabled={!estaAtualizada(data.listaDeJogos)} title={'Atualizar'} />
+            </View>
         </View>
-    );
+    )
+
+    if(isUpdate) {
+        return <Fab enabled={isUpdate} title={'Contabilizar Pontos'} />;
+    } else {
+        return <Fab acao={atualizarResultado} loading={pbResult} enabled={!estaAtualizada(data.listaDeJogos)} title={'Atualizar Resultado'} />;
+    }
+
 }
 
 export default function DetalhesLiga({ route, navigation }) {
@@ -201,11 +255,13 @@ export default function DetalhesLiga({ route, navigation }) {
         <View style={css.container}>
             <FlatList
                 ListHeaderComponent={() => <HeaderDetalhes data={data} />}
-                ListFooterComponent={() => <FooterLigaUpdate navigation={navigation} data={data} />}
                 data={data.listaDeJogos}
+                ListFooterComponent={() => <View style={{height: 100}} />}
                 showsVerticalScrollIndicator={false}
+                keyExtractor={(item) => item.idPartida}
                 renderItem={({item}) => <ItemJogoMasterAdm data={item} />}
             />
+            <FooterLigaUpdate navigation={navigation} data={data} />
         </View>
         
     );

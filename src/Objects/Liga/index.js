@@ -1,3 +1,9 @@
+const status_liga = [
+    {id: 1, name: 'Aberto'},
+    {id: 2, name: 'Fechado'},
+    {id: 3, name: 'Concluido'},
+];
+
 let Liga = {
     id: '',
     horaCriacao: 0,//é o timestamp do date no momento atual da criacao

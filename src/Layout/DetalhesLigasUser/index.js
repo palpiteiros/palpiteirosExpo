@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity, Alert, FlatList } from 'react-native';
-import { Divider, Headline, List, Subheading } from 'react-native-paper';
+import { Divider, Headline, Title, Subheading } from 'react-native-paper';
 import Botao from '../../Components/Botao';
 import ItemDataHora from '../../Components/ItemDataHora';
 import ItemJogoMasterAdm from '../../Components/ItemJogoMasterAdm';
@@ -45,7 +45,7 @@ const css = StyleSheet.create({
     },
     btView: {
         margin: 5,
-        height: 60,
+        height: 80,
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
@@ -55,7 +55,7 @@ const css = StyleSheet.create({
 
     containerButtons: {
         backgroundColor: '#f3f3f3',
-        height: 75,
+        height: 95,
         flexDirection: 'row',
         paddingLeft: 5,
         paddingRight: 5,
@@ -99,7 +99,7 @@ const css = StyleSheet.create({
 function ButtonView({ title, description, click }) {
     return (
         <View style={css.btView} >
-            <Text>{title}</Text>
+            <Title>{title}</Title>
             <Text>{description}</Text>
         </View>
     )
@@ -140,10 +140,19 @@ function HeaderDetalhes({ data , compraTicket}) {
                     description={'Premiação'}
                 />
 
+                
+            </View>
+
+            <View style={css.containerButtons}>
+
+                <ButtonView
+                    title={'01'}
+                    description={'Meus Palpites'}
+                />
 
                 <ButtonView
                     title={'500'}
-                    description={'Palpites'}
+                    description={'Palpites Totais'}
                 />
             </View>
 
@@ -165,7 +174,7 @@ export default function DetalhesLigasUser({ route, navigation }) {
         listaDeJogos: data.listaDeJogos
     }
     const ComprarTicketPalpite = () => { 
-        navigation.navigate('Jogos Da Liga', {data: dataLiga, dataLeagueCompleta:data})
+        navigation.navigate('Jogos Da Liga', {data: data, dataLeagueCompleta:data})
     } ;
 
     

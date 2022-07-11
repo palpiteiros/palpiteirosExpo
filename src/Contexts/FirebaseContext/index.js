@@ -77,7 +77,7 @@ export default function FirebaseProvider({ children }) {
     };
 
     //Salva um novo palpite no firebase
-    async function salvar_Palpite(documento, id, idLiga, listener) {
+    async function salvar_Palpite(documento, id, idLiga, idCampeonato, listener) {
         setLoadingSave(true);
 
         const refPalpite = doc(collection(db, 'Palpites'));
@@ -88,16 +88,21 @@ export default function FirebaseProvider({ children }) {
 
 
         let bodyPalpite = {
-            IdPalpite: idRefPalpite,
-            IdUser: id,
-            Idliga: idLiga,
-            horaInicio: null,
-            HoraConclusao: null,
-            HoraCriacaoPalpiteFormat: format(new Date(), ['dd/MM/yyyy'+' - '+'HH:mm']),
-            HoraCriacaoPalpite: Date.now(),
-            Partidas: documento,
-            status: 0
-        }
+            idPalpite: idRefPalpite,
+            idUser: id,
+            idLiga: idLiga,
+            idCampeonato: idCampeonato,
+            horaResultado: 0,
+            horaCriacaoPalpiteFormat: format(new Date(), ['dd/MM/yyyy'+' - '+'HH:mm']),
+            horaCriacaoPalpite: Date.now(),
+            partidas: documento,
+            status: 0,
+            ranking: {
+                pontos: 0,
+                media: 0,
+                colocacao: 0
+            }
+        };
 
         await setDoc(refPalpite, bodyPalpite).then(() => {
             setLoadingSave(false);
@@ -118,6 +123,16 @@ export default function FirebaseProvider({ children }) {
             return listener({sucess: false});
         });
     }
+
+    async function fechar_liga(id, listener) {
+        updateDoc(doc(db, 'Ligas', id), {
+            status: 2
+        }).then(() => {
+            return listener({sucess: true});
+        }).catch(error => {
+            return listener({sucess: false});
+        });
+    };
 
     //Recuperar todos os documentos em uma coleção
     function recuperar_todos_dados_colecao(tituloDocumento) {
@@ -176,6 +191,7 @@ export default function FirebaseProvider({ children }) {
             salvar_dados,
             salvar_Palpite,
             update_matchs,
+            fechar_liga,
             recuperar_todos_dados_colecao,
             verifica_palpite_por_user,
             recupera_dados_perfil,

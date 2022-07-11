@@ -14,13 +14,12 @@ const css = StyleSheet.create({
         flexDirection: 'row',
         paddingLeft: 15,
         paddingRight: 15,
-        borderRadius: 8,
+        borderRadius: 8
     },
 
     tituloBotao: {
         fontSize: 16,
-        color: 'black',
-        fontWeight: '500'
+        color: 'black'
     }
 });
 

@@ -79,9 +79,7 @@ const alertaMensage = (titulo, msg, acao) => {
     )
 }
 
-const sairConta = () => {
-    alertaMensage("Confirmar saida", "Você tem certeza que deseja sair do app?")
-}
+
 
 function ItemDrawer ({navigation,focused, title, icone, ...rest}) {
 
@@ -111,6 +109,10 @@ const CostumDrawer = ({state, navigation, ...props}) => {
         {name: 'Minha Carteira', icon: 'wallet-outline'},
         {name: 'Meu Perfil', icon: 'person-outline'},
     ];
+
+    const sairConta = () => {
+        Alert.alert("Confirmar saida", "Você tem certeza que deseja sair do app?")
+    };
 
     return (
         <SafeAreaView style={{ flex: 1, marginTop: 26 }}>
@@ -172,6 +174,8 @@ function HomeStack({route, navigation}) {
                     headerShown: false
                 }}
             />
+
+            
           
       </Stack.Navigator>
     );
@@ -182,13 +186,13 @@ export default function SideMenu({ navigation, route }) {
     
 
     const screenIndex = useNavigationState((state) => state?.routes[state.index]?.state?.routes[0]?.state?.index)
-    
+
     const getTitle = () => {
         switch(screenIndex) {
             case 1:
                 return 'Detalhes Da Liga';
             case 2:
-                return 'Jogos Da Liga'
+                return 'Jogos Da Liga';
             default:
                 return 'Inicio';
         }
@@ -283,11 +287,13 @@ export default function SideMenu({ navigation, route }) {
                 name='Recibo'
                 component={Recibo}
                 options={{
-                title: 'Recibo',
-                headerTitle: 'Recibo',
-                headerShown: false
+                    title: 'Recibo',
+                    headerTitle: 'Recibo',
+                    headerShown: false
                 }}
             />
+
+            
         </Drawer.Navigator>
     );
 }
