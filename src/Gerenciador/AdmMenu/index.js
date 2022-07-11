@@ -58,6 +58,7 @@ export default function AdmMenu({ navigation }) {
                 <ItemGridMenu
                     titulo={'Palpiteiros'}
                     img={palpiteiro}
+                    click={() => navigation.navigate('Palpiteiros')}
                 />
             </View>
             <View style={css.row}>

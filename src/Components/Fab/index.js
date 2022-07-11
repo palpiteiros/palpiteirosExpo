@@ -49,4 +49,4 @@ const css = StyleSheet.create({
     fabStyle: {
         fontSize: 30
     }
-})
+});

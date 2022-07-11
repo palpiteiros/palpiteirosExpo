@@ -15,6 +15,7 @@ import Recibo from '../../Layout/Recibo';
 import Notificacoes from '../../Layout/Notificacoes';
 import DetalhesJogosUser from '../../Layout/DetalhesJogosUser';
 import { useNavigation, useNavigationState } from '@react-navigation/native';
+import { logOut } from '../../Services/UserServices';
 
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
@@ -111,7 +112,14 @@ const CostumDrawer = ({state, navigation, ...props}) => {
     ];
 
     const sairConta = () => {
-        Alert.alert("Confirmar saida", "Você tem certeza que deseja sair do app?")
+        Alert.alert("Confirmar saida", "Você tem certeza que deseja sair do app?", [
+            {
+              text: "Não",
+              onPress: () => {},
+              style: "cancel"
+            },
+            { text: "Sair", onPress: () => logOut() }
+        ]);
     };
 
     return (

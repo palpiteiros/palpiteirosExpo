@@ -2,7 +2,7 @@ import React from 'react';
 import { View, ActivityIndicator } from 'react-native';
 import { colorBranco, colorVerde } from '../../Styles/Cores';
 
-export default function Pb({cor}) {
+export default function Pb({cor, style}) {
 
     let color = colorBranco;
 
@@ -11,7 +11,7 @@ export default function Pb({cor}) {
     }
 
     return (
-        <View style={{ flex: 1, minHeight: 48 }}>
+        <View style={[{ flex: 1, minHeight: 48 }, style]}>
           <ActivityIndicator color={color} size='large' />
         </View>
     );

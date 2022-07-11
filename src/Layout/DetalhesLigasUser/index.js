@@ -7,7 +7,7 @@ import ItemJogoMasterAdm from '../../Components/ItemJogoMasterAdm';
 import ItemJogoUser from '../../Components/ItemJogoUser';
 import VariacaoBotao from '../../Components/VariacaoBotao';
 import { dateToYMD } from '../../Objects/Datas';
-import { colorBranco, colorCinza, colorVerdeClaro } from '../../Styles/Cores';
+import { colorBranco, colorCinza, colorGrafite, colorVerdeClaro } from '../../Styles/Cores';
 
 const css = StyleSheet.create({
     container: {
@@ -92,6 +92,9 @@ const css = StyleSheet.create({
 
      back: {
         backgroundColor: colorBranco,
+     },
+     btCinza: {
+        backgroundColor: colorGrafite
      }
 
 });
@@ -188,12 +191,24 @@ export default function DetalhesLigasUser({ route, navigation }) {
                 keyExtractor={(item) => item.idPartida}
                 renderItem={({ item }) => <ItemJogoUser data={item} key={item.idPartida} verificaAdm={false} />}
             />
+
+            
             <View style={[css.botaoCont, css.back]}>
-                <VariacaoBotao
-                    icone={'return-up-forward-outline'}
-                    TituloBotao={'Palpitar agora'}
-                    acao={ComprarTicketPalpite}
-                />
+                {
+                    data.status === 1 ?
+                    <VariacaoBotao
+                        icone={'return-up-forward-outline'}
+                        TituloBotao={'Palpitar agora'}
+                        acao={ComprarTicketPalpite}
+                    />
+                    :
+                    <VariacaoBotao
+                        icone={'return-up-forward-outline'}
+                        TituloBotao={'Ver resultado'}
+                        acao={() => {}}
+                    />
+                }
+                
             </View>
         </View>
 

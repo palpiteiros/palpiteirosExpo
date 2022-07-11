@@ -7,6 +7,7 @@ import Step2 from '../../Gerenciador/LigaCreator/Step2';
 import Step3 from '../../Gerenciador/LigaCreator/Step3';
 import LigaCreator from '../../Gerenciador/LigaCreator';
 import DetalhesLiga from '../../Gerenciador/DetalhesLiga';
+import PalpiteirosManager from '../../Gerenciador/PalpiteirosManager';
 
 
 
@@ -19,7 +20,7 @@ export default function AdmStack() {
       <Stack.Screen name='Menu' options={{headerShown: false}} component={AdmMenu} />
       <Stack.Screen name='Ligas' component={LigaManager} />
       <Stack.Screen name='Liga creator' component={LigaCreator} /> 
-      <Stack.Screen name="Jogos" component={Step2} />
+      <Stack.Screen name="Palpiteiros" component={PalpiteirosManager} />
       <Stack.Screen name="Atributos finais" component={Step3} />
       <Stack.Screen name="Detalhes liga" component={DetalhesLiga} />
     </Stack.Navigator>

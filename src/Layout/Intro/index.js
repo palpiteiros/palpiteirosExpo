@@ -98,7 +98,7 @@ const css = StyleSheet.create({
         color: colorBranco
     },
     img: { 
-        height: 350, 
+        height: 280, 
         resizeMode:'contain',
         width: '100%', 
         marginBottom: 10, 

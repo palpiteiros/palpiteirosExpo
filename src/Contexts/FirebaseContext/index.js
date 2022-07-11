@@ -145,7 +145,7 @@ export default function FirebaseProvider({ children }) {
     };
 
     //Recuperar todos os documentos em uma coleção
-    function recuperar_todos_dados_colecao(tituloDocumento) {
+    function recuperar_todos_dados_colecao(tituloDocumento, listener) {
         setLoading(true);
 
         const q = query(collection(db, tituloDocumento), orderBy('horaCriacao', 'desc'));
@@ -156,6 +156,42 @@ export default function FirebaseProvider({ children }) {
             });
             setDadosRecuperados(list);
             setLoading(false);
+            if(listener !== undefined) {
+                listener(list);
+            }
+        }, error => {
+            setDadosRecuperados([]);
+            setLoading(false);
+            if(listener !== undefined) {
+                listener(null);
+            }
+        });
+        return () => {
+            setDadosRecuperados([]);
+        };
+    }
+
+
+    function getPalpiteiros(listener) {
+        setLoading(true);
+
+        const q = query(collection(db, 'Usuario'), orderBy('dataCadastro', 'desc'));
+        const querySnapshot = onSnapshot(q, (querySnap) => {
+            const list = ([]);
+            querySnap.forEach(doc => {
+                list.push(doc.data());
+            });
+            setDadosRecuperados(list);
+            setLoading(false);
+            if(listener !== undefined) {
+                listener(list);
+            }
+        }, error => {
+            setDadosRecuperados([]);
+            setLoading(false);
+            if(listener !== undefined) {
+                listener(null);
+            }
         });
         return () => {
             setDadosRecuperados([]);
@@ -204,6 +240,7 @@ export default function FirebaseProvider({ children }) {
             fechar_liga,
             abrir_liga,
             recuperar_todos_dados_colecao,
+            getPalpiteiros,
             verifica_palpite_por_user,
             recupera_dados_perfil,
             dadosUser,
