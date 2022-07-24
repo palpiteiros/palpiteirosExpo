@@ -1,5 +1,5 @@
 import React, { createContext, useState, useEffect } from 'react';
-import { getFirestore, collection, getDocs, doc, setDoc, getDoc, addDoc, updateDoc, query, where, deleteDoc, orderBy, onSnapshot } from 'firebase/firestore';
+import { getFirestore, collection, getDocs, doc, setDoc, getDoc, addDoc, updateDoc, query, where, deleteDoc, orderBy, onSnapshot, limit, writeBatch } from 'firebase/firestore';
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { Alert } from 'react-native';
 import firebase from '../../../config/firebase';
@@ -144,13 +144,121 @@ export default function FirebaseProvider({ children }) {
         });
     };
 
+    async function getMatchsByLeague(idLiga, listener) {
+        const palpitesRef = collection(db, "Palpites");
+        const q = query(palpitesRef, where("idLiga", "==", idLiga), where("status", "==", 0), limit(300));
+        getDocs(q).then((querySnapshot) => {
+            let list = [];
+
+            if(querySnapshot.empty) {
+                return listener({list: list});
+            }
+            querySnapshot.forEach(doc => {
+                list.push(doc.data());
+            });
+
+            return listener({list: list});
+
+        }).catch(error => {
+            return listener(null);
+        });
+    };
+
+    async function atualizarPontosPalpites(palpites, jogosAtualizados, listener) {
+        const batch = writeBatch(db);
+
+        palpites.map(palpite => {
+            const {partidas, idPalpite} = palpite;
+
+            let pontosTotalPalpite = 0;
+
+            let novaLista = [];
+
+            partidas.map(match => {
+
+                let objPartida = match;
+
+                const {golsMandante, golsVisitante, idJogo, resultado} = match;
+                const indice = jogosAtualizados.findIndex(x => x.idPartida === idJogo);
+
+                if(indice !== -1) {
+                    const jogoAtual = jogosAtualizados[indice];
+
+                    let pontosJogoAtual = 0;
+
+                    const resultadoGolsMandante = jogoAtual.golsMandante;
+                    const resultadoGolsVisitante = jogoAtual.golsVisitante;
+
+                    //PONTUACAO
+                    //acertou os gols mandante = 15 pontos
+                    //acertou os gols visitante = 15 pontos
+                    //acertou o resultado = 10 pontos
+                    //acertou nmr de gols do mandante, do visitante e o resultando = +30 pontos
+
+                    if(golsMandante === resultadoGolsMandante) {
+                        //user palpitou certo o nmr de gols do mandante
+                        pontosJogoAtual = pontosJogoAtual + 15;
+                        pontosTotalPalpite = pontosTotalPalpite + 15;
+                    }
+
+                    if(golsVisitante === resultadoGolsVisitante) {
+                        pontosJogoAtual = pontosJogoAtual + 15;
+                        pontosTotalPalpite = pontosTotalPalpite + 15;
+                    }
+
+
+                    if(resultadoGolsMandante === resultadoGolsVisitante && resultado.tipo === 'Empate') {
+                        //palpitou empate e acertou
+                        pontosJogoAtual = pontosJogoAtual + 10;
+                        pontosTotalPalpite = pontosTotalPalpite + 10;
+                    } else if(resultadoGolsMandante > resultadoGolsVisitante && resultado.tipo === 'Mandante') {
+                        //palpitou mandante e acertou
+                        pontosJogoAtual = pontosJogoAtual + 10;
+                        pontosTotalPalpite = pontosTotalPalpite + 10;
+                    } else if(resultadoGolsMandante < resultadoGolsVisitante && resultado.tipo === 'Visitante'){
+                        //palpitou visitante e acertou
+                        pontosJogoAtual = pontosJogoAtual + 10;
+                        pontosTotalPalpite = pontosTotalPalpite + 10;
+                    }
+
+
+                    if(pontosJogoAtual === 40) {
+                        //acertou nmr de gols do mandante, do visitante e o resultando
+                        pontosJogoAtual = pontosJogoAtual + 30;
+                        pontosTotalPalpite = pontosTotalPalpite + 30;
+                    }
+
+                    Object.assign(objPartida, {ranking: pontosJogoAtual});
+                    novaLista.push(objPartida);
+                }
+
+            });
+
+            const objRank = {
+                pontos: pontosTotalPalpite,
+                media: (pontosTotalPalpite / partidas.length).toFixed(0),
+                colocacao: 0
+            };
+
+            const refPalpite = doc(db, 'Palpites', idPalpite);
+            batch.update(refPalpite, {partidas: novaLista, ranking: objRank, status: 1});
+
+        });
+
+        batch.commit().then(() => {
+            return listener({sucess: true});
+        }).catch(error => {
+            return listener({sucess: false});
+        });
+    };
+
     //Recuperar todos os documentos em uma coleção
     function recuperar_todos_dados_colecao(tituloDocumento, listener) {
         setLoading(true);
 
         const q = query(collection(db, tituloDocumento), orderBy('horaCriacao', 'desc'));
         const querySnapshot = onSnapshot(q, (querySnap) => {
-            const list = ([]);
+            let list = ([]);
             querySnap.forEach(doc => {
                 list.push(doc.data());
             });
@@ -241,6 +349,8 @@ export default function FirebaseProvider({ children }) {
             abrir_liga,
             recuperar_todos_dados_colecao,
             getPalpiteiros,
+            getMatchsByLeague,
+            atualizarPontosPalpites,
             verifica_palpite_por_user,
             recupera_dados_perfil,
             dadosUser,

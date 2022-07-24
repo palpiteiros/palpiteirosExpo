@@ -118,19 +118,23 @@ export const getMatchsRound = (season, idLeague, round, listener) => {
     });
 }
 
-export const getMatchsResult = (season, idLeague, round, listener) => {
-    let objParamns = {};
-    if(season !== undefined && season !== null) {
-        Object.assign(objParamns, {season: season});
-    } 
+export const getMatchsResult = (jogos, listener) => {
 
-    if(idLeague != undefined && idLeague !== null) {
-        Object.assign(objParamns, {league: idLeague});
-    }
-    
-    if(round != undefined && round !== null) {
-        Object.assign(objParamns, {round: round});
-    }
+    let idsString = '';
+
+    jogos.map((item, i) => {
+
+        if(idsString === '') {
+            idsString = item.idPartida;
+        } else {
+            idsString = `${idsString}-${item.idPartida}`;
+        }
+        
+    });
+
+
+
+    let objParamns = {ids: idsString};
 
     let leagueEndpoint = endpoint + '/fixtures';
     let config = {
@@ -148,6 +152,7 @@ export const getMatchsResult = (season, idLeague, round, listener) => {
         return listener(lista);
     }).catch(error => {
         console.log(error);
+        return listener(null);
     });
 }
 

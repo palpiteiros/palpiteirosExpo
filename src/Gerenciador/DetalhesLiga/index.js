@@ -156,9 +156,10 @@ function FooterLigaUpdate({data, navigation}) {
 
     const [pbResult, setPbResult] = useState(false);
     const [pbFechar, setPbFechar] = useState(false);
+    const [pb, setPb] = useState(false);
 
 
-    const { update_matchs, fechar_liga, abrir_liga } = useContext(FirebaseContext);
+    const { update_matchs, fechar_liga, abrir_liga, getMatchsByLeague, atualizarPontosPalpites } = useContext(FirebaseContext);
 
     const atualizarResultado = (persiste) => {
 
@@ -182,8 +183,13 @@ function FooterLigaUpdate({data, navigation}) {
 
         if(pbResult) return;
         setPbResult(true);
-        getMatchsResult('2022', data.campeonatoId, data.rodada, lista => {
+        getMatchsResult(data.listaDeJogos, lista => {
             
+            if(lista === null) {
+                setPbResult(false);
+                return;
+            }
+
             if(lista.length > 0) {
                 console.log(lista);
 
@@ -241,6 +247,49 @@ function FooterLigaUpdate({data, navigation}) {
             if(sucess) navigation.goBack();
         });
     };
+
+    const iniciarFluxo = () => {
+        getMatchsByLeague(data.id, ({list}) => {
+            if(list !== null) {
+                if(list.length > 0) {
+                    atualizarPontosPalpites(list, data.listaDeJogos, ({sucess}) => {
+                        if(sucess) {
+                            iniciarFluxo();
+                        } else {
+                            Alert.alert('Erro ao atualizar palpites', 'Tente novamente...');
+                        }
+                    });
+                } else {
+                    setPb(false);
+                    Alert.alert('Tudo Contabilizado', 'Agora so falta Rankear os palpites...');
+                }
+            } else {
+                setPb(false);
+                Alert.alert('Erro ao Contabilizar', 'Tente novamente...');
+            }
+            
+        });
+    };
+
+    const contabilizarPontos = () => {
+        if(pb) return;
+        if(data.status === 1) {
+            Alert.alert('Liga Aberta', 'A liga precisa está fechada para palpites');
+            return;
+        }
+
+        let isAtualizado = estaAtualizada(data.listaDeJogos);
+
+        if(!isAtualizado) {
+            Alert.alert('Partidas em Aberto', 'Todas as partidas precisam está atualizadas e encerradas');
+            return;
+        }
+
+        setPb(true);
+
+        iniciarFluxo();
+        
+    };
     
     const isUpdate = estaAtualizada(data.listaDeJogos);
 
@@ -250,9 +299,10 @@ function FooterLigaUpdate({data, navigation}) {
             <View>
                 <VariacaoBotao
                     TituloBotao={'Contabilizar'}
-                    acao={() => {}}
+                    acao={contabilizarPontos}
                     icone={'stats-chart-outline'}
                     style={css.bt}
+                    loading={pb}
                 />
             </View>
             <View>

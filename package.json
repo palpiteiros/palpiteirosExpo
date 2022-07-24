@@ -33,7 +33,7 @@
     "puppeteer": "^14.4.0",
     "react": "17.0.2",
     "react-dom": "17.0.2",
-    "react-native": "^0.64.2",
+    "react-native": "0.68.2",
     "react-native-extra-dimensions-android": "^1.2.5",
     "react-native-gesture-handler": "~2.2.1",
     "react-native-modal": "^13.0.1",
