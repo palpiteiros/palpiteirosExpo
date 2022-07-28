@@ -12,7 +12,6 @@ import { novoPalpite } from '../../Objects/Palpite';
 
 const css = StyleSheet.create({
     containerModal: {
-        
         backgroundColor: 'white',
     },
 
@@ -308,6 +307,7 @@ export default function ModalPalpites({
     const { salvar_Palpite, loadingSave } = useContext(FirebaseContext);
     const { user } = useContext(UserContext);
 
+
     useEffect(() => {
         if (placarMandante > placarVisitante) {
             setEscolheResultado({
@@ -332,6 +332,12 @@ export default function ModalPalpites({
             })
         }
     }, [placarMandante, placarVisitante])
+
+    useEffect(() => {
+        setPlacarMandante(0);
+        setPlacarVisitante(0);
+        setEscolheResultado(null);
+    }, [data]);
 
     const HandlerFazerPalpite = useCallback(() => {
         if (idPartida != undefined && escolheResultado != null) {

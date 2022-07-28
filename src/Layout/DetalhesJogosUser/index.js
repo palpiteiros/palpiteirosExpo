@@ -47,6 +47,17 @@ const css = StyleSheet.create({
 
     headePalpite: {
         marginTop: 0
+    },
+    btSheet: {
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 12,
+        },
+        shadowOpacity: 0.58,
+        shadowRadius: 16.00,
+
+        elevation: 24,
     }
 })
 
@@ -94,14 +105,18 @@ export default function DetalhesJogosUser({ route, navigation }) {
     const [index, setIndex] = useState(-1);
 
 
-    const snapPoints = useMemo(() => ['95%'], []);
+    const snapPoints = useMemo(() => ['90%'], []);
 
     const handleSheetChange = useCallback((i) => {
         setIndex(i);
+        if(i === -1) {
+            setMatchSelected([]);
+        }
     }, []);
 
-    const handleSnapPress = (index, data) => {
+    const handleSnapPress = (data) => {
         sheetRef.current.expand({duration: 500});
+        console.log(data)
         setMatchSelected(data);
     }
 
@@ -139,11 +154,11 @@ export default function DetalhesJogosUser({ route, navigation }) {
                             ListHeaderComponent={() => <HeaderPalpite />}
                             keyExtractor={(item) => item.idPartida}
                             ListFooterComponent={() => <FooterComponent confirmar={confirmar} loading={loadingSave} completo={palpites.length === listadejogos.length} />}
-                            renderItem={({ item }) =>
+                            renderItem={({ item, index }) =>
                                 <ItemCardJogosUser
                                     data={item}
                                     palpites={palpitesVerificacao}
-                            abre={handleSnapPress} />}
+                                    abre={() => handleSnapPress(item)} />}
                         />
                     }
                     
@@ -154,6 +169,7 @@ export default function DetalhesJogosUser({ route, navigation }) {
                     enablePanDownToClose={true}
                     ref={sheetRef}
                     snapPoints={snapPoints}
+                    style={css.btSheet}
                     index={index}
                     onChange={handleSheetChange}
                 >
