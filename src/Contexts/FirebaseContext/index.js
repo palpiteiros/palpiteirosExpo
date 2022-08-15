@@ -77,11 +77,14 @@ export default function FirebaseProvider({ children }) {
     };
 
     //Salva um novo palpite no firebase
-    async function salvar_Palpite(documento, id, idLiga, idCampeonato, listener) {
+    async function salvar_Palpite(documento, id, nome, idLiga, idCampeonato, listener) {
         setLoadingSave(true);
+
+        const batch = writeBatch(db);
 
         const refPalpite = doc(collection(db, 'Palpites'));
         const idRefPalpite = refPalpite.id;
+        const refPalpitePorLiga = doc(collection(db, 'PalpitesDaLiga', 'Ligas', idLiga), idRefPalpite);
         /*
         Object.assign(documento, { IdPalpite: idRefPalpite });
         Object.assign(documento, { HoraCriacaoPalpite: Date.now() });*/
@@ -90,6 +93,7 @@ export default function FirebaseProvider({ children }) {
         let bodyPalpite = {
             idPalpite: idRefPalpite,
             idUser: id,
+            nomeUser: nome,
             idLiga: idLiga,
             idCampeonato: idCampeonato,
             horaResultado: 0,
@@ -104,7 +108,10 @@ export default function FirebaseProvider({ children }) {
             }
         };
 
-        await setDoc(refPalpite, bodyPalpite).then(() => {
+        batch.set(refPalpite, bodyPalpite);
+        batch.set(refPalpitePorLiga, bodyPalpite);
+
+        batch.commit().then(() => {
             setLoadingSave(false);
             return listener({ sucess: true, text: "Palpite salvo com Sucesso!" });
 
@@ -146,7 +153,7 @@ export default function FirebaseProvider({ children }) {
 
     async function getMatchsByLeague(idLiga, listener) {
         const palpitesRef = collection(db, "Palpites");
-        const q = query(palpitesRef, where("idLiga", "==", idLiga), where("status", "==", 0), limit(300));
+        const q = query(palpitesRef, where("idLiga", "==", idLiga), where("status", "==", 0), limit(200));
         getDocs(q).then((querySnapshot) => {
             let list = [];
 
@@ -164,11 +171,32 @@ export default function FirebaseProvider({ children }) {
         });
     };
 
+    async function getRankingPalpiteByLegue(idLiga, listener) {
+        const palpitesRef = collection(db, 'PalpitesDaLiga', 'Ligas', idLiga);
+        const q = query(palpitesRef, orderBy('ranking', 'desc'), limit(10));
+        getDocs(q).then((querySnapshot) => {
+            let list = [];
+
+            if(querySnapshot.empty) {
+                return listener({list: list});
+            }
+            querySnapshot.forEach(doc => {
+                list.push(doc.data());
+            });
+
+            return listener({list: list});
+
+        }).catch(error => {
+            console.log(error)
+            return listener(null);
+        });
+    };
+
     async function atualizarPontosPalpites(palpites, jogosAtualizados, listener) {
         const batch = writeBatch(db);
 
         palpites.map(palpite => {
-            const {partidas, idPalpite} = palpite;
+            const {partidas, idPalpite, idLiga} = palpite;
 
             let pontosTotalPalpite = 0;
 
@@ -241,9 +269,38 @@ export default function FirebaseProvider({ children }) {
             };
 
             const refPalpite = doc(db, 'Palpites', idPalpite);
-            batch.update(refPalpite, {partidas: novaLista, ranking: objRank, status: 1});
+            const refPalpitePorLiga = doc(collection(db, 'PalpitesDaLiga', 'Ligas', idLiga), idPalpite);
+            batch.update(refPalpite, {partidas: novaLista, ranking: pontosTotalPalpite , status: 1});
+            batch.update(refPalpitePorLiga, {partidas: novaLista, ranking: pontosTotalPalpite , status: 1});
 
         });
+
+        batch.commit().then(() => {
+            return listener({sucess: true});
+        }).catch(error => {
+            return listener({sucess: false});
+        });
+    };
+
+    async function rankerPalpites(ranking, listener) {
+        const batch = writeBatch(db);
+        let idL = '';
+        ranking.map((item, i) => {
+            const {idPalpite, idLiga} = item;
+
+            idL = idLiga;
+
+            if(i < 10) {
+                const position = i + 1;
+                const refPalpite = doc(db, 'Palpites', idPalpite);
+                const refPalpitePorLiga = doc(collection(db, 'PalpitesDaLiga', 'Ligas', idLiga), idPalpite);
+                batch.update(refPalpite, {posicao: position, premio: 10});
+                batch.update(refPalpitePorLiga, {posicao: position, premio: 10});
+            }
+        });
+
+        
+        batch.update(doc(db, 'Ligas', idL), {status: 3});
 
         batch.commit().then(() => {
             return listener({sucess: true});
@@ -351,8 +408,10 @@ export default function FirebaseProvider({ children }) {
             getPalpiteiros,
             getMatchsByLeague,
             atualizarPontosPalpites,
+            rankerPalpites,
             verifica_palpite_por_user,
             recupera_dados_perfil,
+            getRankingPalpiteByLegue,
             dadosUser,
             recibo_palpite,
             palpitesVerificacao,

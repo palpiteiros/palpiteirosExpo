@@ -128,7 +128,7 @@ export default function DetalhesJogosUser({ route, navigation }) {
     const confirmar = () => {
         if(loadingSave) return;
         
-        salvar_Palpite(palpites, IdUser, ligaId, campeonatoId, ({ sucess, text }) => {
+        salvar_Palpite(palpites, IdUser, user.nome, ligaId, campeonatoId, ({ sucess, text }) => {
             if (sucess) {
                 setPalpites([]);
                 Alert.alert("Palpites confirmados", "Seus palpites foram realizados com sucesso!");

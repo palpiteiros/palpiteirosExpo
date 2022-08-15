@@ -155,11 +155,12 @@ function HeaderDetalhes({ data }) {
 function FooterLigaUpdate({data, navigation}) {
 
     const [pbResult, setPbResult] = useState(false);
+    const [pbRankear, setPbRankear] = useState(false);
     const [pbFechar, setPbFechar] = useState(false);
     const [pb, setPb] = useState(false);
 
 
-    const { update_matchs, fechar_liga, abrir_liga, getMatchsByLeague, atualizarPontosPalpites } = useContext(FirebaseContext);
+    const { update_matchs, fechar_liga, abrir_liga, getMatchsByLeague, rankerPalpites, atualizarPontosPalpites, getRankingPalpiteByLegue } = useContext(FirebaseContext);
 
     const atualizarResultado = (persiste) => {
 
@@ -290,12 +291,45 @@ function FooterLigaUpdate({data, navigation}) {
         iniciarFluxo();
         
     };
+
+    const rankearLiga = () => {
+        if(pbRankear) return;
+        setPbRankear(true);
+        if(data.status === 1) {
+            Alert.alert('Liga Aberta', 'A liga precisa está fechada para palpites');
+            return;
+        }
+        getRankingPalpiteByLegue(data.id, ({list}) => {
+            if(list.length > 0) {
+                rankerPalpites(list, ({sucess}) => {
+                    if(sucess) {
+                        setPbRankear(false);
+                        Alert.alert('Ranking concluido', 'Palpites Premiados ja estão com colocação e prêmios...');
+                    } else {
+                        setPbRankear(false);
+                        Alert.alert('Erro ao Rankear', 'Não foi possivel atualizar o documento do palpite...');
+                    }
+                })
+            } else {
+                setPbRankear(false);
+                Alert.alert('Erro ao Rankear', 'Nenhum Palpite encontrado...');
+            }
+        })
+    };
     
     const isUpdate = estaAtualizada(data.listaDeJogos);
 
     return (
         <View style={css.footer}>
-            
+            <View>
+                <VariacaoBotao
+                    TituloBotao={'Rankear'}
+                    acao={rankearLiga}
+                    icone={'ribbon-outline'}
+                    style={css.bt}
+                    loading={pbRankear}
+                />
+            </View>
             <View>
                 <VariacaoBotao
                     TituloBotao={'Contabilizar'}
@@ -352,6 +386,7 @@ export default function DetalhesLiga({ route, navigation }) {
     //fazer a requisição detalhada de cada jogo vai retornar mais dados detalhados de cada partica
     //dados como: statisticas como chutes, faltas, cartoes, substituicao, gols, assistencias, 
     //escalao de cada time, banco de reserva
+
 
     return (
         <View style={css.container}>
